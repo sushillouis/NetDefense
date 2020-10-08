@@ -134,7 +134,8 @@ public class SimpleEnemyController : NetworkBehaviour {
         if (path != null) {
             Vector3 direction = path.waypoints[waypointIndex].position - path.waypoints[waypointIndex - 1].position;
             Vector3 vec_value = (direction.magnitude > 0) ? (direction / direction.magnitude) : Vector3.zero;
-            GetComponent<Rigidbody>().velocity = (direction * movementSpeed) / direction.magnitude;
+            float velocityScalar = MainMenu.difficulty == Difficulty.EASY ? .6f : 1.1f;
+            GetComponent<Rigidbody>().velocity = ((direction * movementSpeed) / direction.magnitude) * velocityScalar;
             distance = Mathf.Abs((transform.position - path.waypoints[waypointIndex].position).magnitude);
 
 

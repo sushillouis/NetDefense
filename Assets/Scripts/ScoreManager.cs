@@ -97,7 +97,7 @@ public class ScoreManager : MonoBehaviour {
             }
             if (metric.wasMalic)
                 totalbadPackets++;
-            Debug.Log("looping " + metric.status + " ismalic " + metric.wasMalic);
+           // Debug.Log("looping " + metric.status + " ismalic " + metric.wasMalic);
 
         }
 

@@ -9170,6 +9170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 046652884bd52ee4db598c2bbd11d385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selected: {fileID: 0}
   settings: {fileID: 1324450098}
   sell: {fileID: 407007978}
   indicatorColumns:

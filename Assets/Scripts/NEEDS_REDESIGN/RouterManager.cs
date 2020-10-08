@@ -4,16 +4,18 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class RouterManager : MonoBehaviour {
-    private Router selected;
+    public Router selected;
     public Router Selected {
         get {
             return selected;
         }
         set {
+            if (selected != null)
+                selected.hud.hide();
+            value.hud.show();
+
+
             selected = value;
-            if (!EventSystem.current.IsPointerOverGameObject()) {
-                //ActivateUI(value != null);
-            }
         }
     }
     public GameObject settings;
@@ -22,8 +24,8 @@ public class RouterManager : MonoBehaviour {
     public float[] indicatorColumns;
 
     void Start() {
-       // settings.SetActive(false);
-       // sell.SetActive(false);
+        // settings.SetActive(false);
+        // sell.SetActive(false);
     }
 
     public void SetColor(int color) {
@@ -45,19 +47,5 @@ public class RouterManager : MonoBehaviour {
         Shared.inst.gameMetrics.whitehat_cash += 25;
         Debug.Log("Sold for hardcoded value");
         WhiteHatMenu.inst.OnCashChanged();
-    }
-
-    public void ActivateUI(bool active) {
-#if UNITY_ANDROID
-        
-        if(active) {
-            settings.SetActive(active);
-            sell.SetActive(active);
-        }
-
-#else
-        settings.SetActive(active);
-        sell.SetActive(active);
-#endif
     }
 }

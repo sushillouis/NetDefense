@@ -21,6 +21,8 @@ public class Router : MonoBehaviour {
 
     private RouterManager manager;                      //Holds a reference to the router manager
 
+    public DynamicHud hud;
+
     //Called each time the gate material needs to be changed
     private Material BeamMaterial {
         set {
@@ -38,7 +40,7 @@ public class Router : MonoBehaviour {
         set {
             Debug.Log("toggling selected");
             selected = value;
-            if (value) {
+            if (selected) {
                 manager.Selected = this;
             } else {
                 BeamMaterial = nonHighlightedColor;
@@ -57,10 +59,12 @@ public class Router : MonoBehaviour {
         }
         set {
             mouseOver = value;
-            if (value)
+            if (value) {
                 BeamMaterial = highlightedColor;
-            else if (!Selected)
+            }
+            else if (!Selected) {
                 BeamMaterial = nonHighlightedColor;
+            }
         }
     }
 
@@ -74,21 +78,33 @@ public class Router : MonoBehaviour {
 
     //Selects router on click if the player is not building
     void OnMouseDown() {
-        if (!GameObject.Find("CursorController").GetComponent<CursorController>().building)
+        if (!GameObject.Find("CursorController").GetComponent<CursorController>().building) {
             Selected = true;
+            
+        }
     }
 
+    private static int count = 1;
+    private void Start() {
+        hud = GetComponent<DynamicHud>();
+        name = "Router " + count++;
+        hud.hide();
+    }
     //Checks for click anywhere else to control deselection
     void Update() {
         if (Input.GetMouseButtonDown(0) && !MouseOver && !EventSystem.current.IsPointerOverGameObject()) {
             Debug.Log("!MouseOver: " + !MouseOver + " !IsPointerOverGameObject(): " + !EventSystem.current.IsPointerOverGameObject());
             Selected = false;
+            
         } else if (Input.GetMouseButtonDown(0)) {
             Debug.Log("!MouseOver: " + !MouseOver + " !IsPointerOverGameObject(): " + !EventSystem.current.IsPointerOverGameObject());
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)) {
-                Debug.Log(hit.transform.gameObject.name);
+                Debug.Log("Raycasted Router Value: " + hit.transform.gameObject.name);
+                if (hit.transform.gameObject.name.Equals(name)) {
+                    Selected = true;
+                }
             }
         }
     }
