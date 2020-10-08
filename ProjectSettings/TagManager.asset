@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Router
+  - Grid
+  - Spawner
+  - EntityManager
+  - UNetAPI
+  - SharedResource
+  - slider_size
+  - slider_color
+  - slider_shape
+  - text_size
+  - text_color
+  - text_shape
+  - GameManager
+  - SharedValues
+  - HoneyPot
+  - DataPoint
+  - PlayerPrefab
+  - Packet
+  - PacketPoolManager
+  - Destination
+  - DYNAMIC_INFO_HUD
+  - MainCanvas
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - PostProcessing
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

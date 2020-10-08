@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1266367798000651010
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1266367798000651008}
+  - component: {fileID: 1266367798000651009}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1266367798000651008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1266367798000651010}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.9939995, y: 4.591856, z: 122.99985}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1266367798000651009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1266367798000651010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85098c67e973a984486d9a2986598382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnInterval: 1
+  startTime: 0
+  UI: {fileID: 0}
+  black_hat_text_size: {fileID: 0}
+  black_hat_text_color: {fileID: 0}
+  black_hat_text_shape: {fileID: 0}
+  black_hat_slider_size: {fileID: 0}
+  black_hat_slider_color: {fileID: 0}
+  black_hat_slider_shape: {fileID: 0}
+  materials:
+  - {fileID: 2100000, guid: 1d035d90cc6d91e4f98fb13e02ced084, type: 2}
+  - {fileID: 2100000, guid: ea208853602eeab4a9d311a6b1182795, type: 2}
+  - {fileID: 2100000, guid: 2e626e742153e5647a3d965fe78b5058, type: 2}
+  models:
+  - {fileID: 4300000, guid: b7b66d122beaa294e88f1e81c82a571b, type: 3}
+  - {fileID: 4300000, guid: 3259008f9fb700840a8078629cb3cf98, type: 3}
+  - {fileID: 4300000, guid: d50ac055e566fff42b5b66c75c04ce1f, type: 3}
+  sizes:
+  - 0.5
+  - 1
+  - 1.5
