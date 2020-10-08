@@ -1,12 +1,12 @@
-## Welcome to GitHub Pages
+## NetDefense
 
 You can use the [editor on GitHub](https://github.com/sushillouis/NetDefense/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+### Playing to Learn cyber security principles
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+NetDefense is a series of games that you can play to learn cybersecrity principles dealing with firewalls and honeypots. 
 
 ```markdown
 Syntax highlighted code block
