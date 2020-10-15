@@ -143,11 +143,12 @@ public class Shared : MonoBehaviour {
     }
 
     public void OnQuitButtonPressed() {
-        Debug.Log("Quit Pressed");
+
 
         // reset global state
-        PacketPoolManager.inst.packets.Clear();
+       // PacketPoolManager.inst.CleanUpStatics();
         ScoreManager.inst.packetMetrics.Clear();
+        Destination.CleanUpStatics();
 
         // possilby redundant and wet code
         if (NetworkManager.singleton != null) {

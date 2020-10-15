@@ -21,7 +21,9 @@ public class Router : MonoBehaviour {
 
     private RouterManager manager;                      //Holds a reference to the router manager
 
-    public DynamicHud hud;
+   // public DynamicHud hud;
+
+    public GameObject selectedRing;
 
     //Called each time the gate material needs to be changed
     private Material BeamMaterial {
@@ -86,9 +88,10 @@ public class Router : MonoBehaviour {
 
     private static int count = 1;
     private void Start() {
-        hud = GetComponent<DynamicHud>();
+       // hud = GetComponent<DynamicHud>();
         name = "Router " + count++;
-        hud.hide();
+       // hud.hide();
+        selectedRing.SetActive(false);
     }
     //Checks for click anywhere else to control deselection
     void Update() {

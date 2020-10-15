@@ -22,8 +22,8 @@ public class SimpleEnemyController : NetworkBehaviour {
     public float pulseDuration;
     public float pulseSpeed;
 
-    public GameObject dynamicHud;
-    public GameObject badPacketOutline;
+    //public GameObject dynamicHud;
+    //public GameObject badPacketOutline;
 
 
     //Trait values
@@ -59,8 +59,10 @@ public class SimpleEnemyController : NetworkBehaviour {
 
     public bool isReadyForRemoval;
 
+    public GameObject selectedChild;
+
     public void Start() {
-        
+
         if (EntityManager.inst.isMultiplayer && !EntityManager.inst.isServer) {
             setupBehavior(color, size, shape, malicious);
         }
@@ -89,7 +91,7 @@ public class SimpleEnemyController : NetworkBehaviour {
 
     public void Tick() {
 
-        badPacketOutline.SetActive(status == PACKET_LIFECYCLE_STATUS.ENROUTE && malicious && MainMenu.difficulty == Difficulty.EASY);
+       // badPacketOutline.SetActive(status == PACKET_LIFECYCLE_STATUS.ENROUTE && malicious && MainMenu.difficulty == Difficulty.EASY);
 
         if (status == PACKET_LIFECYCLE_STATUS.UNSPAWNED)
             transform.position = new Vector3(spawnPos.x, spawnPos.y - (5 * instance_id), spawnPos.z);
@@ -110,26 +112,26 @@ public class SimpleEnemyController : NetworkBehaviour {
      * Do transformations through the transformation pipline to go from world space to scaled canvas space
      * 
      */
-    private void UpdateDynamicHud() {
+    //private void UpdateDynamicHud() {
 
-        RectTransform rt = dynamicHud.GetComponent<RectTransform>();
+    //    RectTransform rt = dynamicHud.GetComponent<RectTransform>();
 
-        Vector2 screen_space = Camera.main.WorldToScreenPoint(transform.position);
+    //    Vector2 screen_space = Camera.main.WorldToScreenPoint(transform.position);
 
-        float scaleFactor = MainCanvasManager.inst.scaleFactor();
+    //    float scaleFactor = MainCanvasManager.inst.scaleFactor();
 
-        Vector2 scaled = new Vector2(screen_space.x / scaleFactor, screen_space.y / scaleFactor);
+    //    Vector2 scaled = new Vector2(screen_space.x / scaleFactor, screen_space.y / scaleFactor);
 
-        Vector2 finalTransform = new Vector2(scaled.x - rt.rect.width / 2, scaled.y - rt.rect.height / 2);
+    //    Vector2 finalTransform = new Vector2(scaled.x - rt.rect.width / 2, scaled.y - rt.rect.height / 2);
 
-        badPacketOutline.GetComponent<RectTransform>().localPosition = finalTransform;
+    //    badPacketOutline.GetComponent<RectTransform>().localPosition = finalTransform;
 
 
-    }
+    //}
 
     public void GoEnroute() {
 
-        UpdateDynamicHud();
+        //UpdateDynamicHud();
 
         if (path != null) {
             Vector3 direction = path.waypoints[waypointIndex].position - path.waypoints[waypointIndex - 1].position;
@@ -148,7 +150,7 @@ public class SimpleEnemyController : NetworkBehaviour {
                     lastDistance = Mathf.Infinity;
                 } else {
                     if (!malicious) {
-                       // ScoreManager.inst.OnFriendlyPacketTransfered(id);
+                        // ScoreManager.inst.OnFriendlyPacketTransfered(id);
                         isReadyForRemoval = true;
                     } else {
                         if (!path.IsHoneypot) {
@@ -183,8 +185,8 @@ public class SimpleEnemyController : NetworkBehaviour {
 
         if (other.gameObject.tag == "Router") {
             Router r = other.gameObject.GetComponent<Router>();
-            
-            if(r.color == color && r.shape == shape && r.size == size) {
+
+            if (r.color == color && r.shape == shape && r.size == size) {
                 status = PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN;
                 if (EntityManager.inst.isMultiplayer && !EntityManager.inst.isServer) {
                     Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.CHANGE_PACKET_LIFECYCLE_STATUS, id + "," + (int)PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN));
@@ -203,10 +205,15 @@ public class SimpleEnemyController : NetworkBehaviour {
         this.id = instance_id++;
         status = PACKET_LIFECYCLE_STATUS.UNSPAWNED;
         spawnPos = gameObject.transform.position;
+        selectedChild.SetActive(newMalicious);
+
+        float selectionScale = Mathf.Max(transform.localScale.x * selectedChild.transform.localScale.x, transform.localScale.z * selectedChild.transform.localScale.z);
+        selectionScale *= 2f;
+        selectedChild.transform.localScale = new Vector3(selectionScale, selectedChild.transform.localScale.y, selectionScale);
 
         Game_Manager.inst.SetTraits(this);
-        if (newMalicious)
-            StartCoroutine("Pulsate");
+        //if (newMalicious)
+        //    StartCoroutine("Pulsate");
         if (!EntityManager.inst.isMultiplayer || (EntityManager.inst.isMultiplayer && EntityManager.inst.isServer) || updateClient) {
             int index = Random.Range(0, destination.paths.Count);
             path = destination.paths[index];
@@ -214,19 +221,24 @@ public class SimpleEnemyController : NetworkBehaviour {
             SetSpawnRotandPos();
         }
 
-        dynamicHud = GameObject.FindGameObjectWithTag("DYNAMIC_INFO_HUD");
-        badPacketOutline = Instantiate(badPacketOutline);
-        badPacketOutline.transform.SetParent(dynamicHud.transform);
+        //dynamicHud = GameObject.FindGameObjectWithTag("DYNAMIC_INFO_HUD");
+        //badPacketOutline = Instantiate(badPacketOutline);
+        //badPacketOutline.transform.SetParent(dynamicHud.transform);
     }
 
-    public void SetSpawnRotandPos() {
-        transform.position = new Vector3(path.waypoints[0].position.x, 0, path.waypoints[0].position.z);
+    public void SetSpawnRotandPos() { 
+        if(path.waypoints[0] == null) {
+            Debug.Log("BIG PROBLEM");
+            return;
+        }
+
+        transform.position = new Vector3(path.waypoints[0].position.x, 0, path.waypoints[0].position.z); // null and missing reference
         transform.LookAt(new Vector3(path.waypoints[waypointIndex].position.x, 0, path.waypoints[waypointIndex].position.z));
     }
 
     public void OnDeployed() {
         transform.position = new Vector3(path.transform.position.x, 0, path.transform.position.z);
 
-        UpdateDynamicHud();
+        //UpdateDynamicHud();
     }
 }

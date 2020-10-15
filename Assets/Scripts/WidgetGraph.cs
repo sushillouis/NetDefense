@@ -26,8 +26,8 @@ public class WidgetGraph : MonoBehaviour {
             dataset.Add(0);
             GameObject dp = new GameObject("datapoint-" + i, typeof(Image));
             GameObject line = new GameObject("line-" + i, typeof(Image));
-            dp.transform.parent = transform;
-            line.transform.parent = transform;
+            dp.transform.SetParent(transform);
+            line.transform.SetParent(transform);
             datapoints.Add(dp);
             lines.Add(line);
         }

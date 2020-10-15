@@ -24,7 +24,6 @@ public class EntityManager : NetworkBehaviour {
 
     void Start() {
         isMultiplayer = MainMenu.isMultiplayerSelectedFromMenu;
-        Debug.Log("Multiplayer Selection is... " + isMultiplayer);
     }
 
     public void Update() {

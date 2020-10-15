@@ -43,7 +43,7 @@ public class PacketPoolManager : NetworkBehaviour {
             return POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_TARGET_SELECTION;
         }
 
-        packets.Clear();
+        //packets.Clear();
         for (int i = 0; i < N_PER_TYPE; i++)
             for (int color = 0; color < Game_Manager.COLOR_COUNT; color++)
                 for (int shape = 0; shape < Game_Manager.SHAPE_COUNT; shape++)
@@ -52,6 +52,8 @@ public class PacketPoolManager : NetworkBehaviour {
                         bool isBad = Shared.inst.isBadPacket(color, shape, size);
 
                         string target = packet_destinations[Random.Range(0, packet_destinations.Length)];
+
+                        Debug.Assert(target != null, "Target not selected");
 
                         if (isBad) {
                             if (Shared.inst.gameMetrics.target_probabilities.Count != Game_Manager.inst.destinations.Length) {
@@ -79,16 +81,12 @@ public class PacketPoolManager : NetworkBehaviour {
                         else
                             createPacket(color, size, shape, target, isBad);
 
-                        Debug.Log("Created A Packet");
+
                     }
 
 
 
         return POPULATE_POOL_ERROR_CODES.SUCCESS;
-    }
-
-    public void SpawnPacket(int color, int size, int shape, string destination, bool malicious) {
-
     }
 
     public string getTarget() {
@@ -135,11 +133,23 @@ public class PacketPoolManager : NetworkBehaviour {
         }
     }
 
+    public void CleanUpStatics() {
+        foreach (GameObject go in packets) {
+            Destroy(go);
+        }
+
+        packets.Clear();
+    }
+
     public GameObject createPacket(int color, int size, int shape, string destination, bool malicious) {
         GameObject packet = Instantiate(packetPrefab);
         SimpleEnemyController sec = packet.GetComponent<SimpleEnemyController>();
+
+        
         sec.destination = Destination.getDestinationByID(destination);
         sec.setupBehavior(color, size, shape, malicious);
+
+        Debug.Assert(sec.destination != null, "Dest is null :(");
 
         packets.Add(packet);
         packet.transform.parent = transform;
@@ -158,7 +168,7 @@ public class PacketPoolManager : NetworkBehaviour {
 
     public void deployNextPacket() {
         if (deployIndex > packets.Count - 1) {
-            Debug.Log("No more packets in pool");
+
             return;
         }
         SimpleEnemyController pac = packets[deployIndex++].GetComponent<SimpleEnemyController>();

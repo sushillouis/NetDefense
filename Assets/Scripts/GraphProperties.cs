@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GraphProperties : MonoBehaviour {
-    [SerializeField]
-    private bool isDebug;
 
     public GameObject dataPoint;
     public int maxPoints;
@@ -32,10 +30,7 @@ public class GraphProperties : MonoBehaviour {
     }
 
     void Update() {
-        if (isDebug)
-            currentData = (Mathf.Sin(index / 5f) * 50);
-        else
-            currentData = ScoreManager.inst.black_hat_score_total_for_end_game;
+        currentData = ScoreManager.inst.black_hat_score_total_for_end_game;
 
         float elapsed = Time.time - startTime;
         if (elapsed > 0.09f) {

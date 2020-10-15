@@ -10,9 +10,12 @@ public class RouterManager : MonoBehaviour {
             return selected;
         }
         set {
-            if (selected != null)
-                selected.hud.hide();
-            value.hud.show();
+            if (selected != null) {
+               // selected.hud.hide();
+                selected.selectedRing.SetActive(false);
+            }
+            //value.hud.show();
+            value.selectedRing.SetActive(true);
 
 
             selected = value;

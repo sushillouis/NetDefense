@@ -93,7 +93,7 @@ public class ScoreManager : MonoBehaviour {
         foreach (PacketCompletedMetric metric in packetMetrics) {
             if (metric.wasMalic && metric.status == PacketLifeStatus.SUCCESSFUL) {
                 badPacketSuccesses++;
-                Debug.Log("bad packet was successful");
+
             }
             if (metric.wasMalic)
                 totalbadPackets++;

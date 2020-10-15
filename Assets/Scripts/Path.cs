@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class Path : MonoBehaviour
 {
-    [HideInInspector] public List<Transform> waypoints = new List<Transform>();
+    public List<Transform> waypoints = new List<Transform>();
     public Destination destination;
     public bool IsHoneypot
     {

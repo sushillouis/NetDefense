@@ -35,7 +35,7 @@ public class Game_Manager : MonoBehaviour {
     private GameObject whiteHatUI, blackHatUI;
 
     public int match_length = 60;
-    private float start_time;
+
 
     public GameObject GraphWidget;
     public float graph_update_time = 1;
@@ -147,7 +147,6 @@ public class Game_Manager : MonoBehaviour {
 
 
         float elapsed1 = Time.time - lastSpawn;
-        float elapsed2 = Time.time - start_time;
         float elapsed3 = Time.time - start_graph_update_time;
 
 
@@ -188,7 +187,7 @@ public class Game_Manager : MonoBehaviour {
             PacketPoolManager.inst.deployNextPacket();
             poolHasSpawned = true;
         } else
-            Debug.Log("POOL STATUS... " + pool_status);
+
 
         if (!MainMenu.isMultiplayerSelectedFromMenu && (pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_DEFINITION || pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_TARGET_SELECTION)) {
             BlackHatNPC.inst.setBlackhatNPCvalues();

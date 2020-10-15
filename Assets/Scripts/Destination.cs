@@ -49,4 +49,8 @@ public class Destination : MonoBehaviour
         Debug.LogError("Invalid Path ID");
         return null;
     }
+
+    public static void CleanUpStatics() {
+        destinations.Clear();
+    }
 }

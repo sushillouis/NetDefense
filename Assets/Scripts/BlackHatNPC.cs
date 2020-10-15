@@ -15,7 +15,6 @@ public class BlackHatNPC : MonoBehaviour {
 
     private void Awake() {
         inst = this;
-        inst.setBlackhatNPCvalues();
     }
 
     public void setBlackhatNPCvalues() {
