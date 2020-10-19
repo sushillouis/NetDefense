@@ -205,7 +205,7 @@ public class SimpleEnemyController : NetworkBehaviour {
         this.id = instance_id++;
         status = PACKET_LIFECYCLE_STATUS.UNSPAWNED;
         spawnPos = gameObject.transform.position;
-        selectedChild.SetActive(newMalicious);
+        selectedChild.SetActive(newMalicious && MainMenu.difficulty == Difficulty.EASY);
 
         float selectionScale = Mathf.Max(transform.localScale.x * selectedChild.transform.localScale.x, transform.localScale.z * selectedChild.transform.localScale.z);
         selectionScale *= 2f;

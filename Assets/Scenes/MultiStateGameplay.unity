@@ -21355,6 +21355,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 600
       objectReference: {fileID: 0}
+    - target: {fileID: 3844221225351560149, guid: 55af71b621fa8f44cb6689ec69a8d2dc,
+        type: 3}
+      propertyPath: m_Text
+      value: Menu
+      objectReference: {fileID: 0}
     - target: {fileID: 3844221225391040778, guid: 55af71b621fa8f44cb6689ec69a8d2dc,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -21460,10 +21465,25 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3844221225892711179, guid: 55af71b621fa8f44cb6689ec69a8d2dc,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1856652240}
+    - target: {fileID: 3844221225892711179, guid: 55af71b621fa8f44cb6689ec69a8d2dc,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnRetryButtonSelected
+      objectReference: {fileID: 0}
     - target: {fileID: 3844221226010519006, guid: 55af71b621fa8f44cb6689ec69a8d2dc,
         type: 3}
       propertyPath: m_Text
       value: Game OVer Report
+      objectReference: {fileID: 0}
+    - target: {fileID: 3844221226296485637, guid: 55af71b621fa8f44cb6689ec69a8d2dc,
+        type: 3}
+      propertyPath: m_Text
+      value: Retry
       objectReference: {fileID: 0}
     - target: {fileID: 3844221226428190786, guid: 55af71b621fa8f44cb6689ec69a8d2dc,
         type: 3}

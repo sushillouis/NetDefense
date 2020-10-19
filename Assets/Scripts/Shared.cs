@@ -142,7 +142,7 @@ public class Shared : MonoBehaviour {
 
     }
 
-    public void OnQuitButtonPressed() {
+    public void OnQuitButtonPressed(string sceneName = "MainMenu") {
 
 
         // reset global state
@@ -164,9 +164,9 @@ public class Shared : MonoBehaviour {
         if (MainMenu.isMultiplayerSelectedFromMenu) {
             inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_NETWORK_STATE, ((int)SharedGameStates.OFFLINE).ToString()));
             inst.syncEvents.Add(new SyncEvent(MessageTypes.FORCE_GAME_SHUTDOWN, ""));
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene(sceneName);
         } else
-            SceneManager.LoadScene("MainMenu"); 
+            SceneManager.LoadScene(sceneName); 
     }
 }
 

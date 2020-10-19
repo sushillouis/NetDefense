@@ -58,4 +58,9 @@ public class GameOverMenuManager : MonoBehaviour
         Shared.inst.OnQuitButtonPressed();
        // Initiate.Fade("MainMenu", new Color(.1f, 0.0f, .1f, 1.0f), 2.0f);
     }
+
+    public void OnRetryButtonSelected() {
+        Shared.inst.OnQuitButtonPressed("MultiStateGameplay");
+
+    }
 }
