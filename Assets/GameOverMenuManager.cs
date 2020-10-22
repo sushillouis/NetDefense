@@ -18,6 +18,8 @@ public class GameOverMenuManager : MonoBehaviour
     public Text metric2;
     public Text metric3;
 
+    public Text titleText;
+
     public static GameOverMenuManager inst;
 
     private void Awake() {
@@ -25,6 +27,8 @@ public class GameOverMenuManager : MonoBehaviour
     }
 
     public void OnRefreshMenu() {
+
+        titleText.text = Shared.inst.gameMetrics.whitehat_score > Shared.inst.gameMetrics.blackhat_score  ? Shared.inst.getDevicePlayer().username + "Whitehat wins" : "Blackhat wins";
 
         if (!MainMenu.isMultiplayerSelectedFromMenu || Shared.inst.gameMetrics.metrics == null) {
             metric1.text = "Normal Packets Spawned: " + ScoreManager.inst.totalFriendlyPacketsSpawned;
