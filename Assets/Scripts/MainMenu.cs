@@ -86,4 +86,8 @@ public class MainMenu : MonoBehaviour {
     public void OnBackSelected() {
         levelSelectionPanel.GetComponent<Displaceable>().isValid = false;
     }
+
+    public void OnQuitSelected() {
+        Application.Quit();
+    }
 }
