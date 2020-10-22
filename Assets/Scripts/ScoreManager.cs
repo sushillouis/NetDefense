@@ -178,10 +178,12 @@ public class ScoreManager : MonoBehaviour {
 
         WhiteHatMenu.inst.OnBlackHatStatusChanged();
 
-        Shared.inst.gameMetrics.whitehat_score = (int)white_score;
-        Shared.inst.gameMetrics.blackhat_score = (int)black_score;
-        Shared.inst.gameMetrics.derrivative_whitehat_score = (int)white_score_derivative;
-        Shared.inst.gameMetrics.derrivative_blackhat_score = (int)black_score_derivative;
+        if (EntityManager.inst.isServer || !MainMenu.isMultiplayerSelectedFromMenu) {
+            Shared.inst.gameMetrics.whitehat_score = (int)white_score;
+            Shared.inst.gameMetrics.blackhat_score = (int)black_score;
+            Shared.inst.gameMetrics.derrivative_whitehat_score = (int)white_score_derivative;
+            Shared.inst.gameMetrics.derrivative_blackhat_score = (int)black_score_derivative;
+        }
 
         if (EntityManager.inst.isMultiplayer && EntityManager.inst.isServer) {
             Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SCORES, (int)black_score + "," + (int)white_score));
