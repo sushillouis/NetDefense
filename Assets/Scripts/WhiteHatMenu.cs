@@ -19,13 +19,14 @@ public class WhiteHatMenu : MonoBehaviour
         inst = this;
     }
 
+    public void OnBlackHatStatusChanged() {
+        black_hat_status.text = Shared.inst.gameMetrics.blackhat_score + "";
+    }
+
     public void OnTimerChange(int seconds) {
         endgame_timer.text = seconds + "";
     }
 
-    public void OnBlackHatStatusChanged() {
-        black_hat_status.text = Shared.inst.gameMetrics.blackhat_score + "";
-    }
 
     public void OnCashChanged() {
 

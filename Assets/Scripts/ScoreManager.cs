@@ -97,7 +97,7 @@ public class ScoreManager : MonoBehaviour {
             }
             if (metric.wasMalic)
                 totalbadPackets++;
-           // Debug.Log("looping " + metric.status + " ismalic " + metric.wasMalic);
+            // Debug.Log("looping " + metric.status + " ismalic " + metric.wasMalic);
 
         }
 
@@ -166,15 +166,18 @@ public class ScoreManager : MonoBehaviour {
     }
 
     public void UpdateUIClient() {
-        score_black.text = Shared.inst.gameMetrics.blackhat_score + "";
-        score_white.text = Shared.inst.gameMetrics.whitehat_score + "";
+        if (Shared.inst.gameMetrics.blackhat_score != 0)
+            score_black.text = Shared.inst.gameMetrics.blackhat_score + "";
+
+        if (Shared.inst.gameMetrics.whitehat_score != 0)
+            score_white.text = Shared.inst.gameMetrics.whitehat_score + "";
     }
 
     public void OnMetricsUpdated() {
         // update ui here
 
-        score_black.text = (int)black_score + "";
-        score_white.text = (int)white_score + "";
+        score_black.text = (int)Shared.inst.gameMetrics.blackhat_score + "";
+        score_white.text = (int)Shared.inst.gameMetrics.whitehat_score + "";
 
         WhiteHatMenu.inst.OnBlackHatStatusChanged();
 
