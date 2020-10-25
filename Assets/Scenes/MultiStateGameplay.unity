@@ -4469,13 +4469,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 218634378}
         m_MethodName: OnQuitButtonPressed
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: MainMenu
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &297484619
@@ -10199,6 +10199,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 650722608}
   m_CullTransparentMesh: 0
+--- !u!114 &655248745 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3844221226010519006, guid: 55af71b621fa8f44cb6689ec69a8d2dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1326576364}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &656135165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30146,6 +30158,7 @@ MonoBehaviour:
   metric1: {fileID: 567677107}
   metric2: {fileID: 1588294288}
   metric3: {fileID: 174378618}
+  titleText: {fileID: 655248745}
 --- !u!1001 &1859289750
 PrefabInstance:
   m_ObjectHideFlags: 0

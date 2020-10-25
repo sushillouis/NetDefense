@@ -52,5 +52,10 @@ public class UIManager : MonoBehaviour {
         gameOver.isValid = module[gameOver];
         pauseMenu.isValid = module[pauseMenu];
 
+        if(countdownUI.isValid) {
+            blackhatUI.isValid = false;
+            whitehatUI.isValid = false;
+        }
+
     }
 }

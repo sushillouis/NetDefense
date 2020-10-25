@@ -13,7 +13,7 @@ public enum Difficulty {
 
 public class MainMenu : MonoBehaviour {
 
-    public static bool isMultiplayerSelectedFromMenu = false;
+    public static bool isMultiplayerSelectedFromMenu = true;
     public static Difficulty difficulty;
 
     public GameObject levelSelectionPanel;
@@ -22,7 +22,6 @@ public class MainMenu : MonoBehaviour {
 
     public float movementSpeed = 0;
 
-    public AudioSource music;
 
     public Image easy;
     public Image hard;
@@ -33,6 +32,9 @@ public class MainMenu : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        if(GameObject.FindGameObjectsWithTag("Music").Length == 2) {
+            Destroy(GameObject.FindGameObjectsWithTag("Music")[0]);
+        }
     }
 
     // Update is called once per frame

@@ -72,6 +72,8 @@ public class Shared : MonoBehaviour {
         else
             inst.gameState.currentState = SharedGameStates.COUNTDOWN;
 
+
+
     }
 
     public SharedPlayer getOrAddPlayerById(int id) {
@@ -149,6 +151,12 @@ public class Shared : MonoBehaviour {
        // PacketPoolManager.inst.CleanUpStatics();
         ScoreManager.inst.packetMetrics.Clear();
         Destination.CleanUpStatics();
+        SharedPlayer.playerIdForThisDevice = -1;
+        NetworkManagerHLAPI.reset();
+        inst.players.Clear();
+        inst.syncEvents.Clear();
+        Destroy(inst);
+        Destroy(LobbyMenuManager.inst);
 
         // possilby redundant and wet code
         if (NetworkManager.singleton != null) {

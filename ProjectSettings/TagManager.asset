@@ -26,6 +26,7 @@ TagManager:
   - Destination
   - DYNAMIC_INFO_HUD
   - MainCanvas
+  - Music
   layers:
   - Default
   - TransparentFX

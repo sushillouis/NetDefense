@@ -31,13 +31,15 @@ public class WidgetGraph : MonoBehaviour {
             datapoints.Add(dp);
             lines.Add(line);
         }
+        SetDataset(dataset);
     }
 
+
     public void UpdateDataSet(int datum) {
+
         dataset.Add(datum);
         dataset.RemoveAt(0);
         SetDataset(dataset);
-
 
     }
 

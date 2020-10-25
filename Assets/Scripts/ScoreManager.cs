@@ -178,7 +178,7 @@ public class ScoreManager : MonoBehaviour {
 
         WhiteHatMenu.inst.OnBlackHatStatusChanged();
 
-        if (EntityManager.inst.isServer || !MainMenu.isMultiplayerSelectedFromMenu) {
+        if (!MainMenu.isMultiplayerSelectedFromMenu) {
             Shared.inst.gameMetrics.whitehat_score = (int)white_score;
             Shared.inst.gameMetrics.blackhat_score = (int)black_score;
             Shared.inst.gameMetrics.derrivative_whitehat_score = (int)white_score_derivative;

@@ -54,6 +54,7 @@ public class Game_Manager : MonoBehaviour {
     public GameObject poolManager;
     public GameObject entityManager;
 
+
     public void Awake() {
         inst = this;
     }
@@ -158,7 +159,9 @@ public class Game_Manager : MonoBehaviour {
         if (elapsed3 > graph_update_time) {
             // update graph
             GraphWidget.GetComponent<WidgetGraph>().UpdateDataSet(Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT ? (int)Shared.inst.gameMetrics.derrivative_whitehat_score : (int)Shared.inst.gameMetrics.derrivative_blackhat_score);
+
             start_graph_update_time = Time.time;
+
         }
 
         //Check if new packet should be spawned

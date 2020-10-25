@@ -20,6 +20,11 @@ public class NetworkManagerHLAPI : NetworkManager {
     public static bool isMultiplayer = false;
     private static int net_id = 0;
 
+    public static void reset() {
+        isMultiplayer = false;
+        net_id = 0;
+    }
+
     public void LauchHost(bool mIsMultplayer) {
         singleton.networkPort = networkValues.port;
         isMultiplayer = mIsMultplayer;
