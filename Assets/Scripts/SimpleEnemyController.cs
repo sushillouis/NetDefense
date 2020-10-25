@@ -208,7 +208,7 @@ public class SimpleEnemyController : NetworkBehaviour {
         selectedChild.SetActive(newMalicious && MainMenu.difficulty == Difficulty.EASY);
 
         float selectionScale = Mathf.Max(transform.localScale.x * selectedChild.transform.localScale.x, transform.localScale.z * selectedChild.transform.localScale.z);
-        selectionScale *= 2f;
+        selectionScale *= 1.5f;
         selectedChild.transform.localScale = new Vector3(selectionScale, selectedChild.transform.localScale.y, selectionScale);
 
         Game_Manager.inst.SetTraits(this);
