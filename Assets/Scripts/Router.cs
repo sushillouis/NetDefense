@@ -40,7 +40,6 @@ public class Router : MonoBehaviour {
     private bool Selected {
         get { return selected; }
         set {
-            Debug.Log("toggling selected");
             selected = value;
             if (selected) {
                 manager.Selected = this;

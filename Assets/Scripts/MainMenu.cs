@@ -13,7 +13,7 @@ public enum Difficulty {
 
 public class MainMenu : MonoBehaviour {
 
-    public static bool isMultiplayerSelectedFromMenu = true;
+    public static bool isMultiplayerSelectedFromMenu = false;
     public static Difficulty difficulty;
 
     public GameObject levelSelectionPanel;
