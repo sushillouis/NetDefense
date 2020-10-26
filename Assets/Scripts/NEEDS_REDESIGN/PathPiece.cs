@@ -49,7 +49,8 @@ public class PathPiece : MonoBehaviour
         if(targeted && !occupied && controller.building && Input.GetMouseButtonDown(0))
         {
             GameObject newRouter = Instantiate(controller.router, transform.position, transform.rotation);
-            ScoreManager.inst.OnWhiteHatEarnMoney(newRouter.GetComponent<Router>().cost);
+            // cost for selling a router is zero now
+            ScoreManager.inst.OnWhiteHatEarnMoney(0);
             controller.ToggleBuilding();
             occupied = true;
         }

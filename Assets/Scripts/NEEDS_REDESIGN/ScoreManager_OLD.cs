@@ -69,14 +69,14 @@ public class ScoreManager_OLD : MonoBehaviour
         if (health > amount)
         {
             health -= amount;
-            rebuildCost = 50;
+            rebuildCost = 0;
             rebuildButton.SetActive(true);
             UpdateOnMoneyValueChanged();
         }
         else
         {
             health = 0;
-            rebuildCost = 500;
+            rebuildCost = 0;
             UpdateOnMoneyValueChanged();
         }
     }

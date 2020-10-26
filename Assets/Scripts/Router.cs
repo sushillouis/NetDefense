@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 //Scipt exists on all instances of a router
 public class Router : MonoBehaviour {
-    public int cost = -50;                               //The cost to the player to place a router
+    public int cost = 0;                               //The cost to the player to place a router
     public Material highlightedColor;                   //The material for the router beams when highlighted
     public Material nonHighlightedColor;                //The material for the router beams when not highlighted
     public Material[] gateMaterials;                    //Gate materials corresponding to all possible packet colors
@@ -95,11 +95,11 @@ public class Router : MonoBehaviour {
     //Checks for click anywhere else to control deselection
     void Update() {
         if (Input.GetMouseButtonDown(0) && !MouseOver && !EventSystem.current.IsPointerOverGameObject()) {
-            Debug.Log("!MouseOver: " + !MouseOver + " !IsPointerOverGameObject(): " + !EventSystem.current.IsPointerOverGameObject());
+            //Debug.Log("!MouseOver: " + !MouseOver + " !IsPointerOverGameObject(): " + !EventSystem.current.IsPointerOverGameObject());
             Selected = false;
             
         } else if (Input.GetMouseButtonDown(0)) {
-            Debug.Log("!MouseOver: " + !MouseOver + " !IsPointerOverGameObject(): " + !EventSystem.current.IsPointerOverGameObject());
+            //Debug.Log("!MouseOver: " + !MouseOver + " !IsPointerOverGameObject(): " + !EventSystem.current.IsPointerOverGameObject());
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)) {

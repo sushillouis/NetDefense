@@ -10,6 +10,7 @@ public class RouterManager : MonoBehaviour {
     public Router selected;
 
     public Text routerNameText;
+    public GameObject routerHUD;
 
     public Toggle[] ColorSelections;
     public Toggle[] ShapeSelections;
@@ -71,9 +72,8 @@ public class RouterManager : MonoBehaviour {
     public void Sell() {
         Destroy(selected.gameObject);
         Selected = null;
-        //ActivateUI(false);
-        Shared.inst.gameMetrics.whitehat_cash += 25;
-        Debug.Log("Sold for hardcoded value");
+        routerHUD.SetActive(false);
+        Shared.inst.gameMetrics.whitehat_cash += 0;
         WhiteHatMenu.inst.OnCashChanged();
     }
 }
