@@ -2575,7 +2575,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -2, y: 0}
+  m_SizeDelta: {x: -10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &181078793
 MonoBehaviour:
@@ -2608,7 +2608,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Honeypot
+  m_Text: get
 --- !u!222 &181078794
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4186,7 +4186,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Honeypot
+  m_Text: Router
 --- !u!222 &266399020
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13097,7 +13097,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Get
+  m_Text: Honeypot
 --- !u!222 &796791364
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20474,6 +20474,16 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 794844291}
+    - target: {fileID: 2054149050695778115, guid: 5ac41872214c8834b908948821c385e9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1242463137}
+    - target: {fileID: 2054149050695778115, guid: 5ac41872214c8834b908948821c385e9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnGetHoneyPotSelected
+      objectReference: {fileID: 0}
     - target: {fileID: 2054149051887043020, guid: 5ac41872214c8834b908948821c385e9,
         type: 3}
       propertyPath: m_Text

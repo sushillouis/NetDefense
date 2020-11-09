@@ -5,9 +5,8 @@ using UnityEngine;
 
 
 
-public class Destination : MonoBehaviour
-{
-    private static List<Destination> destinations = new List<Destination>();
+public class Destination : MonoBehaviour {
+    public static List<Destination> destinations = new List<Destination>();
 
     public string inst_id;
 
@@ -19,30 +18,40 @@ public class Destination : MonoBehaviour
 
     public List<Path> paths;
 
+    public bool isReadyTobeHoneypot;
+    public GameObject honeypotSelection;
+
     public void Start() {
         destinations.Add(this);
+        honeypotSelection.SetActive(false);
     }
 
-    private void OnMouseDown()
-    {
-        isHoneypot = !isHoneypot;
-
-        if (EntityManager.inst.isMultiplayer && Shared.inst.gameMetrics.isWhiteHat)
+    private void OnMouseDown() {
+        if (Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT && honeypotSelection.activeSelf) {
+            isHoneypot = !isHoneypot;
             Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_HONEY_POT_ACTIVATION, inst_id + "," + isHoneypot));
+            setIsHoneyPot(isHoneypot);
 
-        setIsHoneyPot(isHoneypot);
+            foreach (Destination d in destinations) {
+                d.isReadyTobeHoneypot = false;
+                d.updateSelection();
+            }
+        }
     }
 
     public void setIsHoneyPot(bool value) {
         this.isHoneypot = value;
-        Material newMaterial = (isHoneypot) ? honeypotMaterial : defaultMaterial;
-        Material[] tempMaterials = GetComponent<Renderer>().materials;
-        tempMaterials[0] = newMaterial;
-        GetComponent<Renderer>().materials = tempMaterials;
-    }
 
+        // only update the material if the player is the whitehat
+        if (Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT) {
+            Material newMaterial = (isHoneypot) ? honeypotMaterial : defaultMaterial;
+            Material[] tempMaterials = GetComponent<Renderer>().materials;
+            tempMaterials[0] = newMaterial;
+            GetComponent<Renderer>().materials = tempMaterials;
+        }
+    }
     public static Destination getDestinationByID(string id) {
-        foreach(Destination d in destinations) {
+        foreach (Destination d in destinations) {
             if (d.inst_id.Equals(id))
                 return d;
         }
@@ -52,5 +61,13 @@ public class Destination : MonoBehaviour
 
     public static void CleanUpStatics() {
         destinations.Clear();
+    }
+
+    public bool canBecomeHoneyPot() {
+        return !isHoneypot && isReadyTobeHoneypot;
+    }
+
+    public void updateSelection() {
+        honeypotSelection.SetActive(canBecomeHoneyPot());
     }
 }

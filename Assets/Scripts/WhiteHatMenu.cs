@@ -36,4 +36,11 @@ public class WhiteHatMenu : MonoBehaviour
             Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.UPDATE_WHITE_HAT_MONEY, Shared.inst.gameMetrics.whitehat_cash + ""));
         }
     }
+
+    public void OnGetHoneyPotSelected() {
+        foreach(Destination d in Destination.destinations) {
+            d.isReadyTobeHoneypot = true;
+            d.updateSelection();
+        }
+    }
 }
