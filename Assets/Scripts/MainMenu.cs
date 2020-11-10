@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public enum Difficulty {
     EASY,
-    HARD
+    HARD,
+    MEDIUM
 }
 
 
@@ -24,6 +25,7 @@ public class MainMenu : MonoBehaviour {
 
 
     public Image easy;
+    public Image medium;
     public Image hard;
     public Image play;
 
@@ -69,12 +71,16 @@ public class MainMenu : MonoBehaviour {
 
         play.color = new Color(play.color.r, play.color.g, play.color.b, 1);
         easy.color = level == 0 ? new Color(easy.color.r, easy.color.g, easy.color.b, 1) : new Color(easy.color.r, easy.color.g, easy.color.b, 0.5f);
-        hard.color = level == 1 ? new Color(hard.color.r, hard.color.g, hard.color.b, 1) : new Color(hard.color.r, hard.color.g, hard.color.b, 0.5f);
+        medium.color = level == 1 ? new Color(medium.color.r, medium.color.g, medium.color.b, 1) : new Color(medium.color.r, medium.color.g, medium.color.b, 0.5f);
+        hard.color = level == 2 ? new Color(hard.color.r, hard.color.g, hard.color.b, 1) : new Color(hard.color.r, hard.color.g, hard.color.b, 0.5f);
 
         if (level == 0)
             difficulty = Difficulty.EASY;
 
         if (level == 1)
+            difficulty = Difficulty.MEDIUM;
+
+        if (level == 2)
             difficulty = Difficulty.HARD;
 
     }

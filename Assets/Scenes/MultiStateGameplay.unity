@@ -19562,6 +19562,7 @@ MonoBehaviour:
   sell_router_text: {fileID: 1514973711}
   black_hat_status: {fileID: 686616500}
   endgame_timer: {fileID: 1970869840}
+  honeyPotButton: {fileID: 1737924471}
 --- !u!1001 &1246522905
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,10 +13,16 @@ public class WhiteHatMenu : MonoBehaviour
     public Text black_hat_status;
     public Text endgame_timer;
 
+    public GameObject honeyPotButton;
+
     public static WhiteHatMenu inst;
 
     public void Awake() {
         inst = this;
+    }
+
+    private void Start() {
+        honeyPotButton.SetActive(MainMenu.difficulty == Difficulty.HARD);
     }
 
     public void OnBlackHatStatusChanged() {
