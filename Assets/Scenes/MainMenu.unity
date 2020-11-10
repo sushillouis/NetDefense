@@ -398,6 +398,7 @@ MonoBehaviour:
   - {fileID: 1107652245}
   movementSpeed: 45
   easy: {fileID: 1518268374}
+  medium: {fileID: 708434385}
   hard: {fileID: 50368959}
   play: {fileID: 1609548240}
 --- !u!1 &527379728
