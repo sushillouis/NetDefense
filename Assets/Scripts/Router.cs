@@ -5,7 +5,9 @@ using UnityEngine.EventSystems;
 
 //Scipt exists on all instances of a router
 public class Router : MonoBehaviour {
+
     public int cost = 0;                               //The cost to the player to place a router
+    public int updatesRemaining = 6;
     public Material highlightedColor;                   //The material for the router beams when highlighted
     public Material nonHighlightedColor;                //The material for the router beams when not highlighted
     public Material[] gateMaterials;                    //Gate materials corresponding to all possible packet colors
@@ -113,28 +115,31 @@ public class Router : MonoBehaviour {
 
     //Assigns color setting and update gate material
     public void SetColor(int newColor) {
-        if (newColor >= 0 && newColor < 3) {
+        if (newColor >= 0 && newColor < 3 && color != newColor) {
             Material[] materials = GetComponent<Renderer>().materials;
             materials[1] = gateMaterials[newColor];
             GetComponent<Renderer>().materials = materials;
             color = newColor;
+            updatesRemaining--;
             colorSet = true;
         }
     }
 
     //Assigns shape setting
     public void SetShape(int newShape) {
-        if (newShape >= 0 && newShape < 3) {
+        if (newShape >= 0 && newShape < 3 && shape != newShape) {
             shape = newShape;
             shapeSet = true;
+            updatesRemaining--;
         }
     }
 
     //Assigns size setting
     public void SetSize(int newSize) {
-        if (newSize >= 0 && newSize < 3) {
+        if (newSize >= 0 && newSize < 3 && size != newSize) {
             size = newSize;
             sizeSet = true;
+            updatesRemaining--;
         }
     }
 

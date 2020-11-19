@@ -10,6 +10,7 @@ public class RouterManager : MonoBehaviour {
     public Router selected;
 
     public Text routerNameText;
+    public Text updatesRemainingText;
     public GameObject routerHUD;
 
     public Toggle[] ColorSelections;
@@ -22,9 +23,10 @@ public class RouterManager : MonoBehaviour {
         }
         set {
             if (selected != null) {
-               // selected.hud.hide();
+                // selected.hud.hide();
                 selected.selectedRing.SetActive(false);
                 routerNameText.text = value.name;
+                updatesRemainingText.text = "Updates " + value.updatesRemaining;
                 OnRouterSelected();
             }
             //value.hud.show();
@@ -44,6 +46,9 @@ public class RouterManager : MonoBehaviour {
     public float[] indicatorColumns;
 
     public void OnRouterSelected() {
+        updatesRemainingText.text = "Updates " + selected.updatesRemaining;
+        routerNameText.text = selected.name;
+
         int color = selected.color;
         int shape = selected.shape;
         int size = selected.size;
@@ -58,15 +63,21 @@ public class RouterManager : MonoBehaviour {
     }
 
     public void SetColor(int color) {
-        selected.SetColor(color);
+        if (selected.updatesRemaining > 0)
+            selected.SetColor(color);
+        updatesRemainingText.text = "Updates " + selected.updatesRemaining;
     }
 
     public void SetShape(int shape) {
-        selected.SetShape(shape);
+        if (selected.updatesRemaining > 0)
+            selected.SetShape(shape);
+        updatesRemainingText.text = "Updates " + selected.updatesRemaining;
     }
 
     public void SetSize(int size) {
-        selected.SetSize(size);
+        if (selected.updatesRemaining > 0)
+            selected.SetSize(size);
+        updatesRemainingText.text = "Updates " + selected.updatesRemaining;
     }
 
     public void Sell() {

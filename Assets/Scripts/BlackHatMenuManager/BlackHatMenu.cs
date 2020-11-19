@@ -48,9 +48,15 @@ public class BlackHatMenu : MonoBehaviour
 
     public Toggle pink, green, blue, square, cone, sphere, small, med, large;
 
+    public Text updatesRemainingValue;
+    public int max_updates_remaining;
+    public int updates_remaining;
+
 
     void Start() {
         Construct();
+        updates_remaining = max_updates_remaining;
+        updatesRemainingValue.text = updates_remaining + "";
     }
 
     private void Construct() {
@@ -89,76 +95,87 @@ public class BlackHatMenu : MonoBehaviour
     }
 
     public void updateMalicPacketValues() {
-        packetStartTime = Time.time;
+        if (updates_remaining > 0) {
+            updates_remaining--;
+            updatesRemainingValue.text = updates_remaining + "";
 
-        int color = 0;
-        if(pink.isOn) {
-            color = 0;
-        }
-        if (green.isOn) {
-            color = 1;
-        }
-        if (blue.isOn) {
-            color = 2;
-        }
-        Shared.inst.maliciousPacketProperties.color = color;
+            packetStartTime = Time.time;
 
-        int size = 0;
-        if(small.isOn) {
-            size = 0;
-        }
-        if (med.isOn) {
-            size = 1;
-        }
-        if (large.isOn) {
-            size = 2;
-        }
-        Shared.inst.maliciousPacketProperties.size = size;
+            int color = 0;
+            if (pink.isOn) {
+                color = 0;
+            }
+            if (green.isOn) {
+                color = 1;
+            }
+            if (blue.isOn) {
+                color = 2;
+            }
+            Shared.inst.maliciousPacketProperties.color = color;
 
-        int shape = 0;
-        if (square.isOn) {
-            shape = 0;
+            int size = 0;
+            if (small.isOn) {
+                size = 0;
+            }
+            if (med.isOn) {
+                size = 1;
+            }
+            if (large.isOn) {
+                size = 2;
+            }
+            Shared.inst.maliciousPacketProperties.size = size;
+
+            int shape = 0;
+            if (square.isOn) {
+                shape = 0;
+            }
+            if (cone.isOn) {
+                shape = 1;
+            }
+            if (sphere.isOn) {
+                shape = 2;
+            }
+
+
+            //       Debug.Log("SIZE: " + size + "\n" + "SHAPE: " + shape + "\n" + "color: " + color + "\n");
+
+            Shared.inst.maliciousPacketProperties.shape = shape;
+
+            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.UPDATE_MALIC_PACKETS, Shared.inst.maliciousPacketProperties.shape + "," + Shared.inst.maliciousPacketProperties.size + "," + Shared.inst.maliciousPacketProperties.color));
+
+            packetCoolDownButton.enabled = false;
         }
-        if (cone.isOn) {
-            shape = 1;
-        }
-        if (sphere.isOn) {
-            shape = 2;
-        }
-
-
- //       Debug.Log("SIZE: " + size + "\n" + "SHAPE: " + shape + "\n" + "color: " + color + "\n");
-
-        Shared.inst.maliciousPacketProperties.shape = shape;
-
-        Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.UPDATE_MALIC_PACKETS, Shared.inst.maliciousPacketProperties.shape + "," + Shared.inst.maliciousPacketProperties.size + "," + Shared.inst.maliciousPacketProperties.color));
-
-        packetCoolDownButton.enabled = false;
 
     }
 
 
     public void updateTargetPercentages()
     {
-        targettingStartTime = Time.time;
+        if (updates_remaining > 0) {
+            updates_remaining--;
+            updatesRemainingValue.text = updates_remaining + "";
 
-        float percentage = s1.value + s2.value + s3.value;
+            targettingStartTime = Time.time;
 
-        if (percentage == 0)
-            percentage = 1;
+            float percentage = s1.value + s2.value + s3.value;
 
-        t1 = s1.value / percentage;
-        t2 = s2.value / percentage;
-        t3 = s3.value / percentage;
+            if (percentage == 0)
+                percentage = 1;
 
-        Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "LEFT" + "," + t1));
-        Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "RIGHT" + "," + t2));
-        Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "CENTRE" + "," + t3));
+            t1 = s1.value / percentage;
+            t2 = s2.value / percentage;
+            t3 = s3.value / percentage;
 
-        targettingCoolDownButton.enabled = false;
+            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "LEFT" + "," + t1));
+            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "RIGHT" + "," + t2));
+            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "CENTRE" + "," + t3));
 
- //       text.text = trgt(1, t1) + "\n" + trgt(2, t2) + "\n" + trgt(3, t3);
+            targettingCoolDownButton.enabled = false;
+
+            //       text.text = trgt(1, t1) + "\n" + trgt(2, t2) + "\n" + trgt(3, t3);
+        }
     }
+
 
     void Update()
     {

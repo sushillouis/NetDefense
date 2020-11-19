@@ -117,19 +117,19 @@ public class PacketPoolManager : NetworkBehaviour {
                 continue;
             }
 
-            bool malic = Shared.inst.isBadPacket(sec.color, sec.shape, sec.size);
-            sec.malicious = malic;
-            sec.destination = malic ? Destination.getDestinationByID(getTarget()) : Destination.getDestinationByID(packet_destinations[Random.Range(0, packet_destinations.Length)]);
+            //bool malic = Shared.inst.isBadPacket(sec.color, sec.shape, sec.size);
+            //sec.malicious = malic;
+            sec.destination = /*malic ? Destination.getDestinationByID(getTarget()) : */Destination.getDestinationByID(packet_destinations[Random.Range(0, packet_destinations.Length)]);
             int index = Random.Range(0, sec.destination.paths.Count);
             sec.path = sec.destination.paths[index];
             sec.SetSpawnRotandPos();
             // sec.StartCoroutine("ClearPulseColor");
-
-            if (malic) {
-                sec.StartCoroutine("Pulsate");
-            } else {
-                sec.StopCoroutine("Pulsate");
-            }
+            sec.UpdateBadBackProperties();
+           // if (malic) {
+                //sec.StartCoroutine("Pulsate");
+           // } else {
+                //sec.StopCoroutine("Pulsate");
+            //}
         }
     }
 

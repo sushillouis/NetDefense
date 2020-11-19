@@ -68,30 +68,31 @@ public class SimpleEnemyController : NetworkBehaviour {
         }
     }
 
-    IEnumerator Pulsate() {
-        if (MainMenu.difficulty == Difficulty.EASY) {
-            GradientColorKey[] colorKey = pulseGradient.colorKeys;
-            colorKey[0].color = GetComponent<MeshRenderer>().material.GetColor("_EmissionColor");
-            pulseGradient.SetKeys(colorKey, pulseGradient.alphaKeys);
-            while (true) {
-                float value = Mathf.PingPong(Time.time * pulseSpeed, 1);
-                Color color = pulseGradient.Evaluate(value);
-                GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", color);
-                yield return null;
-            }
-        }
-    }
-
+    /*   IEnumerator Pulsate() {
+           if (MainMenu.difficulty == Difficulty.EASY) {
+               GradientColorKey[] colorKey = pulseGradient.colorKeys;
+               colorKey[0].color = GetComponent<MeshRenderer>().material.GetColor("_EmissionColor");
+               pulseGradient.SetKeys(colorKey, pulseGradient.alphaKeys);
+               while (true) {
+                   float value = Mathf.PingPong(Time.time * pulseSpeed, 1);
+                   Color color = pulseGradient.Evaluate(value);
+                   GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", color);
+                   yield return null;
+               }
+           }
+       }*/
+    /*
     IEnumerator ClearPulseColor() {
         //Color color = pulseGradient.Evaluate(0);
         // GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", color);
         yield return null;
-    }
+    }*/
 
 
     public void Tick() {
 
-       // badPacketOutline.SetActive(status == PACKET_LIFECYCLE_STATUS.ENROUTE && malicious && MainMenu.difficulty == Difficulty.EASY);
+        // badPacketOutline.SetActive(status == PACKET_LIFECYCLE_STATUS.ENROUTE && malicious && MainMenu.difficulty == Difficulty.EASY);
+        UpdateBadBackProperties();
 
         if (status == PACKET_LIFECYCLE_STATUS.UNSPAWNED)
             transform.position = new Vector3(spawnPos.x, spawnPos.y - (5 * instance_id), spawnPos.z);
@@ -129,9 +130,24 @@ public class SimpleEnemyController : NetworkBehaviour {
 
     //}
 
+
+    public void UpdateBadBackProperties() {
+        if (malicious && status == PACKET_LIFECYCLE_STATUS.UNSPAWNED) {
+           // bool shouldUpdate = !(Shared.inst.isBadPacket(color, shape, size));
+
+
+            color = Shared.inst.maliciousPacketProperties.color;
+            shape = Shared.inst.maliciousPacketProperties.shape;
+            size = Shared.inst.maliciousPacketProperties.size;
+
+            Game_Manager.inst.SetTraits(this);
+        }
+    }
+
     public void GoEnroute() {
 
         //UpdateDynamicHud();
+       
 
         if (path != null) {
             Vector3 direction = path.waypoints[waypointIndex].position - path.waypoints[waypointIndex - 1].position;
@@ -195,6 +211,10 @@ public class SimpleEnemyController : NetworkBehaviour {
         }
     }
 
+    public void requestTurnOnBadPacketOutline(bool isbad) {
+        selectedChild.SetActive(isbad && MainMenu.difficulty == Difficulty.EASY);
+    }
+
 
     public void setupBehavior(int newColor, int newSize, int newShape, bool newMalicious, bool updateClient = false) {
         this.color = newColor;
@@ -206,7 +226,7 @@ public class SimpleEnemyController : NetworkBehaviour {
         status = PACKET_LIFECYCLE_STATUS.UNSPAWNED;
         spawnPos = gameObject.transform.position;
 
-        selectedChild.SetActive(newMalicious && MainMenu.difficulty == Difficulty.EASY);
+        requestTurnOnBadPacketOutline(newMalicious);
 
         float selectionScale = Mathf.Max(transform.localScale.x * selectedChild.transform.localScale.x, transform.localScale.z * selectedChild.transform.localScale.z);
         selectionScale *= 1.5f;
@@ -227,8 +247,8 @@ public class SimpleEnemyController : NetworkBehaviour {
         //badPacketOutline.transform.SetParent(dynamicHud.transform);
     }
 
-    public void SetSpawnRotandPos() { 
-        if(path.waypoints[0] == null) {
+    public void SetSpawnRotandPos() {
+        if (path.waypoints[0] == null) {
             Debug.Log("BIG PROBLEM");
             return;
         }
@@ -238,6 +258,12 @@ public class SimpleEnemyController : NetworkBehaviour {
     }
 
     public void OnDeployed() {
+        // update bad packet type
+        UpdateBadBackProperties();
+
+
+
+        // update transform to spawn pos
         transform.position = new Vector3(path.transform.position.x, 0, path.transform.position.z);
 
         //UpdateDynamicHud();
