@@ -12,7 +12,7 @@ public class Router : MonoBehaviour {
     public Material nonHighlightedColor;                //The material for the router beams when not highlighted
     public Material[] gateMaterials;                    //Gate materials corresponding to all possible packet colors
 
-    public int lastColor;
+    public int lastColor=-1;
     public int color { 
         set {
             if (value != lastColor) {
@@ -21,11 +21,11 @@ public class Router : MonoBehaviour {
             lastColor = value;
         }
 
-        get { return lastColor; }
+        get { return lastColor == -1 ? 0 : lastColor; }
     }                 //The crurent color setting of the router
     public bool colorSet = false;     //True if the color setting has been assigned
 
-    public int lastShape;
+    public int lastShape=-1;
     public int shape {
         set {
             if(value != lastShape) {
@@ -34,11 +34,11 @@ public class Router : MonoBehaviour {
             lastShape = value;
         }
 
-        get { return lastShape; }
+        get { return lastShape == -1 ? 0 : lastShape; }
     }                 //The current shape setting of the router
     public bool shapeSet = false;     //True if the shape setting has been assigned
 
-    public int lastSize;
+    public int lastSize = -1;
     public int size {
         set {//The current size setting of the router
             if (value != lastSize) {
@@ -47,7 +47,7 @@ public class Router : MonoBehaviour {
             lastSize = value;
         }
 
-        get { return lastSize; }
+        get { return lastSize == -1 ? 0 : lastSize ; }
     }
 
 
