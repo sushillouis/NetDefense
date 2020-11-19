@@ -8465,7 +8465,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Updates: 2'
+  m_Text: Updates
 --- !u!222 &546306695
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10038,7 +10038,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Router: 1'
+  m_Text: Router
 --- !u!222 &610200948
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13947,7 +13947,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 825079707}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1160884125}

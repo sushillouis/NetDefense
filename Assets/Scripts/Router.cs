@@ -23,7 +23,7 @@ public class Router : MonoBehaviour {
 
     private RouterManager manager;                      //Holds a reference to the router manager
 
-   // public DynamicHud hud;
+    // public DynamicHud hud;
 
     public GameObject selectedRing;
 
@@ -64,8 +64,7 @@ public class Router : MonoBehaviour {
             mouseOver = value;
             if (value) {
                 BeamMaterial = highlightedColor;
-            }
-            else if (!Selected) {
+            } else if (!Selected) {
                 BeamMaterial = nonHighlightedColor;
             }
         }
@@ -83,15 +82,15 @@ public class Router : MonoBehaviour {
     void OnMouseDown() {
         if (!GameObject.Find("CursorController").GetComponent<CursorController>().building) {
             Selected = true;
-            
+
         }
     }
 
     private static int count = 1;
     private void Start() {
-       // hud = GetComponent<DynamicHud>();
+        // hud = GetComponent<DynamicHud>();
         name = "Router " + count++;
-       // hud.hide();
+        // hud.hide();
         selectedRing.SetActive(false);
     }
     //Checks for click anywhere else to control deselection
@@ -99,7 +98,7 @@ public class Router : MonoBehaviour {
         if (Input.GetMouseButtonDown(0) && !MouseOver && !EventSystem.current.IsPointerOverGameObject()) {
             //Debug.Log("!MouseOver: " + !MouseOver + " !IsPointerOverGameObject(): " + !EventSystem.current.IsPointerOverGameObject());
             Selected = false;
-            
+
         } else if (Input.GetMouseButtonDown(0)) {
             //Debug.Log("!MouseOver: " + !MouseOver + " !IsPointerOverGameObject(): " + !EventSystem.current.IsPointerOverGameObject());
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -115,31 +114,36 @@ public class Router : MonoBehaviour {
 
     //Assigns color setting and update gate material
     public void SetColor(int newColor) {
-        if (newColor >= 0 && newColor < 3 && color != newColor) {
+        if (newColor >= 0 && newColor < 3) {
             Material[] materials = GetComponent<Renderer>().materials;
             materials[1] = gateMaterials[newColor];
             GetComponent<Renderer>().materials = materials;
             color = newColor;
-            updatesRemaining--;
+            if (selected)
+                updatesRemaining--;
             colorSet = true;
         }
     }
 
     //Assigns shape setting
     public void SetShape(int newShape) {
-        if (newShape >= 0 && newShape < 3 && shape != newShape) {
+        if (newShape >= 0 && newShape < 3) {
             shape = newShape;
             shapeSet = true;
-            updatesRemaining--;
+            if (selected)
+
+                updatesRemaining--;
         }
     }
 
     //Assigns size setting
     public void SetSize(int newSize) {
-        if (newSize >= 0 && newSize < 3 && size != newSize) {
+        if (newSize >= 0 && newSize < 3) {
             size = newSize;
             sizeSet = true;
-            updatesRemaining--;
+            if (selected)
+
+                updatesRemaining--;
         }
     }
 
