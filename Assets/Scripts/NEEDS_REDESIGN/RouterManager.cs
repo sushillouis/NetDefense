@@ -53,7 +53,6 @@ public class RouterManager : MonoBehaviour {
         int shape = selected.shape;
         int size = selected.size;
 
-        Debug.Log("Color " + color + ", " + " shape " + shape + ", size " + size);
 
         ColorSelections[color].isOn = true;
         ShapeSelections[shape].isOn = true;
@@ -67,6 +66,7 @@ public class RouterManager : MonoBehaviour {
     public void SetColor(int color) {
         if (selected.updatesRemaining > 0) {
             selected.SetColor(color);
+            Debug.Log(selected.name);
             updatesRemainingText.text = "Updates " + selected.updatesRemaining;
         }
     }
