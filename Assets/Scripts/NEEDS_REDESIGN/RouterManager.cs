@@ -63,21 +63,24 @@ public class RouterManager : MonoBehaviour {
     }
 
     public void SetColor(int color) {
-        if (selected.updatesRemaining > 0)
+        if (selected.updatesRemaining > 0) {
             selected.SetColor(color);
-        updatesRemainingText.text = "Updates " + selected.updatesRemaining;
+            updatesRemainingText.text = "Updates " + selected.updatesRemaining;
+        }
     }
 
     public void SetShape(int shape) {
-        if (selected.updatesRemaining > 0)
+        if (selected.updatesRemaining > 0) {
             selected.SetShape(shape);
-        updatesRemainingText.text = "Updates " + selected.updatesRemaining;
+            updatesRemainingText.text = "Updates " + selected.updatesRemaining;
+        }
     }
 
     public void SetSize(int size) {
-        if (selected.updatesRemaining > 0)
+        if (selected.updatesRemaining > 0) {
             selected.SetSize(size);
-        updatesRemainingText.text = "Updates " + selected.updatesRemaining;
+            updatesRemainingText.text = "Updates " + selected.updatesRemaining;
+        }
     }
 
     public void Sell() {

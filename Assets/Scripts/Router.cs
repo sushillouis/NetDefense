@@ -12,13 +12,45 @@ public class Router : MonoBehaviour {
     public Material nonHighlightedColor;                //The material for the router beams when not highlighted
     public Material[] gateMaterials;                    //Gate materials corresponding to all possible packet colors
 
-    public int color;                 //The crurent color setting of the router
+    public int lastColor;
+    public int color { 
+        set {
+            if (value != lastColor) {
+                updatesRemaining--;
+            }
+            lastColor = value;
+        }
+
+        get { return lastColor; }
+    }                 //The crurent color setting of the router
     public bool colorSet = false;     //True if the color setting has been assigned
 
-    public int shape;                 //The current shape setting of the router
+    public int lastShape;
+    public int shape {
+        set {
+            if(value != lastShape) {
+                updatesRemaining--;
+            }
+            lastShape = value;
+        }
+
+        get { return lastShape; }
+    }                 //The current shape setting of the router
     public bool shapeSet = false;     //True if the shape setting has been assigned
 
-    public int size;                  //The current size setting of the router
+    public int lastSize;
+    public int size {
+        set {//The current size setting of the router
+            if (value != lastSize) {
+                updatesRemaining--;
+            }
+            lastSize = value;
+        }
+
+        get { return lastSize; }
+    }
+
+
     public bool sizeSet = false;      //True if the size setting has been assigned
 
     private RouterManager manager;                      //Holds a reference to the router manager
@@ -119,8 +151,6 @@ public class Router : MonoBehaviour {
             materials[1] = gateMaterials[newColor];
             GetComponent<Renderer>().materials = materials;
             color = newColor;
-            if (selected)
-                updatesRemaining--;
             colorSet = true;
         }
     }
@@ -130,9 +160,6 @@ public class Router : MonoBehaviour {
         if (newShape >= 0 && newShape < 3) {
             shape = newShape;
             shapeSet = true;
-            if (selected)
-
-                updatesRemaining--;
         }
     }
 
@@ -141,9 +168,7 @@ public class Router : MonoBehaviour {
         if (newSize >= 0 && newSize < 3) {
             size = newSize;
             sizeSet = true;
-            if (selected)
 
-                updatesRemaining--;
         }
     }
 
