@@ -66,7 +66,6 @@ public class RouterManager : MonoBehaviour {
     public void SetColor(int color) {
         if (selected.updatesRemaining > 0) {
             selected.SetColor(color);
-            Debug.Log(selected.name);
             updatesRemainingText.text = "Updates " + selected.updatesRemaining;
         }
     }

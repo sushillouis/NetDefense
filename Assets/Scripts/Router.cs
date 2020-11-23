@@ -15,10 +15,19 @@ public class Router : MonoBehaviour {
     public int lastColor=-1;
     public int color { 
         set {
+            //Debug.Log("-------------------------");
+
+            //Debug.Log(" updatesRemaining before: " + updatesRemaining);
+
             if (value != lastColor) {
                 updatesRemaining--;
             }
+            //Debug.Log(" lastColor: " + lastColor + ", " + value);
             lastColor = value;
+            //Debug.Log(" updatesRemaining after: " + updatesRemaining);
+            //Debug.Log("-------------------------");
+
+
         }
 
         get { return lastColor == -1 ? 0 : lastColor; }
@@ -136,7 +145,7 @@ public class Router : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)) {
-                Debug.Log("Raycasted Router Value: " + hit.transform.gameObject.name);
+             //   Debug.Log("Raycasted Router Value: " + hit.transform.gameObject.name);
                 if (hit.transform.gameObject.name.Equals(name)) {
                     Selected = true;
                 }
