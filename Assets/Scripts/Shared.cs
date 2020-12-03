@@ -129,7 +129,7 @@ public class Shared : MonoBehaviour {
         if (MainMenu.isMultiplayerSelectedFromMenu)
             inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_PLAYERS_READY_STATUS, p.playerID + "," + true));
         else
-            p.isReady = false;
+            p.isReady = true;
     }
 
     public int getPlayersReady() {
