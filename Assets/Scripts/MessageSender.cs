@@ -33,6 +33,7 @@ public static class MessageTypes {
     public const int CHANGE_PACKET_LIFECYCLE_STATUS = 12;   // only clients may send
     public const int SET_METRICS = 13;   // sync metrics for end game
     public const int FORCE_GAME_SHUTDOWN = 14;   // closes all networking resources
+    public const int SET_PLAYERS_READY_STATUS = 15;   // set networkplayer.isReady
 
 }
 
@@ -102,6 +103,10 @@ public class MessageSender : NetworkBehaviour {
 
         if (type == MessageTypes.SET_LOBBY_PLAYER_SETTINGS) {
             setPlayerSettings(data);
+        }
+
+        if(type == MessageTypes.SET_PLAYERS_READY_STATUS) {
+            setPlayerIsReady(data);
         }
 
         // add new player
@@ -277,6 +282,19 @@ public class MessageSender : NetworkBehaviour {
         // id,name,ready,role
 
         LobbyMenuManager.inst.OnSettingsChanged(playerID);
+    }
+
+    public void setPlayerIsReady(string csv) {
+        string[] data = csv.Split(',');
+        int playerID = int.Parse(data[0]);
+        bool isReady = bool.Parse(data[1]);
+
+
+        SharedPlayer player = Shared.inst.getOrAddPlayerById(playerID);
+        if (playerID == -1)
+            return;
+
+        player.isReady = isReady;
     }
 
     public void changePacketLifecycleStatus(string data) {

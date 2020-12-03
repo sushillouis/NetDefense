@@ -10,6 +10,7 @@ public enum POPULATE_POOL_ERROR_CODES {
     SUCCESS,
     WAITING_ON_BLACKHAT_DEFINITION,
     WAITING_ON_BLACKHAT_TARGET_SELECTION,
+    WAITING_ON_PLAYER_TO_READY,
     MIX_MATCH_EXCEPTION // @targetting_probabilites should match @packet_destinations array length
 
 }
@@ -41,6 +42,10 @@ public class PacketPoolManager : NetworkBehaviour {
 
         if (!Shared.inst.blackhatHatChosenTargetRatios()) {
             return POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_TARGET_SELECTION;
+        }
+
+        if(!Shared.inst.allPlayersReady()) {
+            return POPULATE_POOL_ERROR_CODES.WAITING_ON_PLAYER_TO_READY;
         }
 
         //packets.Clear();
@@ -133,12 +138,15 @@ public class PacketPoolManager : NetworkBehaviour {
         }
     }
 
-    public void CleanUpStatics() {
+    public void Reset() {
         foreach (GameObject go in packets) {
             Destroy(go);
         }
 
         packets.Clear();
+
+        deployIndex = 0;
+
     }
 
     public GameObject createPacket(int color, int size, int shape, string destination, bool malicious) {

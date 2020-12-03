@@ -53,6 +53,7 @@ public class BlackHatMenu : MonoBehaviour
     public int updates_remaining;
 
 
+
     void Start() {
         Construct();
         updates_remaining = max_updates_remaining;

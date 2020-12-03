@@ -54,6 +54,10 @@ public class Game_Manager : MonoBehaviour {
     public GameObject poolManager;
     public GameObject entityManager;
 
+    public int maxWaves;
+    public int currentWave;
+    public bool isBetweenWaves; 
+
 
     public void Awake() {
         inst = this;
@@ -139,6 +143,7 @@ public class Game_Manager : MonoBehaviour {
         countdownText.text = (int)(1 + (maxTime - elapsed)) + "";
         if (elapsed > maxTime) {
             Shared.inst.gameState.currentState = SharedGameStates.PLAY;
+            Shared.inst.unReadyPlayers();
             if (EntityManager.inst.isServer)
                 Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_NETWORK_STATE, ((int)Shared.inst.gameState.currentState) + ""));
         }
@@ -156,7 +161,7 @@ public class Game_Manager : MonoBehaviour {
         WhiteHatMenu.inst.OnTimerChange(unspawnedPackets);
 
 
-        if (elapsed3 > graph_update_time) {
+        if (elapsed3 > graph_update_time && !isBetweenWaves) {
             // update graph
             GraphWidget.GetComponent<WidgetGraph>().UpdateDataSet(Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT ? (int)Shared.inst.gameMetrics.derrivative_whitehat_score : (int)Shared.inst.gameMetrics.derrivative_blackhat_score);
 
@@ -173,10 +178,24 @@ public class Game_Manager : MonoBehaviour {
 
 
         if (poolHasSpawned && PacketPoolManager.inst.getAlivePackets() == 0) {
-            if (!MainMenu.isMultiplayerSelectedFromMenu)
-                Shared.inst.gameState.currentState = SharedGameStates.OVER;
-            else if (EntityManager.inst.isServer)
-                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_NETWORK_STATE, ((int)(Shared.inst.gameState.currentState = SharedGameStates.OVER)) + ""));
+
+            
+            if (currentWave > maxWaves - 1) {
+                // game over
+                if (!MainMenu.isMultiplayerSelectedFromMenu)
+                    Shared.inst.gameState.currentState = SharedGameStates.OVER;
+                else if (EntityManager.inst.isServer)
+                    Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_NETWORK_STATE, ((int)(Shared.inst.gameState.currentState = SharedGameStates.OVER)) + ""));
+            } else {
+
+                // next wave
+                isBetweenWaves = true;
+                currentWave++;
+                Shared.inst.unReadyPlayers();
+                poolHasSpawned = false;
+                PacketPoolManager.inst.Reset();
+            }
+            
         }
 
     }
@@ -189,12 +208,14 @@ public class Game_Manager : MonoBehaviour {
         if (pool_status == POPULATE_POOL_ERROR_CODES.SUCCESS) {
             PacketPoolManager.inst.deployNextPacket();
             poolHasSpawned = true;
+            isBetweenWaves = false;
         } else
 
 
         if (!MainMenu.isMultiplayerSelectedFromMenu && (pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_DEFINITION || pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_TARGET_SELECTION)) {
             BlackHatNPC.inst.setBlackhatNPCvalues();
         }
+
     }
 
     //Set traits of packet based on the values it already holds

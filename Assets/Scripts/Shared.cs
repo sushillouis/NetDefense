@@ -115,6 +115,37 @@ public class Shared : MonoBehaviour {
         return inst.maliciousPacketProperties.color != -1 && inst.maliciousPacketProperties.size != -1 && inst.maliciousPacketProperties.shape != -1;
     }
 
+    public void unReadyPlayers() {
+        foreach (SharedPlayer p in inst.players) {
+            if (MainMenu.isMultiplayerSelectedFromMenu)
+                inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_PLAYERS_READY_STATUS, p.playerID + "," + false));
+            else
+                p.isReady = false;
+        }
+    }
+
+    public void setPlayerToReady(int playerID) {
+        SharedPlayer p = getOrAddPlayerById(playerID);
+        if (MainMenu.isMultiplayerSelectedFromMenu)
+            inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_PLAYERS_READY_STATUS, p.playerID + "," + true));
+        else
+            p.isReady = false;
+    }
+
+    public int getPlayersReady() {
+        int count = 0;
+        foreach (SharedPlayer p in inst.players) {
+            if (p.isReady)
+                count++;
+        }
+
+        return count;
+    }
+
+    public bool allPlayersReady() {
+        return getPlayersReady() == inst.players.Count;
+    }
+
     public bool blackhatHatChosenTargetRatios() {
 
         // search targetting ratios for a non zero value.
@@ -148,7 +179,7 @@ public class Shared : MonoBehaviour {
 
 
         // reset global state
-       // PacketPoolManager.inst.CleanUpStatics();
+        // PacketPoolManager.inst.CleanUpStatics();
         ScoreManager.inst.packetMetrics.Clear();
         Destination.CleanUpStatics();
         SharedPlayer.playerIdForThisDevice = -1;
@@ -174,7 +205,7 @@ public class Shared : MonoBehaviour {
             inst.syncEvents.Add(new SyncEvent(MessageTypes.FORCE_GAME_SHUTDOWN, ""));
             SceneManager.LoadScene(sceneName);
         } else
-            SceneManager.LoadScene(sceneName); 
+            SceneManager.LoadScene(sceneName);
     }
 }
 
