@@ -81,6 +81,9 @@ public class ScoreManager : MonoBehaviour {
 
     public void Update() {
 
+        if (Game_Manager.inst.isBetweenWaves)
+            return;
+
         friendly_spawn_probability = 1 - PacketPoolManager.inst.badSpawnProbability;
         bad_spawn_probability = 1 - friendly_spawn_probability;
 
@@ -116,6 +119,10 @@ public class ScoreManager : MonoBehaviour {
             black_score += black_score_derivative;
             timer = Time.time;
         }
+    }
+
+    public void OnEnteredBetweenWavesState() {
+
     }
 
     public void CalculateEndGameStats() {

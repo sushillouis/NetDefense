@@ -98,7 +98,7 @@ public class Game_Manager : MonoBehaviour {
         // [Jonathon] Can this only be checked when the shortcut to switch roles is pressed?
         // [Teddy] yes that's a better spot for it, much better haha
 
-        forceNetworkIdentiesAwake();
+        forceNetworkIdentiesAwake(); // because Unet isn't behaving correctly
 
 
         // check to see if it's time to change from lobby to countdown
@@ -191,6 +191,7 @@ public class Game_Manager : MonoBehaviour {
                 // next wave
                 isBetweenWaves = true;
                 currentWave++;
+                ScoreManager.inst.OnEnteredBetweenWavesState();
                 Shared.inst.unReadyPlayers();
                 poolHasSpawned = false;
                 PacketPoolManager.inst.Reset();
