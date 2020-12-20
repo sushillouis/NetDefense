@@ -15,7 +15,7 @@ public class DismissableScreenManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(Input.GetKeyDown(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.Space) && Shared.inst.gameState.currentState == SharedGameStates.PLAY) {
             mainContent.isValid = !mainContent.isValid;
         }
 
