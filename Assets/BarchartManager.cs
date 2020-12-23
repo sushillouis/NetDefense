@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class BarchartManager : MonoBehaviour {
 
     public RectTransform container;
@@ -10,60 +11,143 @@ public class BarchartManager : MonoBehaviour {
     public Vector2 barSize;
     public float spacing;
     public Vector2 padding;
+    public float maxValue;
 
-    public int barCount;
+    public int fontSize;
+    public Font labelFont;
 
-    private List<GameObject> bars;
+
+    public List<GameObject> bars;
+    public OnBarClickedDialogueManager OnBarClickedDialogueManager;
+    public static List<BarchartManager> insts = new List<BarchartManager>();
+
+    private void Awake() {
+        insts.Add(this);
+    }
 
     void Start() {
         bars = new List<GameObject>();
+    }
 
-        for (int i = 0; i < 10; i++) {
-            appendBar(i + 1);
+    public void OnShouldUpdateBarChart() {
+        ScoreManager.inst.updateHistogram();
+        clearBars();
+
+        for (int i = 0; i < ScoreManager.inst.histogram.Count; i++) {
+            KeyValuePair<PacketProfile, int> dataPoint = ScoreManager.inst.histogram[i];
+
+            appendBar(dataPoint.Value, dataPoint.Key.color + "" + dataPoint.Key.size + "" + dataPoint.Key.shape);
         }
 
-        deleteBar(5);
-        deleteBar(6);
+
+        normalizedValues();
     }
 
-    // Update is called once per frame
-    void Update() {
-
+    public void clearBars() {
+        while (bars.Count != 0) {
+            Destroy(bars[0]);
+            bars.RemoveAt(0);
+        }
     }
 
-    public void appendBar(float height) {
-        NewBar(barCount, 0, height);
+    public void appendBar(float height, string label = "") {
+        NewBar(bars.Count, 0, height, label);
     }
 
     public void deleteBar(int index) {
         Destroy(bars[index]);
+        bars.RemoveAt(index);
     }
 
+    public void closeGaps() {
+        for (int i = 0; i < bars.Count; i++) {
+            GameObject bar = bars[i];
+            setBarTransform(i + 1, 0, bar.GetComponent<FloatValueList>().values[0], bar);
+        }
+    }
 
-    private GameObject NewBar(int x, int y, float value) {
-        x++;
-        // Vector2 position = new Vector2(x * barSize.x + x * spacing, y * barSize.y);
-        GameObject bar = new GameObject("bar");
-     //   bar.AddComponent<GeneralDelegateStore>().delegates.Add((vec, t, X, Y, Padding, Spacing, BarSize) => {
-     //       Vector2 position = new Vector2((X * BarSize.x) + X * Spacing, Y * BarSize.y);
-     //       vec = new Vector2(position.x + Padding.x, position.y + Padding.y + t.sizeDelta.y / 2f);
-     //   });
+    public void normalizedValues() {
+        float max = 0;
+        foreach (GameObject bar in bars) {
+            max = Mathf.Max(bar.GetComponent<FloatValueList>().values[0], max);
+        }
 
-          
-        //updatePosition action = 
+        if (max == 0)
+            max = 1;
 
-        bars.Add(bar);
-        bar.AddComponent<Image>();
-        bar.GetComponent<Image>().color = barColor;
-        bar.transform.SetParent(container, false);
-        RectTransform transform = bar.GetComponent<RectTransform>();
-        transform.sizeDelta = new Vector2(barSize.x, barSize.y * value);
-        //transform.anchoredPosition = new Vector2(position.x + padding.x, position.y + padding.y + transform.sizeDelta.y/2f);
-       // action.Invoke(transform.anchoredPosition, transform, x, y, padding, spacing, barSize);
+        for (int i = 0; i < bars.Count; i++) {
+            GameObject bar = bars[i];
+            float normalizedValue = (bar.GetComponent<FloatValueList>().values[0] / max) * maxValue;
+            bar.GetComponent<FloatValueList>().values[0] = normalizedValue;
+            setBarTransform(i + 1, 0, normalizedValue, bar);
+        }
+    }
+
+    public void attachLabel(GameObject bar, string label) {
+        bar.GetComponent<StringValueList>().values[0] = label;
+        GameObject textLabel = new GameObject("label");
+        Text text = textLabel.AddComponent<Text>();
+        text.text = label;
+        text.font = labelFont;
+        text.fontSize = fontSize;
+        text.alignment = TextAnchor.MiddleCenter;
+        textLabel.transform.SetParent(bar.transform, false);
+        RectTransform transform = textLabel.GetComponent<RectTransform>();
         transform.anchorMin = Vector2.zero;
         transform.anchorMax = Vector2.zero;
-        barCount++;
+        transform.Translate(barSize.x / 2, 0, 0);
+        transform.sizeDelta = new Vector2(35, 35);
+        textLabel.transform.rotation = Quaternion.Euler(0, 0, 45);
+    }
 
+    private GameObject NewBar(int x, int y, float value, string label) {
+        x++;
+        GameObject bar = new GameObject("bar");
+        bar.transform.SetParent(container, false);
+        bar.AddComponent<FloatValueList>().values.Add(value);
+        bar.AddComponent<FloatValueList>().values.Add(value);
+        bar.AddComponent<StringValueList>().values.Add(label);
+        bar.AddComponent<Image>();
+        bar.GetComponent<Image>().color = barColor;
+        bar.transform.SetAsFirstSibling();
+
+        Button button = bar.AddComponent<Button>();
+
+        button.onClick.AddListener(delegate () { OnBarPressed(label, value); });
+
+        setBarTransform(x, y, value, bar);
+        bars.Add(bar);
+
+        attachLabel(bar, label);
         return bar;
+    }
+
+    public void OnBarPressed(string label, float value) {
+
+        char color = label[0];
+        char size = label[1];
+        char shape = label[2];
+
+        string name = (color == '0' ? "Pink" : color == '1' ? "Green" : "Blue") + " "+ (size == '0' ? "Small" : size == '1' ? "Medium" : "Large") + " "+ (shape == '0' ? "Cube" : shape == '1' ? "Pyramid" : "Sphere");
+
+        OnBarClickedDialogueManager.OnShowDialogue(label, name, (int)value);
+    }
+
+    private void setBarTransform(int x, int y, float value, GameObject bar) {
+        Vector2 position = createBarPosition(x, y);
+        anchorBar(value, position, bar);
+    }
+
+    private void anchorBar(float value, Vector2 position, GameObject bar) {
+        value++;
+        RectTransform transform = bar.GetComponent<RectTransform>();
+        transform.sizeDelta = new Vector2(barSize.x, barSize.y * value);
+        transform.anchoredPosition = new Vector2(position.x + padding.x, position.y + padding.y + transform.sizeDelta.y / 2f);
+        transform.anchorMin = Vector2.zero;
+        transform.anchorMax = Vector2.zero;
+    }
+
+    private Vector2 createBarPosition(int x, int y) {
+        return new Vector2(x * barSize.x + x * spacing, y * barSize.y);
     }
 }

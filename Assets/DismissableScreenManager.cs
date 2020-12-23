@@ -9,14 +9,17 @@ public class DismissableScreenManager : MonoBehaviour {
     public Displaceable[] contents;
     public Displaceable mainContent;
 
-    void Start() {
 
+
+    void Start() {
+        contents[0].isValid = true;
     }
 
     // Update is called once per frame
     void Update() {
         if(Input.GetKeyDown(KeyCode.Space) && Shared.inst.gameState.currentState == SharedGameStates.PLAY) {
             mainContent.isValid = !mainContent.isValid;
+            
         }
 
     }

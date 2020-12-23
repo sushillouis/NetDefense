@@ -9,6 +9,34 @@ public enum PacketLifeStatus {
     UNCERTAIN
 }
 
+[System.Serializable]
+public class PacketProfile {
+    public int size;
+    public int color;
+    public int shape;
+
+    public PacketProfile(int size, int color, int shape) {
+        this.size = size;
+        this.color = color;
+        this.shape = shape;
+    }
+}
+
+public static class PacketProfileTypes {
+    public static PacketProfile[] profiles = new PacketProfile[3 * 3 * 3];
+
+    static PacketProfileTypes() {
+        int index = 0;
+        for (int size = 0; size < 3; size++) {
+            for (int color = 0; color < 3; color++) {
+                for (int shape = 0; shape < 3; shape++) {
+                    profiles[index++] = new PacketProfile(size, color, shape);
+                }
+            }
+        }
+    }
+}
+
 
 [System.Serializable]
 public class PacketCompletedMetric {
@@ -58,6 +86,31 @@ public class ScoreManager : MonoBehaviour {
 
     public int maxPacketsConsidered; // history size
     public List<PacketCompletedMetric> packetMetrics; // packet lifecycle history about last n instances
+    public List<PacketProfile> packetTypeHistory;
+    public List<KeyValuePair<PacketProfile, int>> histogram;
+
+    public int getFrequencyOfProfile(PacketProfile profile) {
+        int frequency = 0;
+        foreach (PacketProfile pp in packetTypeHistory) {
+            if (profile.color == pp.color && profile.shape == pp.shape && profile.size == pp.size) {
+                frequency++;
+            }
+        }
+
+        return frequency;
+    }
+
+    public void updateHistogram() {
+        histogram.Clear();
+        for (int i = 0; i < 3 * 3 * 3; i++)
+            histogram.Add(new KeyValuePair<PacketProfile, int>(PacketProfileTypes.profiles[i], getFrequencyOfProfile(PacketProfileTypes.profiles[i])));
+
+
+        histogram.Sort(delegate (KeyValuePair<PacketProfile, int> e1, KeyValuePair<PacketProfile, int> e2) {
+
+            return e2.Value.CompareTo(e1.Value);
+        });
+    }
 
     public PacketCompletedMetric getMetricById(int id) {
         foreach (PacketCompletedMetric metric in packetMetrics) {
@@ -76,6 +129,9 @@ public class ScoreManager : MonoBehaviour {
         Shared.inst.gameMetrics.whitehat_cash = 1000;
         WhiteHatMenu.inst.OnCashChanged();
         packetMetrics = new List<PacketCompletedMetric>();
+        packetTypeHistory = new List<PacketProfile>();
+        histogram = new List<KeyValuePair<PacketProfile, int>>();
+
         timer = Time.time;
     }
 
@@ -201,3 +257,4 @@ public class ScoreManager : MonoBehaviour {
         }
     }
 }
+

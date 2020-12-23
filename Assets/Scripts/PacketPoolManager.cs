@@ -183,9 +183,13 @@ public class PacketPoolManager : NetworkBehaviour {
 
         if (!pac.malicious)
             ScoreManager.inst.OnFriendlyPacketSpawned(pac.id);
-        else
+        else 
             ScoreManager.inst.OnBadPacketSpawned(pac.id);
 
+        ScoreManager.inst.packetTypeHistory.Add(new PacketProfile(pac.size, pac.color, pac.shape));
+        foreach (BarchartManager bm in BarchartManager.insts) {
+            bm.OnShouldUpdateBarChart();
+        }
         pac.status = PACKET_LIFECYCLE_STATUS.ENROUTE;
         pac.OnDeployed();
 
