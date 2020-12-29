@@ -1,10 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 public class BarchartManager : MonoBehaviour {
+
+    public string name;
+
+    public bool ShouldUpdate;
+    public bool shouldUpdate {
+        get {
+            return ShouldUpdate;
+        }
+        set {
+            ShouldUpdate = value;
+            OnShouldUpdateBarChart();
+        }
+    }
 
     public RectTransform container;
     public Color barColor;
@@ -19,7 +33,18 @@ public class BarchartManager : MonoBehaviour {
 
     public List<GameObject> bars;
     public OnBarClickedDialogueManager OnBarClickedDialogueManager;
+
     public static List<BarchartManager> insts = new List<BarchartManager>();
+
+    public static BarchartManager getBarManagerByName(string name) {
+        foreach (BarchartManager bm in insts) {
+            if (name.ToLower().Equals(bm.name.ToLower())) {
+                return bm;
+            }
+        }
+
+        return null;
+    }
 
     private void Awake() {
         insts.Add(this);
@@ -30,8 +55,28 @@ public class BarchartManager : MonoBehaviour {
     }
 
     public void OnShouldUpdateBarChart() {
-        ScoreManager.inst.updateHistogram();
         clearBars();
+
+        if (this == getBarManagerByName("Chart1") && shouldUpdate)
+            UpdateBarChart1();
+
+        if (this == getBarManagerByName("Chart2") && shouldUpdate)
+            UpdateBarChart2();
+
+        normalizedValues();
+
+    }
+
+    private void UpdateBarChart2() {
+        
+        for (int i = 0; i < 15; i++) {
+
+            appendBar(i, "i=" + i);
+        }
+    }
+
+    private void UpdateBarChart1() {
+        ScoreManager.inst.updateHistogram();
 
         for (int i = 0; i < ScoreManager.inst.histogram.Count; i++) {
             KeyValuePair<PacketProfile, int> dataPoint = ScoreManager.inst.histogram[i];
@@ -40,7 +85,6 @@ public class BarchartManager : MonoBehaviour {
         }
 
 
-        normalizedValues();
     }
 
     public void clearBars() {
@@ -123,14 +167,19 @@ public class BarchartManager : MonoBehaviour {
     }
 
     public void OnBarPressed(string label, float value) {
+        if (this == getBarManagerByName("Chart1"))
+            OnBarChart1Pressed(label, value);
 
+    }
+
+    private void OnBarChart1Pressed(string label, float value) {
         char color = label[0];
         char size = label[1];
         char shape = label[2];
 
-        string name = (color == '0' ? "Pink" : color == '1' ? "Green" : "Blue") + " "+ (size == '0' ? "Small" : size == '1' ? "Medium" : "Large") + " "+ (shape == '0' ? "Cube" : shape == '1' ? "Pyramid" : "Sphere");
+        string name = (color == '0' ? "Pink" : color == '1' ? "Green" : "Blue") + " " + (size == '0' ? "Small" : size == '1' ? "Medium" : "Large") + " " + (shape == '0' ? "Cube" : shape == '1' ? "Cone" : "Sphere");
 
-        OnBarClickedDialogueManager.OnShowDialogue(label, name, (int)value);
+        OnBarClickedDialogueManager.OnShowDialogue(label, name, "Frequency" + (int)value);
     }
 
     private void setBarTransform(int x, int y, float value, GameObject bar) {

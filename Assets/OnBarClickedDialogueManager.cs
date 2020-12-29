@@ -10,10 +10,10 @@ public class OnBarClickedDialogueManager : MonoBehaviour
     public Text packetName;
     public Text frequency;
 
-    public void OnShowDialogue(string titleText, string packetName, int frequency) {
+    public void OnShowDialogue(string titleText, string packetName, string frequency) {
         this.titleText.text = titleText;
         this.packetName.text = packetName;
-        this.frequency.text = "Frequency " + frequency;
+        this.frequency.text = frequency;
         gameObject.SetActive(true);
     }
     
