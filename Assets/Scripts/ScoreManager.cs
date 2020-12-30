@@ -88,6 +88,7 @@ public class ScoreManager : MonoBehaviour {
     public List<PacketCompletedMetric> packetMetrics; // packet lifecycle history about last n instances
     public List<PacketProfile> packetTypeHistory;
     public List<KeyValuePair<PacketProfile, int>> histogram;
+    public List<KeyValuePair<float, float>> badPacketsFilteredHistory;
 
     public int getFrequencyOfProfile(PacketProfile profile) {
         int frequency = 0;
@@ -131,6 +132,7 @@ public class ScoreManager : MonoBehaviour {
         packetMetrics = new List<PacketCompletedMetric>();
         packetTypeHistory = new List<PacketProfile>();
         histogram = new List<KeyValuePair<PacketProfile, int>>();
+        badPacketsFilteredHistory = new List<KeyValuePair<float, float>>();
 
         timer = Time.time;
     }
@@ -238,6 +240,9 @@ public class ScoreManager : MonoBehaviour {
 
     public void OnMetricsUpdated() {
         // update ui here
+
+        // for plot of total spawned vs filtered
+        badPacketsFilteredHistory.Add(new KeyValuePair<float, float>(totalBadPacketsSpawned, badPacketSuccesses));
 
         score_black.text = (int)Shared.inst.gameMetrics.blackhat_score + "";
         score_white.text = (int)Shared.inst.gameMetrics.whitehat_score + "";

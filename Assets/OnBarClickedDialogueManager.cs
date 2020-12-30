@@ -7,13 +7,13 @@ public class OnBarClickedDialogueManager : MonoBehaviour
 {
 
     public Text titleText;
-    public Text packetName;
-    public Text frequency;
+    public Text data1;
+    public Text data2;
 
-    public void OnShowDialogue(string titleText, string packetName, string frequency) {
+    public void OnShowDialogue(string titleText, string data1, string data2) {
         this.titleText.text = titleText;
-        this.packetName.text = packetName;
-        this.frequency.text = frequency;
+        this.data1.text = data1;
+        this.data2.text = data2;
         gameObject.SetActive(true);
     }
     

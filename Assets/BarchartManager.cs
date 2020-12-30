@@ -68,10 +68,23 @@ public class BarchartManager : MonoBehaviour {
     }
 
     private void UpdateBarChart2() {
-        
-        for (int i = 0; i < 15; i++) {
 
-            appendBar(i, "i=" + i);
+        // plot the most recent n datapoints
+        int n = 10;
+        for (int i = Math.Max(ScoreManager.inst.badPacketsFilteredHistory.Count - n, 0); i < ScoreManager.inst.badPacketsFilteredHistory.Count; i++) {
+
+            GameObject key = appendBar(ScoreManager.inst.badPacketsFilteredHistory[i].Key);
+            float totalSpawned = key.GetComponent<FloatValueList>().values[0];
+            key.GetComponent<StringValueList>().values.Add("Total Infected Packets Spawned");
+            key.GetComponent<StringValueList>().values.Add("Spawned: " + totalSpawned);
+            key.GetComponent<StringValueList>().values.Add("Time: " + i + "s");
+
+            GameObject value = appendBar(ScoreManager.inst.badPacketsFilteredHistory[i].Value, Color.red);
+            value.GetComponent<StringValueList>().values.Add("Total Infected Packets Successes");
+            value.GetComponent<StringValueList>().values.Add("Successes: " + (int)(100f * (value.GetComponent<FloatValueList>().values[0] / totalSpawned)) + "%");
+            value.GetComponent<StringValueList>().values.Add("Time: " + i + "s");
+
+            appendBar(0, Color.clear).SetActive(false);
         }
     }
 
@@ -94,8 +107,12 @@ public class BarchartManager : MonoBehaviour {
         }
     }
 
-    public void appendBar(float height, string label = "") {
-        NewBar(bars.Count, 0, height, label);
+    public GameObject appendBar(float height, string label = "") {
+        return appendBar(height, barColor, label);
+    }
+
+    public GameObject appendBar(float height, Color barColor, string label = "") {
+        return NewBar(bars.Count, 0, height, label, barColor);
     }
 
     public void deleteBar(int index) {
@@ -144,12 +161,12 @@ public class BarchartManager : MonoBehaviour {
         textLabel.transform.rotation = Quaternion.Euler(0, 0, 45);
     }
 
-    private GameObject NewBar(int x, int y, float value, string label) {
+    private GameObject NewBar(int x, int y, float value, string label, Color barColor) {
         x++;
         GameObject bar = new GameObject("bar");
         bar.transform.SetParent(container, false);
         bar.AddComponent<FloatValueList>().values.Add(value);
-        bar.AddComponent<FloatValueList>().values.Add(value);
+        bar.GetComponent<FloatValueList>().values.Add(value);
         bar.AddComponent<StringValueList>().values.Add(label);
         bar.AddComponent<Image>();
         bar.GetComponent<Image>().color = barColor;
@@ -157,7 +174,7 @@ public class BarchartManager : MonoBehaviour {
 
         Button button = bar.AddComponent<Button>();
 
-        button.onClick.AddListener(delegate () { OnBarPressed(label, value); });
+        button.onClick.AddListener(delegate () { OnBarPressed(label, value, bar.GetComponent<FloatValueList>().values, bar.GetComponent<StringValueList>().values); });
 
         setBarTransform(x, y, value, bar);
         bars.Add(bar);
@@ -166,10 +183,19 @@ public class BarchartManager : MonoBehaviour {
         return bar;
     }
 
-    public void OnBarPressed(string label, float value) {
+    public void OnBarPressed(string label, float value, List<float> floats, List<string> strings) {
         if (this == getBarManagerByName("Chart1"))
             OnBarChart1Pressed(label, value);
 
+        if (this == getBarManagerByName("Chart2"))
+            OnBarChart2Pressed(strings);
+    }
+
+    private void OnBarChart2Pressed(List<string> strings) {
+        if (strings.Count == 4) {
+            OnBarClickedDialogueManager.OnShowDialogue(strings[1], strings[2], strings[3]);
+
+        }
     }
 
     private void OnBarChart1Pressed(string label, float value) {
@@ -179,7 +205,7 @@ public class BarchartManager : MonoBehaviour {
 
         string name = (color == '0' ? "Pink" : color == '1' ? "Green" : "Blue") + " " + (size == '0' ? "Small" : size == '1' ? "Medium" : "Large") + " " + (shape == '0' ? "Cube" : shape == '1' ? "Cone" : "Sphere");
 
-        OnBarClickedDialogueManager.OnShowDialogue(label, name, "Frequency" + (int)value);
+        OnBarClickedDialogueManager.OnShowDialogue(label, name, "Frequency " + (int)value);
     }
 
     private void setBarTransform(int x, int y, float value, GameObject bar) {
