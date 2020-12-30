@@ -67,10 +67,12 @@ public class Shared : MonoBehaviour {
 
     private void Start() {
 
-        if (MainMenu.isMultiplayerSelectedFromMenu)
+        if (MainMenu.isMultiplayerSelectedFromMenu) {
             inst.gameState.currentState = SharedGameStates.LOBBY;
-        else
+        } else {
             inst.gameState.currentState = SharedGameStates.COUNTDOWN;
+            
+        }
 
 
 

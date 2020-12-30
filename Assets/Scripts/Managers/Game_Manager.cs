@@ -79,7 +79,7 @@ public class Game_Manager : MonoBehaviour {
              Shared.inst.getDevicePlayer().role = SharedPlayer.WHITEHAT;
              Debug.Log("Tried making device player...");*/
             network.LauchHost(false);
-            Shared.inst.getDevicePlayer().role = SharedPlayer.WHITEHAT;
+            Shared.inst.getDevicePlayer().role = MainMenu.hat == -1 ? 2 : MainMenu.hat;
             Shared.inst.getDevicePlayer().username = "You";
         }
     }

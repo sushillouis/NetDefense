@@ -18,6 +18,7 @@ public class MainMenu : MonoBehaviour {
     public static Difficulty difficulty;
 
     public GameObject levelSelectionPanel;
+    public GameObject hatSelectionPanel;
 
     public GameObject[] environmentUnits;
 
@@ -28,13 +29,17 @@ public class MainMenu : MonoBehaviour {
     public Image medium;
     public Image hard;
     public Image play;
+    public Image white;
+    public Image black;
+    public Image done;
 
-    private int level = -1;
+    public static int level = -1;
+    public static int hat = -1;
 
 
     // Start is called before the first frame update
     void Start() {
-        if(GameObject.FindGameObjectsWithTag("Music").Length == 2) {
+        if (GameObject.FindGameObjectsWithTag("Music").Length == 2) {
             Destroy(GameObject.FindGameObjectsWithTag("Music")[0]);
         }
     }
@@ -67,7 +72,7 @@ public class MainMenu : MonoBehaviour {
     // level=0 means easy
     // level=1 means hard
     public void OnLevelButtonPressed(int level) {
-        this.level = level;
+        MainMenu.level = level;
 
         play.color = new Color(play.color.r, play.color.g, play.color.b, 1);
         easy.color = level == 0 ? new Color(easy.color.r, easy.color.g, easy.color.b, 1) : new Color(easy.color.r, easy.color.g, easy.color.b, 0.5f);
@@ -85,14 +90,34 @@ public class MainMenu : MonoBehaviour {
 
     }
 
+    public void OnHatSelected(int hat) {
+        MainMenu.hat = hat;
+        done.color = new Color(done.color.r, done.color.g, done.color.b, 1);
+        white.color = hat == 2 ? new Color(white.color.r, white.color.g, white.color.b, 1) : new Color(white.color.r, white.color.g, white.color.b, 0.5f);
+        black.color = hat == 1 ? new Color(black.color.r, black.color.g, black.color.b, 1) : new Color(black.color.r, black.color.g, black.color.b, 0.5f);
+
+    }
+
     public void StartGamePlay() {
         if (level == -1)
             return;
+
+        if (!isMultiplayerSelectedFromMenu && hat == -1) {
+            levelSelectionPanel.GetComponent<Displaceable>().isValid = false;
+            hatSelectionPanel.GetComponent<Displaceable>().isValid = true;
+            return;
+        }
+
         SceneManager.LoadScene("MultiStateGameplay");
+
     }
 
     public void OnBackSelected() {
+        level = -1;
+        hat = -1;
+
         levelSelectionPanel.GetComponent<Displaceable>().isValid = false;
+        hatSelectionPanel.GetComponent<Displaceable>().isValid = false;
     }
 
     public void OnQuitSelected() {
