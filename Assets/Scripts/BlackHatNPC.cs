@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BlackHatNPC : MonoBehaviour {
+
     public int attackCount = -1;
 
     [SerializeField]

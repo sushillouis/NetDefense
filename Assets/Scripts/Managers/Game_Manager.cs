@@ -213,10 +213,13 @@ public class Game_Manager : MonoBehaviour {
         } else
 
 
-        if (!MainMenu.isMultiplayerSelectedFromMenu && (pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_DEFINITION || pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_TARGET_SELECTION)) {
+        if (MainMenu.hat == SharedPlayer.WHITEHAT && !MainMenu.isMultiplayerSelectedFromMenu && (pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_DEFINITION || pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_TARGET_SELECTION)) {
             BlackHatNPC.inst.setBlackhatNPCvalues();
         }
 
+        if (MainMenu.hat == SharedPlayer.BLACKHAT && !MainMenu.isMultiplayerSelectedFromMenu && (pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_DEFINITION || pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_TARGET_SELECTION)) {
+            WhiteHatNPC.inst.OnUsingWhiteAtNPC();
+        }
     }
 
     //Set traits of packet based on the values it already holds

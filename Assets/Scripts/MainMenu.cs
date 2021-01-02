@@ -34,11 +34,13 @@ public class MainMenu : MonoBehaviour {
     public Image done;
 
     public static int level = -1;
-    public static int hat = -1;
+    public static int hat = SharedPlayer.BLACKHAT;
 
 
     // Start is called before the first frame update
     void Start() {
+        level = -1;
+        hat = -1;
         if (GameObject.FindGameObjectsWithTag("Music").Length == 2) {
             Destroy(GameObject.FindGameObjectsWithTag("Music")[0]);
         }
