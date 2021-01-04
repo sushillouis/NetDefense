@@ -167,10 +167,15 @@ public class BlackHatMenu : MonoBehaviour
             t2 = s2.value / percentage;
             t3 = s3.value / percentage;
 
-            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "LEFT" + "," + t1));
-            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "RIGHT" + "," + t2));
-            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "CENTRE" + "," + t3));
-
+            if (MainMenu.isMultiplayerSelectedFromMenu) {
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "LEFT" + "," + t1));
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "RIGHT" + "," + t2));
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "CENTRE" + "," + t3));
+            } else {
+                Shared.inst.gameMetrics.target_probabilities["LEFT"] = t1;
+                Shared.inst.gameMetrics.target_probabilities["RIGHT"] = t2;
+                Shared.inst.gameMetrics.target_probabilities["CENTRE"] = t3;
+            }
             targettingCoolDownButton.enabled = false;
 
             //       text.text = trgt(1, t1) + "\n" + trgt(2, t2) + "\n" + trgt(3, t3);

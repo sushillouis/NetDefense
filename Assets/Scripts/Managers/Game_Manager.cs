@@ -203,8 +203,11 @@ public class Game_Manager : MonoBehaviour {
 
     public void RequestPacketSpawnFromPool() {
         POPULATE_POOL_ERROR_CODES pool_status = POPULATE_POOL_ERROR_CODES.SUCCESS;
+
         if (!poolHasSpawned)
             pool_status = PacketPoolManager.inst.populatePool();
+
+        Debug.Log(pool_status);
 
         if (pool_status == POPULATE_POOL_ERROR_CODES.SUCCESS) {
             PacketPoolManager.inst.deployNextPacket();
