@@ -47,59 +47,72 @@ public class WhiteHatNPC : MonoBehaviour {
                 hasSpawnedAtIndex[i] = true;
             }
         }
+
+        foreach (GameObject router in routers) {
+            Router r = router.GetComponent<Router>();
+
+            r.SetColor(Random.Range(0, 3));
+            r.SetShape(Random.Range(0, 3));
+            r.SetSize(Random.Range(0, 3));
+        }
     }
 
     public void OnOptimzeRouters() {
-        Debug.Log("Called");
-        foreach(GameObject router in routers) {
-            Router r = router.GetComponent<Router>();
-            if (r.updatesRemaining == 0) {
-                routers.Remove(router);
+        for (int i = 0; i < routers.Count; i++) {
+            Router r = routers[i].GetComponent<Router>();
+            if (r.updatesRemaining < 1) {
+                routers.RemoveAt(i);
+                i--;
                 unupgradableRouterCount++;
-                for(int i = 0; i < hasSpawnedAtIndex.Length; i++) {
-                    if(!hasSpawnedAtIndex[i]) {
-                        hasSpawnedAtIndex[i] = true;
-                        routers.Add(Instantiate(Router, routerSpawns[i].transform.position, routerSpawns[i].transform.rotation));
+
+                if (unupgradableRouterCount > 0)
+                    for (int j = 0; j < hasSpawnedAtIndex.Length; j++) {
+                        if (!hasSpawnedAtIndex[j]) {
+                            hasSpawnedAtIndex[j] = true;
+                            Router router = Instantiate(Router, routerSpawns[j].transform.position, routerSpawns[j].transform.rotation).GetComponent<Router>();
+                            routers.Add(router.gameObject);
+                            router.SetColor(Random.Range(0, 3));
+                            router.SetShape(Random.Range(0, 3));
+                            router.SetSize(Random.Range(0, 3));
+                            unupgradableRouterCount--;
+                            break;
+                        }
                     }
-                }
             } else {
                 // we can update router settings
 
-                if(r.color != Shared.inst.maliciousPacketProperties.color) {
+
+                if (r.color != Shared.inst.maliciousPacketProperties.color) {
                     // update the color to something different
-                    int color = r.color;
-                    while(color != r.color)
-                        color = Random.Range(0, 3);
-                    r.color = color;
+                    if (r.updatesRemaining > 0)
+                        r.SetColor(Random.Range(0, 3));
                 }
 
                 if (r.shape != Shared.inst.maliciousPacketProperties.shape) {
                     // update the shape to something different
-                    int shape = r.shape;
-                    while (shape != r.shape)
-                        shape = Random.Range(0, 3);
-                    r.shape = shape;
+                    if (r.updatesRemaining > 0)
+
+                        r.SetShape(Random.Range(0, 3));
                 }
 
                 if (r.size != Shared.inst.maliciousPacketProperties.size) {
                     // update the size to something different
-                    int size = r.size;
-                    while (size != r.size)
-                        size = Random.Range(0, 3);
-                    r.size = size;
+                    if (r.updatesRemaining > 0)
+
+                        r.SetSize(Random.Range(0, 3));
                 }
             }
         }
     }
 
-    
+
     void Update() {
         if (Game_Manager.inst.isBetweenWaves)
             return;
 
         float elapsed = Time.time - startTime;
 
-        if(elapsed > optimizeRouterFilterRate) {
+        if (elapsed > optimizeRouterFilterRate) {
             OnOptimzeRouters();
             startTime = Time.time;
         }

@@ -207,7 +207,7 @@ public class Game_Manager : MonoBehaviour {
         if (!poolHasSpawned)
             pool_status = PacketPoolManager.inst.populatePool();
 
-        Debug.Log(pool_status);
+
 
         if (pool_status == POPULATE_POOL_ERROR_CODES.SUCCESS) {
             PacketPoolManager.inst.deployNextPacket();
