@@ -50,6 +50,7 @@ public class WhiteHatNPC : MonoBehaviour {
     }
 
     public void OnOptimzeRouters() {
+        Debug.Log("Called");
         foreach(GameObject router in routers) {
             Router r = router.GetComponent<Router>();
             if (r.updatesRemaining == 0) {
