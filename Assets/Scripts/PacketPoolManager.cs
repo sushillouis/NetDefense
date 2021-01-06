@@ -66,8 +66,10 @@ public class PacketPoolManager : NetworkBehaviour {
                                 return POPULATE_POOL_ERROR_CODES.MIX_MATCH_EXCEPTION;
                             }
 
+                            
+
                             // TODO GENERALIZE FOR n TARGETS
-                            //target = getTarget();
+                            target = getTarget();
 
                             continue;
                         }
@@ -90,7 +92,7 @@ public class PacketPoolManager : NetworkBehaviour {
                     }
 
 
-
+        OnBlackhatUpdateStrategy();
         return POPULATE_POOL_ERROR_CODES.SUCCESS;
     }
 
@@ -111,6 +113,8 @@ public class PacketPoolManager : NetworkBehaviour {
             target = "CENTRE";
         }
 
+        Debug.Log(target + " p1=" + p1 + ", p2=" + p2 + ", p3=" + p3);
+
         return target;
     }
 
@@ -124,7 +128,7 @@ public class PacketPoolManager : NetworkBehaviour {
 
             //bool malic = Shared.inst.isBadPacket(sec.color, sec.shape, sec.size);
             //sec.malicious = malic;
-            sec.destination = /*malic ? Destination.getDestinationByID(getTarget()) : */Destination.getDestinationByID(packet_destinations[Random.Range(0, packet_destinations.Length)]);
+            sec.destination = sec.malicious ? Destination.getDestinationByID(getTarget()) : Destination.getDestinationByID(packet_destinations[Random.Range(0, packet_destinations.Length)]);
             int index = Random.Range(0, sec.destination.paths.Count);
             sec.path = sec.destination.paths[index];
             sec.SetSpawnRotandPos();

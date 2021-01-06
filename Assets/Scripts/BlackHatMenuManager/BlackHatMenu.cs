@@ -142,11 +142,16 @@ public class BlackHatMenu : MonoBehaviour
 
             Shared.inst.maliciousPacketProperties.shape = shape;
 
-            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.UPDATE_MALIC_PACKETS, Shared.inst.maliciousPacketProperties.shape + "," + Shared.inst.maliciousPacketProperties.size + "," + Shared.inst.maliciousPacketProperties.color));
 
             packetCoolDownButton.enabled = false;
         }
 
+        if(!MainMenu.isMultiplayerSelectedFromMenu) {
+            PacketPoolManager.inst.OnBlackhatUpdateStrategy();
+        } else {
+
+            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.UPDATE_MALIC_PACKETS, Shared.inst.maliciousPacketProperties.shape + "," + Shared.inst.maliciousPacketProperties.size + "," + Shared.inst.maliciousPacketProperties.color));
+        }
     }
 
 
@@ -175,11 +180,15 @@ public class BlackHatMenu : MonoBehaviour
                 Shared.inst.gameMetrics.target_probabilities["LEFT"] = t1;
                 Shared.inst.gameMetrics.target_probabilities["RIGHT"] = t2;
                 Shared.inst.gameMetrics.target_probabilities["CENTRE"] = t3;
+                PacketPoolManager.inst.OnBlackhatUpdateStrategy();
+
             }
             targettingCoolDownButton.enabled = false;
 
             //       text.text = trgt(1, t1) + "\n" + trgt(2, t2) + "\n" + trgt(3, t3);
         }
+
+
     }
 
 
