@@ -41,6 +41,8 @@ public class MainMenu : MonoBehaviour {
     void Start() {
         level = -1;
         hat = -1;
+        buttonColorForHatSelection(hat);
+        LevelButtonSelectionColor(level);
         if (GameObject.FindGameObjectsWithTag("Music").Length == 2) {
             Destroy(GameObject.FindGameObjectsWithTag("Music")[0]);
         }
@@ -76,10 +78,7 @@ public class MainMenu : MonoBehaviour {
     public void OnLevelButtonPressed(int level) {
         MainMenu.level = level;
 
-        play.color = new Color(play.color.r, play.color.g, play.color.b, 1);
-        easy.color = level == 0 ? new Color(easy.color.r, easy.color.g, easy.color.b, 1) : new Color(easy.color.r, easy.color.g, easy.color.b, 0.5f);
-        medium.color = level == 1 ? new Color(medium.color.r, medium.color.g, medium.color.b, 1) : new Color(medium.color.r, medium.color.g, medium.color.b, 0.5f);
-        hard.color = level == 2 ? new Color(hard.color.r, hard.color.g, hard.color.b, 1) : new Color(hard.color.r, hard.color.g, hard.color.b, 0.5f);
+        LevelButtonSelectionColor(level);
 
         if (level == 0)
             difficulty = Difficulty.EASY;
@@ -92,13 +91,25 @@ public class MainMenu : MonoBehaviour {
 
     }
 
+    private void LevelButtonSelectionColor(int level) {
+        play.color = new Color(play.color.r, play.color.g, play.color.b, 1);
+        easy.color = level == 0 ? new Color(easy.color.r, easy.color.g, easy.color.b, 1) : new Color(easy.color.r, easy.color.g, easy.color.b, 0.5f);
+        medium.color = level == 1 ? new Color(medium.color.r, medium.color.g, medium.color.b, 1) : new Color(medium.color.r, medium.color.g, medium.color.b, 0.5f);
+        hard.color = level == 2 ? new Color(hard.color.r, hard.color.g, hard.color.b, 1) : new Color(hard.color.r, hard.color.g, hard.color.b, 0.5f);
+    }
+
     public void OnHatSelected(int hat) {
         MainMenu.hat = hat;
+        buttonColorForHatSelection(hat);
+
+    }
+
+    private void buttonColorForHatSelection(int hat) {
         done.color = new Color(done.color.r, done.color.g, done.color.b, 1);
         white.color = hat == 2 ? new Color(white.color.r, white.color.g, white.color.b, 1) : new Color(white.color.r, white.color.g, white.color.b, 0.5f);
         black.color = hat == 1 ? new Color(black.color.r, black.color.g, black.color.b, 1) : new Color(black.color.r, black.color.g, black.color.b, 0.5f);
-
     }
+
 
     public void StartGamePlay() {
         if (level == -1)
@@ -117,7 +128,8 @@ public class MainMenu : MonoBehaviour {
     public void OnBackSelected() {
         level = -1;
         hat = -1;
-
+        buttonColorForHatSelection(hat);
+        LevelButtonSelectionColor(level);
         levelSelectionPanel.GetComponent<Displaceable>().isValid = false;
         hatSelectionPanel.GetComponent<Displaceable>().isValid = false;
     }
