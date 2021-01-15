@@ -43,9 +43,17 @@ public class BlackHatNPC : MonoBehaviour {
             Dictionary<string, float> tp = Shared.inst.gameMetrics.target_probabilities;
 
             for (int i = 0; i < values.Length; i++) {
-                tp.Add(targets[i], values[i]);
+                if (!tp.ContainsKey(targets[i]))
+                    tp.Add(targets[i], values[i]);
+                else
+                    tp[targets[i]] = values[i];
             }
         }
+    }
+
+    public void OnBetweenWaves() {
+        if (MainMenu.hat == SharedPlayer.WHITEHAT)
+            setBlackhatNPCvalues();
     }
 
     void Update() {

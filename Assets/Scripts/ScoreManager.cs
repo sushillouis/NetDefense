@@ -180,7 +180,9 @@ public class ScoreManager : MonoBehaviour {
     }
 
     public void OnEnteredBetweenWavesState() {
-
+        WhiteHatNPC.inst.OnBetweenWaves();
+        BlackHatNPC.inst.OnBetweenWaves();
+        DismissableScreenManager.inst.mainContent.isValid = true;
     }
 
     public void CalculateEndGameStats() {

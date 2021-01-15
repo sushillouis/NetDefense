@@ -16,7 +16,11 @@ public class WhiteHatNPC : MonoBehaviour {
     public float startTime;
     public float optimizeRouterFilterRate; // in seconds
 
-    public int unupgradableRouterCount;
+    public int initialSpawnCount;
+    public int routerSpawnTokens;
+    public int endOfWaveAward;
+
+    public bool canSpend;
 
     private void Awake() {
         inst = this;
@@ -31,7 +35,7 @@ public class WhiteHatNPC : MonoBehaviour {
 
         routers = new List<GameObject>();
         activeIndices = new List<int>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < initialSpawnCount; i++) {
             int number = Random.Range(0, routerSpawns.Length);
             if (!activeIndices.Contains(number)) {
                 activeIndices.Add(number);
@@ -58,26 +62,35 @@ public class WhiteHatNPC : MonoBehaviour {
     }
 
     public void OnOptimzeRouters() {
+        UpdateRouters();
+        SpawnRouters();
+    }
+
+    private void SpawnRouters() {
+        // trade tokens for routers if we have tokens
+        if (routerSpawnTokens > 0 && canSpend)
+            for (int j = 0; j < hasSpawnedAtIndex.Length; j++) {
+                if (!hasSpawnedAtIndex[j]) {
+                    hasSpawnedAtIndex[j] = true;
+                    Router router = Instantiate(Router, routerSpawns[j].transform.position, routerSpawns[j].transform.rotation).GetComponent<Router>();
+                    routers.Add(router.gameObject);
+                    router.SetColor(Random.Range(0, 3));
+                    router.SetShape(Random.Range(0, 3));
+                    router.SetSize(Random.Range(0, 3));
+                    routerSpawnTokens--; // take token when spawned
+                    canSpend = false;
+                    break;
+                }
+            }
+    }
+
+    private void UpdateRouters() {
         for (int i = 0; i < routers.Count; i++) {
             Router r = routers[i].GetComponent<Router>();
             if (r.updatesRemaining < 1) {
                 routers.RemoveAt(i);
                 i--;
-                unupgradableRouterCount++;
-
-                if (unupgradableRouterCount > 0)
-                    for (int j = 0; j < hasSpawnedAtIndex.Length; j++) {
-                        if (!hasSpawnedAtIndex[j]) {
-                            hasSpawnedAtIndex[j] = true;
-                            Router router = Instantiate(Router, routerSpawns[j].transform.position, routerSpawns[j].transform.rotation).GetComponent<Router>();
-                            routers.Add(router.gameObject);
-                            router.SetColor(Random.Range(0, 3));
-                            router.SetShape(Random.Range(0, 3));
-                            router.SetSize(Random.Range(0, 3));
-                            unupgradableRouterCount--;
-                            break;
-                        }
-                    }
+                routerSpawnTokens++; // give a token when we have a useless router
             } else {
                 // we can update router settings
 
@@ -105,7 +118,6 @@ public class WhiteHatNPC : MonoBehaviour {
         }
     }
 
-
     void Update() {
         if (Game_Manager.inst.isBetweenWaves)
             return;
@@ -114,9 +126,17 @@ public class WhiteHatNPC : MonoBehaviour {
 
         if (elapsed > optimizeRouterFilterRate) {
             OnOptimzeRouters();
+            canSpend = true;
             startTime = Time.time;
         }
     }
 
+    public void OnBetweenWaves() {
+        if (MainMenu.hat == SharedPlayer.WHITEHAT)
+            return;
+
+        if (routerSpawnTokens == 0)
+            routerSpawnTokens += endOfWaveAward; // award a token at the end of a wave
+    }
 
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class OnReadyUpController : MonoBehaviour
 {
+    public Text startWaveText;
     public Text readyUpPlayersValueText;
 
     public void OnReadyUp() {
@@ -13,6 +14,7 @@ public class OnReadyUpController : MonoBehaviour
     }
 
     public void Update() {
-        readyUpPlayersValueText.text = Shared.inst.getPlayersReady() + "/" + Shared.inst.players.Count; 
+        startWaveText.text = "Start Wave " + (Game_Manager.inst.currentWave+1);
+        readyUpPlayersValueText.text = "Players Ready: " + Shared.inst.getPlayersReady() + "/" + Shared.inst.players.Count; 
     }
 }

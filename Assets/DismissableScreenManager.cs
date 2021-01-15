@@ -34,6 +34,11 @@ public class DismissableScreenManager : MonoBehaviour {
         }
     }
 
+    public void DismissScreen() {
+        mainContent.isValid = false;
+
+    }
+
 
     public void DisableContents() {
         foreach (Displaceable d in contents) {

@@ -113,7 +113,7 @@ public class PacketPoolManager : NetworkBehaviour {
             target = "CENTRE";
         }
 
-        Debug.Log(target + " p1=" + p1 + ", p2=" + p2 + ", p3=" + p3);
+      //  Debug.Log(target + " p1=" + p1 + ", p2=" + p2 + ", p3=" + p3);
 
         return target;
     }
