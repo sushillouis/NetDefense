@@ -191,6 +191,11 @@ public class Shared : MonoBehaviour {
         Destroy(inst);
         Destroy(LobbyMenuManager.inst);
 
+        foreach (BarchartManager barchats in BarchartManager.insts)
+            Destroy(barchats);
+        BarchartManager.insts.Clear();
+        Destroy(DismissableScreenManager.inst);
+
         // possilby redundant and wet code
         if (NetworkManager.singleton != null) {
 

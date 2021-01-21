@@ -16,6 +16,9 @@ public class BlackHatNPC : MonoBehaviour {
 
     private void Awake() {
         inst = this;
+        if ((MainMenu.hat == SharedPlayer.BLACKHAT && !MainMenu.isMultiplayerSelectedFromMenu) || MainMenu.isMultiplayerSelectedFromMenu) {
+            Destroy(this);
+        }
     }
 
     public void setBlackhatNPCvalues() {

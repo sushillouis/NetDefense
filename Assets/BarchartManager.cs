@@ -165,12 +165,12 @@ public class BarchartManager : MonoBehaviour {
         x++;
         GameObject bar = new GameObject("bar");
         bar.transform.SetParent(container, false);
+        bar.transform.SetAsFirstSibling();
         bar.AddComponent<FloatValueList>().values.Add(value);
         bar.GetComponent<FloatValueList>().values.Add(value);
         bar.AddComponent<StringValueList>().values.Add(label);
         bar.AddComponent<Image>();
         bar.GetComponent<Image>().color = barColor;
-        bar.transform.SetAsFirstSibling();
 
         Button button = bar.AddComponent<Button>();
 

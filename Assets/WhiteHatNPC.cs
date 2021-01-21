@@ -26,6 +26,10 @@ public class WhiteHatNPC : MonoBehaviour {
         inst = this;
         startTime = Time.time;
         hasSpawnedAtIndex = new bool[routerSpawns.Length];
+
+        if((MainMenu.hat == SharedPlayer.WHITEHAT && !MainMenu.isMultiplayerSelectedFromMenu) || MainMenu.isMultiplayerSelectedFromMenu) {
+            Destroy(this);
+        }
     }
 
     public void OnUsingWhiteAtNPC() {
