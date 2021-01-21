@@ -10,7 +10,7 @@ public class OnReadyUpController : MonoBehaviour
 
     public void OnReadyUp() {
         Shared.inst.setPlayerToReady(SharedPlayer.playerIdForThisDevice);
-
+        AutoHelpScreenBlackhatManager.inst.OnReady();
     }
 
     public void Update() {
