@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MultiStateGameplay.unity
     guid: 7b58cfd0cfbf697428cb90a5029a7b6c
+  - enabled: 1
+    path: Assets/Scenes/BriefingMenu.unity
+    guid: 60286a8655550414981bcaa40ce295a4
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000

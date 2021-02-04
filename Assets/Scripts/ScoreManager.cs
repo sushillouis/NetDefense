@@ -139,7 +139,7 @@ public class ScoreManager : MonoBehaviour {
 
     public void Update() {
 
-        if (Game_Manager.inst.isBetweenWaves)
+        if (Game_Manager.inst.isBetweenWaves || Shared.inst.gameState.currentState == SharedGameStates.OVER)
             return;
 
         friendly_spawn_probability = 1 - PacketPoolManager.inst.badSpawnProbability;

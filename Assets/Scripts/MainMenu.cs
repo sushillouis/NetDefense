@@ -137,4 +137,8 @@ public class MainMenu : MonoBehaviour {
     public void OnQuitSelected() {
         Application.Quit();
     }
+
+    public void OnBriefingSelected() {
+        SceneManager.LoadScene("BriefingMenu");
+    }
 }
