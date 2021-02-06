@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PathPiece : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class PathPiece : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name.EndsWith("Tutorial"))
+            return;
+
         controller = GameObject.Find("CursorController").GetComponent<CursorController>();
         scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager_OLD>();
     }

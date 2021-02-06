@@ -19,6 +19,7 @@ public class MainMenu : MonoBehaviour {
 
     public GameObject levelSelectionPanel;
     public GameObject hatSelectionPanel;
+    public GameObject tutorialSelectionPanel;
 
     public GameObject[] environmentUnits;
 
@@ -32,8 +33,10 @@ public class MainMenu : MonoBehaviour {
     public Image white;
     public Image black;
     public Image done;
+    public Image tut1, tut2, tut3, startTut;
 
     public static int level = -1;
+    public static int tutorial = -1;
     public static int hat = SharedPlayer.BLACKHAT;
 
 
@@ -41,6 +44,7 @@ public class MainMenu : MonoBehaviour {
     void Start() {
         level = -1;
         hat = -1;
+        tutorial = -1;
         buttonColorForHatSelection(hat);
         LevelButtonSelectionColor(level);
         if (GameObject.FindGameObjectsWithTag("Music").Length == 2) {
@@ -132,6 +136,8 @@ public class MainMenu : MonoBehaviour {
         LevelButtonSelectionColor(level);
         levelSelectionPanel.GetComponent<Displaceable>().isValid = false;
         hatSelectionPanel.GetComponent<Displaceable>().isValid = false;
+        tutorialSelectionPanel.GetComponent<Displaceable>().isValid = false;
+
     }
 
     public void OnQuitSelected() {
@@ -140,5 +146,38 @@ public class MainMenu : MonoBehaviour {
 
     public void OnBriefingSelected() {
         SceneManager.LoadScene("BriefingMenu");
+    }
+
+    public void OnTutorialButtonSelected() {
+        tutorialSelectionPanel.GetComponent<Displaceable>().isValid = true;
+    }
+
+    public void OnTutorialSelected(int option) {
+        tutorial = option;
+        startTut.color = new Color(startTut.color.r, startTut.color.g, startTut.color.b, 1);
+        tut1.color = option == 0 ? new Color(tut1.color.r, tut1.color.g, tut1.color.b, 1) : new Color(tut1.color.r, tut1.color.g, tut1.color.b, 0.5f);
+        tut2.color = option == 1 ? new Color(tut2.color.r, tut2.color.g, tut2.color.b, 1) : new Color(tut2.color.r, tut2.color.g, tut2.color.b, 0.5f);
+        tut3.color = option == 2 ? new Color(tut3.color.r, tut3.color.g, tut3.color.b, 1) : new Color(tut3.color.r, tut3.color.g, tut3.color.b, 0.5f);
+
+    }
+
+    public void OnPlayTutorial() {
+        if (tutorial == -1)
+            return;
+
+
+        if(tutorial == 0) {
+            SceneManager.LoadScene("OverviewTutorial");
+
+        }
+
+        if (tutorial == 1) {
+            SceneManager.LoadScene("BlackhatTutorial");
+
+        }
+        if (tutorial == 2) {
+            SceneManager.LoadScene("WhitehatTutorial");
+
+        }
     }
 }
