@@ -43,6 +43,8 @@ public class MainMenu : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         OnBackSelected();
+        Debug.Log("HAT " + hat);
+        Debug.Log("level " + level);
         if (GameObject.FindGameObjectsWithTag("Music").Length == 2) {
             Destroy(GameObject.FindGameObjectsWithTag("Music")[0]);
         }
@@ -111,22 +113,23 @@ public class MainMenu : MonoBehaviour {
     }
 
 
-    public void StartGamePlay() {
-        if(level != -1 && hat == -1) {
+    public void StartGamePlay(int mode) {
+        if (mode == 1 && hat == -1) {
             hat = 2;
         }
 
-        if (level == -1) {
+        if (mode == 0 && level == -1) {
             level = 0;
         }
 
-        if (!isMultiplayerSelectedFromMenu && hat == -1) {
+        if (!isMultiplayerSelectedFromMenu && mode == 0) {
             levelSelectionPanel.GetComponent<Displaceable>().isValid = false;
             hatSelectionPanel.GetComponent<Displaceable>().isValid = true;
             return;
         }
 
-        SceneManager.LoadScene("MultiStateGameplay");
+        if (mode == 1)
+            SceneManager.LoadScene("MultiStateGameplay");
 
     }
 
@@ -169,7 +172,7 @@ public class MainMenu : MonoBehaviour {
             return;
 
 
-        if(tutorial == 0) {
+        if (tutorial == 0) {
             SceneManager.LoadScene("OverviewTutorial");
 
         }
