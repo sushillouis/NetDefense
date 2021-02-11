@@ -18,7 +18,7 @@ public class DismissableScreenManager : MonoBehaviour {
 
 
     void Start() {
-        OnTabPressed(0);
+        OnTabPressed(2);
     }
 
     // Update is called once per frame

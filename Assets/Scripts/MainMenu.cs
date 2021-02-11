@@ -42,11 +42,12 @@ public class MainMenu : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        level = -1;
-        hat = -1;
-        tutorial = -1;
+        level = 0;
+        hat = 0;
+        tutorial = 0;
         buttonColorForHatSelection(hat);
         LevelButtonSelectionColor(level);
+        OnTutorialSelected(tutorial);
         if (GameObject.FindGameObjectsWithTag("Music").Length == 2) {
             Destroy(GameObject.FindGameObjectsWithTag("Music")[0]);
         }
