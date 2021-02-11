@@ -42,12 +42,7 @@ public class MainMenu : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        level = 0;
-        hat = 0;
-        tutorial = 0;
-        buttonColorForHatSelection(hat);
-        LevelButtonSelectionColor(level);
-        OnTutorialSelected(tutorial);
+        OnBackSelected();
         if (GameObject.FindGameObjectsWithTag("Music").Length == 2) {
             Destroy(GameObject.FindGameObjectsWithTag("Music")[0]);
         }
@@ -117,8 +112,13 @@ public class MainMenu : MonoBehaviour {
 
 
     public void StartGamePlay() {
-        if (level == -1)
-            return;
+        if(level != -1 && hat == -1) {
+            hat = 2;
+        }
+
+        if (level == -1) {
+            level = 0;
+        }
 
         if (!isMultiplayerSelectedFromMenu && hat == -1) {
             levelSelectionPanel.GetComponent<Displaceable>().isValid = false;
@@ -133,8 +133,10 @@ public class MainMenu : MonoBehaviour {
     public void OnBackSelected() {
         level = -1;
         hat = -1;
-        buttonColorForHatSelection(hat);
-        LevelButtonSelectionColor(level);
+        tutorial = -1;
+        buttonColorForHatSelection(2);
+        LevelButtonSelectionColor(0);
+        OnTutorialSelected(0);
         levelSelectionPanel.GetComponent<Displaceable>().isValid = false;
         hatSelectionPanel.GetComponent<Displaceable>().isValid = false;
         tutorialSelectionPanel.GetComponent<Displaceable>().isValid = false;
