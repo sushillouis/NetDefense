@@ -56,7 +56,7 @@ public class Game_Manager : MonoBehaviour {
 
     public int maxWaves;
     public int currentWave;
-    public bool isBetweenWaves; 
+    public bool isBetweenWaves;
 
 
     public void Awake() {
@@ -64,6 +64,11 @@ public class Game_Manager : MonoBehaviour {
     }
 
     void Start() {
+        // add keys to dictonary for targgeting
+        foreach (Destination d in destinations) {
+            Shared.inst.gameMetrics.target_probabilities.Add(d.inst_id, 0);
+        }
+
         lastSpawn = Time.time;
         start_graph_update_time = Time.time;
 
@@ -71,6 +76,7 @@ public class Game_Manager : MonoBehaviour {
         inst = this;
         whiteHatUI = UI.transform.GetChild(0).gameObject;
         blackHatUI = UI.transform.GetChild(1).gameObject;
+        BlackHatMenu.inst.nextWaveButton.GetComponent<ButtonSelectionEffect>().isOn = true;
 
 
 
@@ -179,7 +185,7 @@ public class Game_Manager : MonoBehaviour {
 
         if (poolHasSpawned && PacketPoolManager.inst.getAlivePackets() == 0) {
 
-            
+
             if (currentWave > maxWaves - 1) {
                 // game over
                 if (!MainMenu.isMultiplayerSelectedFromMenu)
@@ -187,16 +193,16 @@ public class Game_Manager : MonoBehaviour {
                 else if (EntityManager.inst.isServer)
                     Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_NETWORK_STATE, ((int)(Shared.inst.gameState.currentState = SharedGameStates.OVER)) + ""));
             } else {
-
                 // next wave
                 isBetweenWaves = true;
+                BlackHatMenu.inst.nextWaveButton.GetComponent<ButtonSelectionEffect>().isOn = true;
                 currentWave++;
                 ScoreManager.inst.OnEnteredBetweenWavesState();
                 Shared.inst.unReadyPlayers();
                 poolHasSpawned = false;
                 PacketPoolManager.inst.Reset();
             }
-            
+
         }
 
     }

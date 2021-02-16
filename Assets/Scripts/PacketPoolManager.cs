@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-
-
-
+using UnityEngine.SceneManagement;
 
 public enum POPULATE_POOL_ERROR_CODES {
     SUCCESS,
@@ -66,10 +64,10 @@ public class PacketPoolManager : NetworkBehaviour {
                                 return POPULATE_POOL_ERROR_CODES.MIX_MATCH_EXCEPTION;
                             }
 
-                            
 
-                            // TODO GENERALIZE FOR n TARGETS
-                            target = getTarget();
+
+                            // TODO TEST for GENERALIZE FOR n TARGETS
+                            target = SceneManager.GetActiveScene().name.EndsWith("Tutorial") ? getTargetGeneralizable() : getTarget();
 
                             continue;
                         }
@@ -118,6 +116,20 @@ public class PacketPoolManager : NetworkBehaviour {
         return target;
     }
 
+    public string getTargetGeneralizable() {
+
+        float probability = Random.value;
+
+        float p = 0;
+        foreach(string key in Shared.inst.gameMetrics.target_probabilities.Keys) {
+            p += Shared.inst.gameMetrics.target_probabilities[key];
+            if (probability <= p)
+                return key;
+        }
+
+        return null;
+    }
+
 
     public void OnBlackhatUpdateStrategy() {
         foreach (GameObject pac in GameObject.FindGameObjectsWithTag("Packet")) {
@@ -128,7 +140,7 @@ public class PacketPoolManager : NetworkBehaviour {
 
             //bool malic = Shared.inst.isBadPacket(sec.color, sec.shape, sec.size);
             //sec.malicious = malic;
-            sec.destination = sec.malicious ? Destination.getDestinationByID(getTarget()) : Destination.getDestinationByID(packet_destinations[Random.Range(0, packet_destinations.Length)]);
+            sec.destination = sec.malicious ? Destination.getDestinationByID(SceneManager.GetActiveScene().name.EndsWith("Tutorial") ? getTargetGeneralizable() : getTarget()) : Destination.getDestinationByID(packet_destinations[Random.Range(0, packet_destinations.Length)]);
             int index = Random.Range(0, sec.destination.paths.Count);
             sec.path = sec.destination.paths[index];
             sec.SetSpawnRotandPos();

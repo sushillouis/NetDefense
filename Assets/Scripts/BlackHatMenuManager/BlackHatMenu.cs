@@ -52,7 +52,12 @@ public class BlackHatMenu : MonoBehaviour
     public int max_updates_remaining;
     public int updates_remaining;
 
+    public GameObject nextWaveButton;
+    public static BlackHatMenu inst;
 
+    private void Awake() {
+        inst = this;
+    }
 
     void Start() {
         Construct();
@@ -193,10 +198,46 @@ public class BlackHatMenu : MonoBehaviour
 
     }
 
+    public void updateTargetPercentagesTutorial() {
+        if (updates_remaining > 0) {
+            updates_remaining--;
+            updatesRemainingValue.text = updates_remaining + "";
+
+            targettingStartTime = Time.time;
+
+            float percentage = s1.value + s2.value;
+
+            if (percentage == 0)
+                percentage = 1;
+
+            t1 = s1.value / percentage;
+            t2 = s2.value / percentage;
+
+
+            if (MainMenu.isMultiplayerSelectedFromMenu) {
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "TOP" + "," + t1));
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "BOTTOM" + "," + t2));
+            } else {
+                Shared.inst.gameMetrics.target_probabilities["TOP"] = t1;
+                Shared.inst.gameMetrics.target_probabilities["BOTTOM"] = t2;
+                PacketPoolManager.inst.OnBlackhatUpdateStrategy();
+
+            }
+            targettingCoolDownButton.enabled = false;
+            AutoHelpScreenBlackhatManager.inst.OnConfirmedTarget();
+
+            //       text.text = trgt(1, t1) + "\n" + trgt(2, t2) + "\n" + trgt(3, t3);
+        }
+
+
+    }
+
 
     void Update()
     {
         handleGUIpositionsOnStateChanged();
+
+
 
         targetting_elapsed = Time.time - targettingStartTime;
 
