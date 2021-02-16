@@ -6859,6 +6859,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1340330814}
     m_Modifications:
+    - target: {fileID: 4944083109078952076, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944083109078952076, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944083109078952076, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944083109078952076, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1995883442}
+    - target: {fileID: 4944083109078952076, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnTurnOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944083109078952076, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4944083109461934172, guid: bf774995a0f871643a32e5fdb486e1b6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6968,6 +6998,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ReadyUpPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944083110288399261, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944083110288399261, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944083110288399261, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -19.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf774995a0f871643a32e5fdb486e1b6, type: 3}
@@ -19272,6 +19317,7 @@ MonoBehaviour:
   updatesRemainingValue: {fileID: 513510927}
   max_updates_remaining: 5
   updates_remaining: 0
+  nextWaveButton: {fileID: 1995883438}
 --- !u!1 &1096211191
 GameObject:
   m_ObjectHideFlags: 0
@@ -21293,7 +21339,7 @@ MonoBehaviour:
   - {fileID: 1555013570}
   tutorialUI: {fileID: 1438975731}
   activeIndex: 0
-  targettingButton: {fileID: 0}
+  targettingButton: {fileID: 1352874275}
 --- !u!4 &1248027359
 Transform:
   m_ObjectHideFlags: 0
@@ -24343,6 +24389,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1090462070}
         m_MethodName: OnTargetButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1352874280}
+        m_MethodName: OnTurnOff
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -35472,6 +35529,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992616343}
   m_CullTransparentMesh: 0
+--- !u!1 &1995883438 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4944083109461934173, guid: bf774995a0f871643a32e5fdb486e1b6,
+    type: 3}
+  m_PrefabInstance: {fileID: 406487726}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1995883442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995883438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb46694392ad9b2429a8e6bbc843b774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOn: 0
+  maxScale: 1.1
+  period: 2
+  sizeDelta: {x: 0, y: 0}
+  isTextOn: 0
+  text: {fileID: 0}
+  fontSize: 0
 --- !u!1 &2005917009
 GameObject:
   m_ObjectHideFlags: 0

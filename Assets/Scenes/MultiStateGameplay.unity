@@ -7755,6 +7755,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: ReadyUpPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 4944083110288399261, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944083110288399261, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944083110288399261, guid: bf774995a0f871643a32e5fdb486e1b6,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -19.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf774995a0f871643a32e5fdb486e1b6, type: 3}
 --- !u!224 &406487727 stripped
@@ -7763,6 +7778,31 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 406487726}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &406487728 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4944083109461934173, guid: bf774995a0f871643a32e5fdb486e1b6,
+    type: 3}
+  m_PrefabInstance: {fileID: 406487726}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &406487729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406487728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb46694392ad9b2429a8e6bbc843b774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOn: 0
+  maxScale: 1.1
+  period: 1
+  sizeDelta: {x: 0, y: 0}
+  isTextOn: 0
+  text: {fileID: 0}
+  fontSize: 0
 --- !u!1 &407007978
 GameObject:
   m_ObjectHideFlags: 0
@@ -21421,6 +21461,7 @@ MonoBehaviour:
   updatesRemainingValue: {fileID: 513510927}
   max_updates_remaining: 5
   updates_remaining: 0
+  nextWaveButton: {fileID: 406487728}
 --- !u!1 &1096211191
 GameObject:
   m_ObjectHideFlags: 0

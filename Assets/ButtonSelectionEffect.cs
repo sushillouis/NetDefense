@@ -16,7 +16,8 @@ public class ButtonSelectionEffect : MonoBehaviour {
 
     private void Start() {
         sizeDelta = GetComponent<RectTransform>().sizeDelta;
-        fontSize = text.font.fontSize;
+        if (isTextOn)
+            fontSize = text.font.fontSize;
     }
     void Update() {
         if (isOn) {
@@ -35,7 +36,8 @@ public class ButtonSelectionEffect : MonoBehaviour {
     public void OnTurnOff() {
         isOn = false;
         GetComponent<RectTransform>().sizeDelta = sizeDelta;
-        if (fontSize != 0)
+        if (isTextOn)
             text.fontSize = fontSize;
+        isTextOn = false;
     }
 }

@@ -120,6 +120,7 @@ public class MainMenu : MonoBehaviour {
 
         if (mode == 0 && level == -1) {
             level = 0;
+            hat = -1;
         }
 
         if (!isMultiplayerSelectedFromMenu && mode == 0) {
