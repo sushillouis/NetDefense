@@ -179,6 +179,7 @@ public class MainMenu : MonoBehaviour {
         }
 
         if (tutorial == 1) {
+            hat = 1;
             SceneManager.LoadScene("BlackhatTutorial");
 
         }
