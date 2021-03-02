@@ -133,6 +133,9 @@ public class Router : MonoBehaviour {
         name = "Router " + count++;
         // hud.hide();
         selectedRing.SetActive(false);
+        Game_Manager.inst.routersPlaceable--;
+        WhiteHatMenu.inst.OnRouterPlaced();
+        
     }
     //Checks for click anywhere else to control deselection
     void Update() {

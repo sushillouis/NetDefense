@@ -183,6 +183,7 @@ public class ScoreManager : MonoBehaviour {
         WhiteHatNPC.inst.OnBetweenWaves();
         BlackHatNPC.inst.OnBetweenWaves();
         DismissableScreenManager.inst.mainContent.isValid = true;
+
     }
 
     public void CalculateEndGameStats() {
@@ -249,7 +250,6 @@ public class ScoreManager : MonoBehaviour {
         score_black.text = (int)Shared.inst.gameMetrics.blackhat_score + "";
         score_white.text = (int)Shared.inst.gameMetrics.whitehat_score + "";
 
-        WhiteHatMenu.inst.OnBlackHatStatusChanged();
 
         if (!MainMenu.isMultiplayerSelectedFromMenu) {
             Shared.inst.gameMetrics.whitehat_score = (int)white_score;

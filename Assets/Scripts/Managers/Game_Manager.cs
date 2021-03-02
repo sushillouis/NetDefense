@@ -58,6 +58,8 @@ public class Game_Manager : MonoBehaviour {
     public int currentWave;
     public bool isBetweenWaves;
 
+    public int routersPlaceable;
+
 
     public void Awake() {
         inst = this;
@@ -77,6 +79,7 @@ public class Game_Manager : MonoBehaviour {
         whiteHatUI = UI.transform.GetChild(0).gameObject;
         blackHatUI = UI.transform.GetChild(1).gameObject;
         BlackHatMenu.inst.nextWaveButton.GetComponent<ButtonSelectionEffect>().isOn = true;
+        WhiteHatMenu.inst.startButton.isOn = true;
 
 
 

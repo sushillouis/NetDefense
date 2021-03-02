@@ -3,30 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WhiteHatMenu : MonoBehaviour
-{
+public class WhiteHatMenu : MonoBehaviour {
 
 
     public Text cash_value_text;
     public Text sell_router_text;
 
-    public Text black_hat_status;
+    public Text black_hat_status; // this is the string for routers placable
     public Text endgame_timer;
 
     public GameObject honeyPotButton;
 
     public static WhiteHatMenu inst;
 
+    public GameObject hidePanel;
+
+    public Button GetButton;
+
+    public ButtonSelectionEffect startButton;
+
     public void Awake() {
         inst = this;
     }
 
     private void Start() {
+
         honeyPotButton.SetActive(MainMenu.difficulty == Difficulty.HARD);
+        OnRouterPlaced();
     }
 
-    public void OnBlackHatStatusChanged() {
-        black_hat_status.text = Shared.inst.gameMetrics.blackhat_score + "";
+    public void OnRouterPlaced() {
+        black_hat_status.text = Game_Manager.inst.routersPlaceable + "";
+        hidePanel.SetActive(Game_Manager.inst.routersPlaceable < 1);
+        GetButton.interactable = !hidePanel.activeSelf;
     }
 
     public void OnTimerChange(int seconds) {
@@ -44,7 +53,7 @@ public class WhiteHatMenu : MonoBehaviour
     }
 
     public void OnGetHoneyPotSelected() {
-        foreach(Destination d in Destination.destinations) {
+        foreach (Destination d in Destination.destinations) {
             d.isReadyTobeHoneypot = true;
             d.updateSelection();
         }
