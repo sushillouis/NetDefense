@@ -11,6 +11,7 @@ public class WhiteHatMenu : MonoBehaviour {
 
     public Text black_hat_status; // this is the string for routers placable
     public Text endgame_timer;
+    public Text endgame_timer_lbl;
 
     public GameObject honeyPotButton;
 
@@ -39,7 +40,9 @@ public class WhiteHatMenu : MonoBehaviour {
     }
 
     public void OnTimerChange(int seconds) {
-        endgame_timer.text = seconds + "";
+        endgame_timer.text = (seconds == 0 ? "" : seconds + "");
+
+        endgame_timer_lbl.text = seconds == 0 ? "Waiting..." : "Ends in";
     }
 
 

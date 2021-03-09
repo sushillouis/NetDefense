@@ -17,6 +17,18 @@ public class RouterManager : MonoBehaviour {
     public Toggle[] ShapeSelections;
     public Toggle[] SizeSelections;
 
+    public Button updateBtn;
+    public GameObject DisablePanel;
+    public int color;
+    public int shape;
+    public int size;
+
+    public static RouterManager inst;
+
+    private void Awake() {
+        inst = this;
+    }
+
     public Router Selected {
         get {
             return selected;
@@ -54,9 +66,18 @@ public class RouterManager : MonoBehaviour {
         int size = selected.size;
 
 
-        ColorSelections[color].isOn = true;
-        ShapeSelections[shape].isOn = true;
-        SizeSelections[size].isOn = true;
+        ColorSelections[color].isOn = selected.HasUpdated();
+        ShapeSelections[shape].isOn = selected.HasUpdated();
+        SizeSelections[size].isOn = selected.HasUpdated();
+
+        if(!selected.HasUpdated()) {
+            for(int i = 0; i < 3; i++) {
+                ColorSelections[i].isOn = ShapeSelections[i].isOn = SizeSelections[i].isOn = false;
+            }
+        }
+
+        DisablePanel.SetActive(selected.updatesRemaining == 0);
+        updateBtn.interactable = selected.updatesRemaining != 0;
     }
 
     void Start() {
@@ -64,24 +85,31 @@ public class RouterManager : MonoBehaviour {
     }
 
     public void SetColor(int color) {
-        if (selected.updatesRemaining > 0) {
-            selected.SetColor(color);
-            updatesRemainingText.text = "Updates " + selected.updatesRemaining;
-        }
+        this.color = color;
     }
 
     public void SetShape(int shape) {
-        if (selected.updatesRemaining > 0) {
-            selected.SetShape(shape);
-            updatesRemainingText.text = "Updates " + selected.updatesRemaining;
-        }
+        this.shape = shape;
     }
 
     public void SetSize(int size) {
+        this.size = size;
+    }
+
+    public void OnUpdateRouterSelected() {
+        if (selected.color == color && selected.size == size && selected.shape == shape)
+            return;
+
         if (selected.updatesRemaining > 0) {
             selected.SetSize(size);
+            selected.SetShape(shape);
+            selected.SetColor(color);
+            selected.updatesRemaining--;
             updatesRemainingText.text = "Updates " + selected.updatesRemaining;
         }
+
+        DisablePanel.SetActive(selected.updatesRemaining == 0);
+        updateBtn.interactable = selected.updatesRemaining != 0;
     }
 
     public void Sell() {

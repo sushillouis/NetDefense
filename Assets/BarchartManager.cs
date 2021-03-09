@@ -203,7 +203,7 @@ public class BarchartManager : MonoBehaviour {
         char size = label[1];
         char shape = label[2];
 
-        string name = (color == '0' ? "Pink" : color == '1' ? "Green" : "Blue") + " " + (size == '0' ? "Small" : size == '1' ? "Medium" : "Large") + " " + (shape == '0' ? "Cube" : shape == '1' ? "Cone" : "Sphere");
+        string name = (size == '0' ? "Small" : size == '1' ? "Medium" : "Large") + " " +  (color == '0' ? "Pink" : color == '1' ? "Green" : "Blue") + " " + (shape == '0' ? "Cube" : shape == '1' ? "Cone" : "Sphere");
 
         OnBarClickedDialogueManager.OnShowDialogue(label, name, "Frequency " + (int)value);
     }

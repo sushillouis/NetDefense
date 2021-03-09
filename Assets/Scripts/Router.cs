@@ -7,20 +7,22 @@ using UnityEngine.EventSystems;
 public class Router : MonoBehaviour {
 
     public int cost = 0;                               //The cost to the player to place a router
-    public int updatesRemaining = 6;
+    public int updatesRemaining = 2;
+    public bool hasUpdated;
+    private int initUpdates;
     public Material highlightedColor;                   //The material for the router beams when highlighted
     public Material nonHighlightedColor;                //The material for the router beams when not highlighted
     public Material[] gateMaterials;                    //Gate materials corresponding to all possible packet colors
 
-    public int lastColor=-1;
-    public int color { 
+    public int lastColor = -1;
+    public int color {
         set {
             //Debug.Log("-------------------------");
 
             //Debug.Log(" updatesRemaining before: " + updatesRemaining);
 
             if (value != lastColor) {
-                updatesRemaining--;
+                // updatesRemaining--;
             }
             //Debug.Log(" lastColor: " + lastColor + ", " + value);
             lastColor = value;
@@ -34,11 +36,11 @@ public class Router : MonoBehaviour {
     }                 //The crurent color setting of the router
     public bool colorSet = false;     //True if the color setting has been assigned
 
-    public int lastShape=-1;
+    public int lastShape = -1;
     public int shape {
         set {
-            if(value != lastShape) {
-                updatesRemaining--;
+            if (value != lastShape) {
+                //  updatesRemaining--;
             }
             lastShape = value;
         }
@@ -51,12 +53,12 @@ public class Router : MonoBehaviour {
     public int size {
         set {//The current size setting of the router
             if (value != lastSize) {
-                updatesRemaining--;
+                //   updatesRemaining--;
             }
             lastSize = value;
         }
 
-        get { return lastSize == -1 ? 0 : lastSize ; }
+        get { return lastSize == -1 ? 0 : lastSize; }
     }
 
 
@@ -129,13 +131,14 @@ public class Router : MonoBehaviour {
 
     private static int count = 1;
     private void Start() {
+        initUpdates = updatesRemaining;
         // hud = GetComponent<DynamicHud>();
         name = "Router " + count++;
         // hud.hide();
         selectedRing.SetActive(false);
         Game_Manager.inst.routersPlaceable--;
         WhiteHatMenu.inst.OnRouterPlaced();
-        
+
     }
     //Checks for click anywhere else to control deselection
     void Update() {
@@ -148,7 +151,7 @@ public class Router : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)) {
-             //   Debug.Log("Raycasted Router Value: " + hit.transform.gameObject.name);
+                //   Debug.Log("Raycasted Router Value: " + hit.transform.gameObject.name);
                 if (hit.transform.gameObject.name.Equals(name)) {
                     Selected = true;
                 }
@@ -164,6 +167,7 @@ public class Router : MonoBehaviour {
             GetComponent<Renderer>().materials = materials;
             color = newColor;
             colorSet = true;
+            hasUpdated = true;
         }
     }
 
@@ -172,6 +176,7 @@ public class Router : MonoBehaviour {
         if (newShape >= 0 && newShape < 3) {
             shape = newShape;
             shapeSet = true;
+            hasUpdated = true;
         }
     }
 
@@ -180,7 +185,7 @@ public class Router : MonoBehaviour {
         if (newSize >= 0 && newSize < 3) {
             size = newSize;
             sizeSet = true;
-
+            hasUpdated = true;
         }
     }
 
@@ -189,22 +194,8 @@ public class Router : MonoBehaviour {
         manager = GameObject.Find("RouterManager").GetComponent<RouterManager>();
     }
 
-    private void OnTriggerEnter(Collider other) {
-        /*   if(other.tag == "Packet") {
 
-               SimpleEnemyController sec = other.GetComponent<SimpleEnemyController>();
-
-               if ((!colorSet || (color == sec.color)) &&
-                  (!shapeSet || (shape == sec.shape)) &&
-                  (!sizeSet || (size == sec.size)) &&
-                  (colorSet || shapeSet || sizeSet)) {
-                   sec.status = PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN;
-                   if(EntityManager.inst.isMultiplayer && !EntityManager.inst.isServer) {
-                       Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.CHANGE_PACKET_LIFECYCLE_STATUS, sec.id + "," + (int) PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN));
-                   }
-               }
-           }
-
-           Debug.Log("Router Found Collision with " + other.tag);*/
+    public bool HasUpdated() {
+        return hasUpdated;
     }
 }

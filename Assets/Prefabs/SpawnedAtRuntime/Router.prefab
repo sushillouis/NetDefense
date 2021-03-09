@@ -125,19 +125,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 50
+  updatesRemaining: 2
   highlightedColor: {fileID: 2100000, guid: a16009bf19c320149815c56d7e177b41, type: 2}
   nonHighlightedColor: {fileID: 2100000, guid: bf6e4f26b95a0304ea02b68530945831, type: 2}
   gateMaterials:
   - {fileID: 2100000, guid: 70a29f11eed95af47b818a7bff8db149, type: 2}
   - {fileID: 2100000, guid: 8c5d5b54d6b6f6645aefc4514814538c, type: 2}
   - {fileID: 2100000, guid: b9001e840f9b03744ab4cb36178e364e, type: 2}
-  color: 0
+  lastColor: -1
   colorSet: 0
-  shape: 0
+  lastShape: -1
   shapeSet: 0
-  size: 0
+  lastSize: -1
   sizeSet: 0
-  hud: {fileID: 0}
   selectedRing: {fileID: 7934121084676460245}
 --- !u!114 &5780253647713103815
 MonoBehaviour:

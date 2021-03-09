@@ -54,6 +54,8 @@ public class PacketCompletedMetric {
 public class ScoreManager : MonoBehaviour {
     public static ScoreManager inst;
 
+    public int updatesGivenPerWave;
+
     public Text score_black;
     public Text score_white;
 
@@ -135,6 +137,17 @@ public class ScoreManager : MonoBehaviour {
         badPacketsFilteredHistory = new List<KeyValuePair<float, float>>();
 
         timer = Time.time;
+
+
+        if (MainMenu.difficulty == Difficulty.EASY) {
+            updatesGivenPerWave = 2;
+        }
+        if (MainMenu.difficulty == Difficulty.MEDIUM) {
+            updatesGivenPerWave = 1;
+        }
+        if (MainMenu.difficulty == Difficulty.HARD) {
+            updatesGivenPerWave = 1;
+        }
     }
 
     public void Update() {
@@ -183,7 +196,13 @@ public class ScoreManager : MonoBehaviour {
         WhiteHatNPC.inst.OnBetweenWaves();
         BlackHatNPC.inst.OnBetweenWaves();
         DismissableScreenManager.inst.mainContent.isValid = true;
-
+        GameObject[] routers = GameObject.FindGameObjectsWithTag("Router");
+        foreach (GameObject go in routers) {
+            Router r = go.GetComponent<Router>();
+            if (r != null)
+                r.updatesRemaining += updatesGivenPerWave;
+        }
+        RouterManager.inst.settings.SetActive(false);
     }
 
     public void CalculateEndGameStats() {

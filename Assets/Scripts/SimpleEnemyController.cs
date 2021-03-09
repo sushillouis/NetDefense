@@ -8,7 +8,8 @@ public enum PACKET_LIFECYCLE_STATUS {
     UNSPAWNED,
     ENROUTE,
     ROUTER_TAKE_DOWN,
-    ARRIVED_AT_DESTINATION
+    ARRIVED_AT_DESTINATION,
+    ARRIVED_AT_HONEYPOT
 }
 
 public class SimpleEnemyController : NetworkBehaviour {
@@ -133,7 +134,7 @@ public class SimpleEnemyController : NetworkBehaviour {
 
     public void UpdateBadBackProperties() {
         if (malicious && status == PACKET_LIFECYCLE_STATUS.UNSPAWNED) {
-           // bool shouldUpdate = !(Shared.inst.isBadPacket(color, shape, size));
+            // bool shouldUpdate = !(Shared.inst.isBadPacket(color, shape, size));
 
 
             color = Shared.inst.maliciousPacketProperties.color;
@@ -147,7 +148,7 @@ public class SimpleEnemyController : NetworkBehaviour {
     public void GoEnroute() {
 
         //UpdateDynamicHud();
-       
+
 
         if (path != null) {
             Vector3 direction = path.waypoints[waypointIndex].position - path.waypoints[waypointIndex - 1].position;
@@ -186,6 +187,7 @@ public class SimpleEnemyController : NetworkBehaviour {
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Destination") {
 
+
             if (malicious) {
                 ParticleSystem effect = other.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>();
                 effect.Play();
@@ -195,8 +197,9 @@ public class SimpleEnemyController : NetworkBehaviour {
                 ScoreManager.inst.OnFriendlyPacketTransfered(id);
 
             }
+            status = !gameObject.GetComponent<Destination>().isHoneypot ? PACKET_LIFECYCLE_STATUS.ARRIVED_AT_HONEYPOT : PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
 
-            status = PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
+
         }
 
         if (other.gameObject.tag == "Router") {
@@ -204,6 +207,10 @@ public class SimpleEnemyController : NetworkBehaviour {
 
             if (r.color == color && r.shape == shape && r.size == size) {
                 status = PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN;
+                if (malicious) {
+                    Camera.main.transform.GetChild(1).GetComponent<AudioSource>().Play();
+
+                }
                 if (EntityManager.inst.isMultiplayer && !EntityManager.inst.isServer) {
                     Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.CHANGE_PACKET_LIFECYCLE_STATUS, id + "," + (int)PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN));
                 }

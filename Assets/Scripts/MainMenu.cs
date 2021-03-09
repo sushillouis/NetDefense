@@ -37,7 +37,7 @@ public class MainMenu : MonoBehaviour {
 
     public static int level = -1;
     public static int tutorial = -1;
-    public static int hat = SharedPlayer.BLACKHAT;
+    public static int hat = SharedPlayer.WHITEHAT;
 
 
     // Start is called before the first frame update
