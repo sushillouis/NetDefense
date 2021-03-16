@@ -56,11 +56,15 @@ public class MainMenu : MonoBehaviour {
             PlayGameSinglePlayer();
         }
 
-        foreach (GameObject unit in environmentUnits) {
-            unit.transform.position -= new Vector3(0, 0, Time.deltaTime * movementSpeed);
-            if (unit.transform.position.z < -400) {
-                unit.transform.position += new Vector3(0, 0, 1600);
+        try {
+            foreach (GameObject unit in environmentUnits) {
+                unit.transform.position -= new Vector3(0, 0, Time.deltaTime * movementSpeed);
+                if (unit.transform.position.z < -400) {
+                    unit.transform.position += new Vector3(0, 0, 1600);
+                }
             }
+        } catch {
+
         }
     }
 
