@@ -7,6 +7,7 @@ public class ThemeManager : MonoBehaviour
 {
 
     public GameObject[] themes;
+    public Material[] skyboxes;
 
     public GameObject themeUI;
 
@@ -19,10 +20,12 @@ public class ThemeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         for (int i = 0; i < themes.Length; i++) {
             themes[i].SetActive(false);
         }
         themes[index].SetActive(true);
+        RenderSettings.skybox = skyboxes[index];
 
         updateButton.onClick.AddListener(() => { 
             for(int i = 0; i < themes.Length; i++) {
@@ -31,6 +34,7 @@ public class ThemeManager : MonoBehaviour
 
             themes[index = themeDropdown.value].SetActive(true);
             themeUI.SetActive(false);
+            RenderSettings.skybox = skyboxes[index];
         });   
     }
 

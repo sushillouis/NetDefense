@@ -29,7 +29,11 @@ public class NetworkManagerHLAPI : NetworkManager {
         singleton.networkPort = networkValues.port;
         isMultiplayer = mIsMultplayer;
         singleton.StartHost();
-        NetworkDiscoveryManager.inst.StartAsServer();
+        try {
+            NetworkDiscoveryManager.inst.StartAsServer();
+        } catch {
+
+        }
     }
 
     public void LauchClient() {

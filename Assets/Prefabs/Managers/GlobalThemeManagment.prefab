@@ -739,6 +739,9 @@ MonoBehaviour:
   themes:
   - {fileID: 0}
   - {fileID: 0}
+  skyboxes:
+  - {fileID: 2100000, guid: 003f38e9a21026042a40f029188b73d4, type: 2}
+  - {fileID: 2100000, guid: 1b048fd17ce9e0f4f91a711ce3a1d5aa, type: 2}
   themeUI: {fileID: 8127462296591120952}
   themeDropdown: {fileID: 8127462296648111097}
   updateButton: {fileID: 8127462296664527008}

@@ -15,6 +15,10 @@ public class TileGrid : MonoBehaviour
     void OnMouseEnter()
     {
         //Activates if mouse is on grid
+        if (cursor == null)
+            return;
+        if (cursor.GetComponent<CursorController>() == null)
+            return;
         cursor.GetComponent<CursorController>().cursor.SetActive(true);
         cursor.GetComponent<CursorController>().SetDefaultCursor(false);
     }

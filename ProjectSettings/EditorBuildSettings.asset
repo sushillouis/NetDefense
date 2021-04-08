@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BlackhatTutorial.unity
     guid: 82cb97cbde23dd349b443aaf9fe97c43
+  - enabled: 1
+    path: Assets/Scenes/WhitehatTutorial.unity
+    guid: 54e0bde1534e55b4983c280bfbae8f4f
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
