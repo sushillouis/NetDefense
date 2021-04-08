@@ -12,7 +12,7 @@ public class StreamURLAtRuntime : MonoBehaviour
     {
         GetComponent<VideoPlayer>().url = System.IO.Path.Combine(Application.streamingAssetsPath, path);
 
-
+        GetComponent<VideoPlayer>().Play();
     }
 
     // Update is called once per frame
