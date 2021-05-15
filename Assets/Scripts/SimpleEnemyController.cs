@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -110,9 +110,9 @@ public class SimpleEnemyController : NetworkBehaviour {
     }
 
     /**
-     * 
+     *
      * Do transformations through the transformation pipline to go from world space to scaled canvas space
-     * 
+     *
      */
     //private void UpdateDynamicHud() {
 
@@ -187,6 +187,10 @@ public class SimpleEnemyController : NetworkBehaviour {
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Destination") {
 
+			// TODO: Rigerously test solution (it appears to be working on every difficulty)
+        	Destination dest = gameObject.GetComponent<Destination>(); // TODO: Why would objects tagged as destinations not have a destination component attached?
+			if(dest) status = !dest.isHoneypot ? PACKET_LIFECYCLE_STATUS.ARRIVED_AT_HONEYPOT : PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
+			else status = PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
 
             if (malicious) {
                 ParticleSystem effect = other.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>();
@@ -197,9 +201,6 @@ public class SimpleEnemyController : NetworkBehaviour {
                 ScoreManager.inst.OnFriendlyPacketTransfered(id);
 
             }
-            status = !gameObject.GetComponent<Destination>().isHoneypot ? PACKET_LIFECYCLE_STATUS.ARRIVED_AT_HONEYPOT : PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
-
-
         }
 
         if (other.gameObject.tag == "Router") {
