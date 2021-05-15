@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -197,9 +197,10 @@ public class SimpleEnemyController : NetworkBehaviour {
                 effect.Play();
                 Camera.main.transform.GetChild(0).GetComponent<AudioSource>().Play();
                 ScoreManager.inst.OnBadPacketTransfered(id);
+				
+				if(BlackHatNPC.inst) BlackHatNPC.inst.OnMaliciousPacketCollision(status == PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION);
             } else {
                 ScoreManager.inst.OnFriendlyPacketTransfered(id);
-
             }
         }
 
@@ -211,11 +212,14 @@ public class SimpleEnemyController : NetworkBehaviour {
                 if (malicious) {
                     Camera.main.transform.GetChild(1).GetComponent<AudioSource>().Play();
 
+					if(BlackHatNPC.inst) BlackHatNPC.inst.OnMaliciousPacketCollision(false); // Since the packet was filtered by a router, it definately didn't reach its destination
                 }
                 if (EntityManager.inst.isMultiplayer && !EntityManager.inst.isServer) {
                     Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.CHANGE_PACKET_LIFECYCLE_STATUS, id + "," + (int)PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN));
                 }
             }
+
+
         }
     }
 

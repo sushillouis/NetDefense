@@ -25697,6 +25697,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCount: -1
+  negativesInRowBeforeUpdateRange: {x: 4, y: 7}
+  negativesInRowBeforeUpdate: 7
+  negativesInRow: 0
   targets: []
   values: []
 --- !u!114 &565958350
@@ -82927,8 +82930,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301eca71255100647bb9bad1d5641921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
 --- !u!114 &1780606089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82941,8 +82942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c17a664134eb954aa7219d2d88c3bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
 --- !u!114 &1780606090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82955,8 +82954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a970acddb8696a4792ca6e022840a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
 --- !u!81 &1780606091
 AudioListener:
   m_ObjectHideFlags: 0
@@ -93819,6 +93816,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCount: -1
+  negativesInRowBeforeUpdateRange: {x: 3, y: 5}
+  negativesInRowBeforeUpdate: 7
+  negativesInRow: 0
   targets: []
   values: []
 --- !u!1 &2021189987
