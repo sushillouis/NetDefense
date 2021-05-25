@@ -110,9 +110,9 @@ public class SimpleEnemyController : NetworkBehaviour {
     }
 
     /**
-     * 
+     *
      * Do transformations through the transformation pipline to go from world space to scaled canvas space
-     * 
+     *
      */
     //private void UpdateDynamicHud() {
 
@@ -187,19 +187,21 @@ public class SimpleEnemyController : NetworkBehaviour {
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Destination") {
 
+			// TODO: Rigerously test solution (it appears to be working on every difficulty)
+        	Destination dest = gameObject.GetComponent<Destination>(); // TODO: Why would objects tagged as destinations not have a destination component attached?
+			if(dest) status = !dest.isHoneypot ? PACKET_LIFECYCLE_STATUS.ARRIVED_AT_HONEYPOT : PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
+			else status = PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
 
             if (malicious) {
                 ParticleSystem effect = other.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>();
                 effect.Play();
                 Camera.main.transform.GetChild(0).GetComponent<AudioSource>().Play();
                 ScoreManager.inst.OnBadPacketTransfered(id);
+				
+				if(BlackHatNPC.inst) BlackHatNPC.inst.OnMaliciousPacketCollision(status == PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION);
             } else {
                 ScoreManager.inst.OnFriendlyPacketTransfered(id);
-
             }
-            status = !gameObject.GetComponent<Destination>().isHoneypot ? PACKET_LIFECYCLE_STATUS.ARRIVED_AT_HONEYPOT : PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
-
-
         }
 
         if (other.gameObject.tag == "Router") {
@@ -210,11 +212,14 @@ public class SimpleEnemyController : NetworkBehaviour {
                 if (malicious) {
                     Camera.main.transform.GetChild(1).GetComponent<AudioSource>().Play();
 
+					if(BlackHatNPC.inst) BlackHatNPC.inst.OnMaliciousPacketCollision(false); // Since the packet was filtered by a router, it definately didn't reach its destination
                 }
                 if (EntityManager.inst.isMultiplayer && !EntityManager.inst.isServer) {
                     Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.CHANGE_PACKET_LIFECYCLE_STATUS, id + "," + (int)PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN));
                 }
             }
+
+
         }
     }
 
