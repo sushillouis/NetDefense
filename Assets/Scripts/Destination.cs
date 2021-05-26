@@ -40,6 +40,10 @@ public class Destination : MonoBehaviour {
     }
 
     public void setIsHoneyPot(bool value) {
+		// If we are setting a honey pot, make sure that all of the other destinations are not honey pots
+		if(value) foreach (Destination d in Destination.destinations)
+			d.setIsHoneyPot(false);
+
         this.isHoneypot = value;
 
         // only update the material if the player is the whitehat

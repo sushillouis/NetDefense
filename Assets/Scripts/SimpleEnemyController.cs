@@ -104,6 +104,7 @@ public class SimpleEnemyController : NetworkBehaviour {
 
 
         if (status == PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION ||
+			status == PACKET_LIFECYCLE_STATUS.ARRIVED_AT_HONEYPOT ||
             status == PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN)
             transform.position = new Vector3(spawnPos.x, spawnPos.y - (5 * instance_id), spawnPos.z);
 
@@ -187,20 +188,18 @@ public class SimpleEnemyController : NetworkBehaviour {
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Destination") {
 
-			// TODO: Rigerously test solution (it appears to be working on every difficulty)
-        	Destination dest = gameObject.GetComponent<Destination>(); // TODO: Why would objects tagged as destinations not have a destination component attached?
-			if(dest) status = !dest.isHoneypot ? PACKET_LIFECYCLE_STATUS.ARRIVED_AT_HONEYPOT : PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
-			else status = PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
+			status = other.gameObject.GetComponent<Destination>().isHoneypot ? PACKET_LIFECYCLE_STATUS.ARRIVED_AT_HONEYPOT : PACKET_LIFECYCLE_STATUS.ARRIVED_AT_DESTINATION;
 
-            if (malicious) {
-                ParticleSystem effect = other.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>();
-                effect.Play();
+			if(malicious && status == PACKET_LIFECYCLE_STATUS.ARRIVED_AT_HONEYPOT){
+				// TODO: Need to ask what should happen when a malicious packet arrives at a honeypot
+				// TODO: What different effects should the players see... should blackhat see normal hit effects?
+				if(Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT) Camera.main.transform.GetChild(1).GetComponent<AudioSource>().Play(); // If the player is a white hat, play the router sound!
+			} else if (malicious) {
+                other.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
                 Camera.main.transform.GetChild(0).GetComponent<AudioSource>().Play();
                 ScoreManager.inst.OnBadPacketTransfered(id);
-            } else {
+            } else
                 ScoreManager.inst.OnFriendlyPacketTransfered(id);
-
-            }
         }
 
         if (other.gameObject.tag == "Router") {
