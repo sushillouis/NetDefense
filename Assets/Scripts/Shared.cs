@@ -168,6 +168,10 @@ public class Shared : MonoBehaviour {
         return false;
     }
 
+	public bool blackHatChosenMaliciousPacketProperties(){
+		return maliciousPacketProperties.shape >= 0 && maliciousPacketProperties.size >= 0 && maliciousPacketProperties.color >= 0;
+	}
+
     public bool isBadPacket(int color, int shape, int size) {
         return color == inst.maliciousPacketProperties.color && shape == inst.maliciousPacketProperties.shape && size == inst.maliciousPacketProperties.size;
     }

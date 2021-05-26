@@ -21,7 +21,8 @@ public class OnReadyUpController : MonoBehaviour {
 	}
 
     public void Update() {
-        startWaveText.text = "Start Wave " + (Game_Manager.inst.currentWave + 1);
-        readyUpPlayersValueText.text = (MainMenu.isMultiplayerSelectedFromMenu && Shared.inst.isPlayerReady(SharedPlayer.playerIdForThisDevice) ? "Players Ready: " + Shared.inst.getPlayersReady() + "/" + Shared.inst.players.Count : "Click Here to Start");
+		bool blackHatCanStart = Shared.inst.blackhatHatChosenTargetRatios() && Shared.inst.blackHatChosenMaliciousPacketProperties();
+        startWaveText.text = (blackHatCanStart ? "Start Wave " + (Game_Manager.inst.currentWave + 1) : "Need Help?");
+        readyUpPlayersValueText.text = (MainMenu.isMultiplayerSelectedFromMenu && Shared.inst.isPlayerReady(SharedPlayer.playerIdForThisDevice) ? "Players Ready: " + Shared.inst.getPlayersReady() + "/" + Shared.inst.players.Count : (blackHatCanStart ? "Click Here to Start" : "Select Strategy"));
     }
 }
