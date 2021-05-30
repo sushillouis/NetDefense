@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -71,7 +71,7 @@ public class Shared : MonoBehaviour {
             inst.gameState.currentState = SharedGameStates.LOBBY;
         } else {
             inst.gameState.currentState = SharedGameStates.COUNTDOWN;
-            
+
         }
 
 
@@ -133,6 +133,15 @@ public class Shared : MonoBehaviour {
         else
             p.isReady = true;
     }
+
+	public bool isPlayerReady(int playerID){
+		foreach (SharedPlayer p in inst.players) {
+			if(p.playerID == playerID)
+				return p.isReady;
+		}
+
+		return false;
+	}
 
     public int getPlayersReady() {
         int count = 0;

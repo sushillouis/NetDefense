@@ -161,7 +161,7 @@ public class ScoreManager : MonoBehaviour {
         if (packetMetrics.Count < 3)
             return;
 
-        // generate score using metrics history 
+        // generate score using metrics history
         int badPacketSuccesses = 0;
         int totalbadPackets = 0;
         foreach (PacketCompletedMetric metric in packetMetrics) {
@@ -180,6 +180,8 @@ public class ScoreManager : MonoBehaviour {
 
         fraction_black_hat_score = (badPacketSuccesses / (float)totalbadPackets);
         fraction_white_hat_score = (1f - fraction_black_hat_score);
+
+		// Debug.Log(fraction_white_hat_score + " - " + fraction_black_hat_score);
 
         white_score_derivative = (fraction_white_hat_score * scoreFactor);
         black_score_derivative = (fraction_black_hat_score * scoreFactor);
@@ -208,8 +210,11 @@ public class ScoreManager : MonoBehaviour {
     public void CalculateEndGameStats() {
         totalPacketsSpawned = totalBadPacketsSpawned + totalFriendlyPacketsSpawned;
 
-        white_hat_score_total_for_end_game = (int)((friendlyPacketSuccesses / (float)totalFriendlyPacketsSpawned) * scoreFactor);
-        black_hat_score_total_for_end_game = (int)((badPacketSuccesses / (float)totalBadPacketsSpawned) * scoreFactor);
+		// TODO: Why do we use this seperate method for calculating end game score? We don't we just use the normal score?
+        // white_hat_score_total_for_end_game = (int)((friendlyPacketSuccesses / (float)totalFriendlyPacketsSpawned) * scoreFactor);
+        // black_hat_score_total_for_end_game = (int)((badPacketSuccesses / (float)totalBadPacketsSpawned) * scoreFactor);
+		white_hat_score_total_for_end_game = (int)white_score;
+		black_hat_score_total_for_end_game = (int)black_score;
     }
 
     public void OnWhiteHatEarnMoney(int amt) {
@@ -221,7 +226,9 @@ public class ScoreManager : MonoBehaviour {
         friendlyPacketSuccesses++;
         PacketCompletedMetric m = getMetricById(instanceID);
         if (m != null)
-            m.status = PacketLifeStatus.SUCCESSFUL; OnMetricsUpdated();
+            m.status = PacketLifeStatus.SUCCESSFUL;
+
+		OnMetricsUpdated();
     }
 
     public void OnBadPacketTransfered(int instanceID) {
@@ -231,7 +238,6 @@ public class ScoreManager : MonoBehaviour {
             m.status = PacketLifeStatus.SUCCESSFUL;
 
         OnMetricsUpdated();
-
     }
 
     public void OnFriendlyPacketSpawned(int instanceID) {
@@ -283,4 +289,3 @@ public class ScoreManager : MonoBehaviour {
         }
     }
 }
-

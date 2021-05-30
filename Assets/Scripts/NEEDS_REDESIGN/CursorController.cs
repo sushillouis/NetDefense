@@ -1,6 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //Script on each piece of grid to control the location of the cursor
 public class CursorController : MonoBehaviour {
@@ -10,6 +11,7 @@ public class CursorController : MonoBehaviour {
     public GameObject gridCursor;
     public GameObject routerCursor;
     public GameObject router;
+	public Text buildButtonText;
     public Material highlightedRouter;
     public Material nonHighlightedRouter;
     public bool building = false;
@@ -40,7 +42,13 @@ public class CursorController : MonoBehaviour {
         building = !building;
 
         routerManager.routerHUD.SetActive(building);
+		buildButtonText.text = (building ? "close" : "get");
     }
+
+	public void CloseRouterPannel() {
+		ToggleBuilding(); // This is such a silly solution, but it also works 100% of the time and has 0 code reuse ;(
+		if(building) ToggleBuilding();
+	}
 
     public void ToggleHighlighted(bool highlighted) {
         if (highlighted) {

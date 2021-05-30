@@ -21,7 +21,7 @@ public class WhiteHatMenu : MonoBehaviour {
 
     public Button GetButton;
 
-    public ButtonSelectionEffect startButton;
+    public OnReadyUpController nextWaveButton;
 
     public void Awake() {
         inst = this;

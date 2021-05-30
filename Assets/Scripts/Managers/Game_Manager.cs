@@ -78,8 +78,6 @@ public class Game_Manager : MonoBehaviour {
         inst = this;
         whiteHatUI = UI.transform.GetChild(0).gameObject;
         blackHatUI = UI.transform.GetChild(1).gameObject;
-        BlackHatMenu.inst.nextWaveButton.GetComponent<ButtonSelectionEffect>().isOn = true;
-        WhiteHatMenu.inst.startButton.isOn = true;
 
 
 
@@ -187,8 +185,6 @@ public class Game_Manager : MonoBehaviour {
 
 
         if (poolHasSpawned && PacketPoolManager.inst.getAlivePackets() == 0) {
-
-
             if (currentWave > maxWaves - 1) {
                 // game over
                 if (!MainMenu.isMultiplayerSelectedFromMenu)
@@ -196,18 +192,12 @@ public class Game_Manager : MonoBehaviour {
                 else if (EntityManager.inst.isServer)
                     Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_NETWORK_STATE, ((int)(Shared.inst.gameState.currentState = SharedGameStates.OVER)) + ""));
             } else {
-                // next wave
-                isBetweenWaves = true;
-                BlackHatMenu.inst.nextWaveButton.GetComponent<ButtonSelectionEffect>().isOn = true;
-                currentWave++;
-                ScoreManager.inst.OnEnteredBetweenWavesState();
-                Shared.inst.unReadyPlayers();
-                poolHasSpawned = false;
-                PacketPoolManager.inst.Reset();
-            }
-
+				// next wave
+				isBetweenWaves = true;
+				currentWave++;
+				OnWaveEnd();
+			}
         }
-
     }
 
     public void RequestPacketSpawnFromPool() {
@@ -221,8 +211,11 @@ public class Game_Manager : MonoBehaviour {
         if (pool_status == POPULATE_POOL_ERROR_CODES.SUCCESS) {
             PacketPoolManager.inst.deployNextPacket();
             poolHasSpawned = true;
+			// If we were between waves before this occurance... then the wave just started!
+			if(isBetweenWaves) OnWaveStart();
             isBetweenWaves = false;
-        } else
+
+        }// else // TODO: Should this else be here?
 
 
         if (MainMenu.hat == SharedPlayer.WHITEHAT && !MainMenu.isMultiplayerSelectedFromMenu && (pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_DEFINITION || pool_status == POPULATE_POOL_ERROR_CODES.WAITING_ON_BLACKHAT_TARGET_SELECTION)) {
@@ -274,4 +267,22 @@ public class Game_Manager : MonoBehaviour {
                 break;
         }
     }
+
+	// Called each time a new wave starts (all players have readied up)
+	public void OnWaveStart(){
+		// Make sure the ready buttons appear
+		BlackHatMenu.inst.nextWaveButton.OnWaveStart();
+		WhiteHatMenu.inst.nextWaveButton.OnWaveStart();
+	}
+
+	// Called each time a wave ends (all of the packets have reached their destination)
+	public void OnWaveEnd() {
+		ScoreManager.inst.OnEnteredBetweenWavesState();
+		// Make sure the ready buttons disappear
+		BlackHatMenu.inst.nextWaveButton.OnWaveEnd();
+		WhiteHatMenu.inst.nextWaveButton.OnWaveEnd();
+		Shared.inst.unReadyPlayers();
+		poolHasSpawned = false;
+		PacketPoolManager.inst.Reset();
+	}
 }

@@ -65,10 +65,9 @@ public class RouterManager : MonoBehaviour {
         int shape = selected.shape;
         int size = selected.size;
 
-
-        ColorSelections[color].isOn = selected.HasUpdated();
-        ShapeSelections[shape].isOn = selected.HasUpdated();
-        SizeSelections[size].isOn = selected.HasUpdated();
+		ColorSelections[color].isOn = true;
+        ShapeSelections[shape].isOn = true;
+        SizeSelections[size].isOn = true;
 
         if(!selected.HasUpdated()) {
             for(int i = 0; i < 3; i++) {

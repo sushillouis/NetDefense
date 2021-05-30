@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,7 +52,7 @@ public class BlackHatMenu : MonoBehaviour
     public int max_updates_remaining;
     public int updates_remaining;
 
-    public GameObject nextWaveButton;
+    public OnReadyUpController nextWaveButton;
     public static BlackHatMenu inst;
 
     private void Awake() {
