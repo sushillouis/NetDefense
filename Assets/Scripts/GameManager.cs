@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 
 
-public class Game_Manager : MonoBehaviour {
+public class GameManager : MonoBehaviour {
 
     //Singleton
-    public static Game_Manager inst;
+    public static GameManager inst;
 
 
     //Range of each trait for the level

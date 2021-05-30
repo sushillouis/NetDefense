@@ -123,7 +123,7 @@ public class WhiteHatNPC : MonoBehaviour {
     }
 
     void Update() {
-        if (Game_Manager.inst.isBetweenWaves)
+        if (GameManager.inst.isBetweenWaves)
             return;
 
         float elapsed = Time.time - startTime;

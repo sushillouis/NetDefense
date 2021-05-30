@@ -34,8 +34,8 @@ public class WhiteHatMenu : MonoBehaviour {
     }
 
     public void OnRouterPlaced() {
-        black_hat_status.text = Game_Manager.inst.routersPlaceable + "";
-        hidePanel.SetActive(Game_Manager.inst.routersPlaceable < 1);
+        black_hat_status.text = GameManager.inst.routersPlaceable + "";
+        hidePanel.SetActive(GameManager.inst.routersPlaceable < 1);
         GetButton.interactable = !hidePanel.activeSelf;
     }
 

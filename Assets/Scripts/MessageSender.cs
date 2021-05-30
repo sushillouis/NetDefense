@@ -11,13 +11,13 @@ using UnityEngine.SceneManagement;
 public static class MessageTypes {
 
     /**
-     * MessageTypes are used to 
+     * MessageTypes are used to
      * inform clients how to process
-     * a new event. They are use to 
+     * a new event. They are use to
      * classify the rpc data as a header.
      * For each type will exist a unique
      * implementation.
-     * 
+     *
      */
 
     public const int IS_HOST_WHITE_HAT = 1;                 // host only
@@ -84,7 +84,7 @@ public class MessageSender : NetworkBehaviour {
                 NetworkManager.singleton.StopHost();
                 NetworkManager.singleton.StopServer();
                 NetworkManager.singleton.StopAllCoroutines();
-                Destroy(NetworkManager.singleton); 
+                Destroy(NetworkManager.singleton);
             } catch {
                 Debug.LogError("Couldn't stop client or host");
             }
@@ -194,7 +194,7 @@ public class MessageSender : NetworkBehaviour {
             // update money values and the client ui
             if (type == MessageTypes.UPDATE_WHITE_HAT_MONEY) {
                 Shared.inst.gameMetrics.whitehat_cash = Convert.ToInt32(data);
-                ScoreManager_OLD.inst.moneyText.text = "$" + Shared.inst.gameMetrics.whitehat_cash + ".00";
+                WhiteHatMenu.inst.OnCashChanged();
             }
         }
     }

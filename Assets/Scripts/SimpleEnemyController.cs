@@ -142,7 +142,7 @@ public class SimpleEnemyController : NetworkBehaviour {
             shape = Shared.inst.maliciousPacketProperties.shape;
             size = Shared.inst.maliciousPacketProperties.size;
 
-            Game_Manager.inst.SetTraits(this);
+            GameManager.inst.SetTraits(this);
         }
     }
 
@@ -239,7 +239,7 @@ public class SimpleEnemyController : NetworkBehaviour {
         selectionScale *= 1.5f;
         selectedChild.transform.localScale = new Vector3(selectionScale, selectedChild.transform.localScale.y, selectionScale);
 
-        Game_Manager.inst.SetTraits(this);
+        GameManager.inst.SetTraits(this);
         //if (newMalicious)
         //    StartCoroutine("Pulsate");
         if (!EntityManager.inst.isMultiplayer || (EntityManager.inst.isMultiplayer && EntityManager.inst.isServer) || updateClient) {

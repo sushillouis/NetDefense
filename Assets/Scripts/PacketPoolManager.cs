@@ -48,9 +48,9 @@ public class PacketPoolManager : NetworkBehaviour {
 
         //packets.Clear();
         for (int i = 0; i < N_PER_TYPE; i++)
-            for (int color = 0; color < Game_Manager.COLOR_COUNT; color++)
-                for (int shape = 0; shape < Game_Manager.SHAPE_COUNT; shape++)
-                    for (int size = 0; size < Game_Manager.SIZE_COUNT; size++) {
+            for (int color = 0; color < GameManager.COLOR_COUNT; color++)
+                for (int shape = 0; shape < GameManager.SHAPE_COUNT; shape++)
+                    for (int size = 0; size < GameManager.SIZE_COUNT; size++) {
 
                         bool isBad = Shared.inst.isBadPacket(color, shape, size);
 
@@ -59,7 +59,7 @@ public class PacketPoolManager : NetworkBehaviour {
                         Debug.Assert(target != null, "Target not selected");
 
                         if (isBad) {
-                            if (Shared.inst.gameMetrics.target_probabilities.Count != Game_Manager.inst.destinations.Length) {
+                            if (Shared.inst.gameMetrics.target_probabilities.Count != GameManager.inst.destinations.Length) {
                                 Debug.LogError("Check Array Sizes");
                                 return POPULATE_POOL_ERROR_CODES.MIX_MATCH_EXCEPTION;
                             }
@@ -169,7 +169,7 @@ public class PacketPoolManager : NetworkBehaviour {
         GameObject packet = Instantiate(packetPrefab);
         SimpleEnemyController sec = packet.GetComponent<SimpleEnemyController>();
 
-        
+
         sec.destination = Destination.getDestinationByID(destination);
         sec.setupBehavior(color, size, shape, malicious);
 
@@ -199,7 +199,7 @@ public class PacketPoolManager : NetworkBehaviour {
 
         if (!pac.malicious)
             ScoreManager.inst.OnFriendlyPacketSpawned(pac.id);
-        else 
+        else
             ScoreManager.inst.OnBadPacketSpawned(pac.id);
 
         ScoreManager.inst.packetTypeHistory.Add(new PacketProfile(pac.size, pac.color, pac.shape));

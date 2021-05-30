@@ -26,9 +26,9 @@ public class BlackHatNPC : MonoBehaviour {
         if (!MainMenu.isMultiplayerSelectedFromMenu) {
             targets = PacketPoolManager.inst.packet_destinations;
             values = new float[targets.Length];
-            Shared.inst.maliciousPacketProperties.color = Random.Range(0, Game_Manager.COLOR_COUNT);
-            Shared.inst.maliciousPacketProperties.size = Random.Range(0, Game_Manager.SIZE_COUNT);
-            Shared.inst.maliciousPacketProperties.shape = Random.Range(0, Game_Manager.SHAPE_COUNT);
+            Shared.inst.maliciousPacketProperties.color = Random.Range(0, GameManager.COLOR_COUNT);
+            Shared.inst.maliciousPacketProperties.size = Random.Range(0, GameManager.SIZE_COUNT);
+            Shared.inst.maliciousPacketProperties.shape = Random.Range(0, GameManager.SHAPE_COUNT);
 
             attackCount = Random.Range(1, targets.Length + 1);
             List<int> targettingIndcies = new List<int>();

@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class PathPiece : MonoBehaviour
 {
     private CursorController controller;
-    private ScoreManager_OLD scoreManager;
     private bool occupied = false;
     private bool targeted = false;
 
@@ -18,7 +17,6 @@ public class PathPiece : MonoBehaviour
         //    return;
 
         controller = GameObject.Find("CursorController").GetComponent<CursorController>();
-        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager_OLD>();
     }
 
     void OnMouseEnter()
