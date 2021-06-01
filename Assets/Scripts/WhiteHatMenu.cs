@@ -42,7 +42,7 @@ public class WhiteHatMenu : MonoBehaviour {
     public void OnTimerChange(int seconds) {
         endgame_timer.text = (seconds == 0 ? "" : seconds + "");
 
-        endgame_timer_lbl.text = seconds == 0 ? "Waiting..." : "Ends in";
+        endgame_timer_lbl.text = seconds == 0 ? "Waiting..." : "Incoming";
     }
 
 
