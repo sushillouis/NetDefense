@@ -148,7 +148,12 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void OnQuitSelected() {
+		Destroy(MusicController.inst.gameObject); // Destroy the music audio source so that in WebGL the music will stop
+#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
 
     public void OnBriefingSelected() {
