@@ -72,22 +72,28 @@ public class PacketPoolManager : NetworkBehaviour {
                             continue;
                         }
 
+						// For each (not bad) packet there is a 50% chance to spawn a bad packet
                         float randomProb = Random.value;
-                        if (badSpawnProbability > randomProb)
+                        if (badSpawnProbability > randomProb && !isBad)
                             if (MainMenu.isMultiplayerSelectedFromMenu)
                                 CmdCreatePacket(Shared.inst.maliciousPacketProperties.color, Shared.inst.maliciousPacketProperties.size, Shared.inst.maliciousPacketProperties.shape, target, true);
                             else
                                 createPacket(Shared.inst.maliciousPacketProperties.color, Shared.inst.maliciousPacketProperties.size, Shared.inst.maliciousPacketProperties.shape, target, true);
 
 
-
+						// Spawn the packet
                         if (MainMenu.isMultiplayerSelectedFromMenu)
                             CmdCreatePacket(color, size, shape, target, isBad);
                         else
                             createPacket(color, size, shape, target, isBad);
-
-
                     }
+
+		// Once all of the packets have been spawned, if the first packet is bad swap it with the last packet (100% bad first packet fix)
+		if(packets[0].GetComponent<SimpleEnemyController>().malicious){
+			GameObject tmp = packets[0];
+			packets[0] = packets[packets.Count - 1];
+			packets[packets.Count - 1] = tmp;
+		}
 
 
         OnBlackhatUpdateStrategy();
