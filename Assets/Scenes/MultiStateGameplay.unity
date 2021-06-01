@@ -19204,10 +19204,10 @@ RectTransform:
   m_Father: {fileID: 758983625}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 41.41, y: -20}
-  m_SizeDelta: {x: 82.82, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &901946162
 MonoBehaviour:
@@ -27772,7 +27772,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1324450099
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32779,7 +32779,7 @@ MonoBehaviour:
   network: {fileID: 1725208056}
   poolManager: {fileID: 1798088047}
   entityManager: {fileID: 978700289}
-  maxWaves: 2
+  maxWaves: 3
   currentWave: 0
   isBetweenWaves: 1
   routersPlaceable: 2
@@ -37800,7 +37800,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1883103774}
   m_Layer: 5
-  m_Name: Score
+  m_Name: GameInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43356,10 +43356,10 @@ RectTransform:
   m_Father: {fileID: 1298648801485272691}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 42.945, y: -20}
-  m_SizeDelta: {x: 85.89, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1298648802165393776
 MonoBehaviour:

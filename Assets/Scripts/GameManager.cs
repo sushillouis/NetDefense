@@ -185,7 +185,7 @@ public class GameManager : MonoBehaviour {
 
 
         if (poolHasSpawned && PacketPoolManager.inst.getAlivePackets() == 0) {
-            if (currentWave > maxWaves - 1) {
+            if (currentWave >= maxWaves - 1) {
                 // game over
                 if (!MainMenu.isMultiplayerSelectedFromMenu)
                     Shared.inst.gameState.currentState = SharedGameStates.OVER;
