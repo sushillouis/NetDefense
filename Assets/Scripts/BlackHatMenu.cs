@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// TODO: Need to confirm that an update actually took place before taking one away from the user...
-// TODO: Need to give more updates between each wave?
-
 public class BlackHatMenu : MonoBehaviour
 {
     public static class types
@@ -53,7 +50,15 @@ public class BlackHatMenu : MonoBehaviour
 
     public Text updatesRemainingValue;
     public int max_updates_remaining;
-    public int updates_remaining;
+	[SerializeField]
+	private int _updates_remaining;
+    public int updates_remaining {
+		get => _updates_remaining;
+		set {
+			_updates_remaining = value;
+			updatesRemainingValue.text = _updates_remaining + "";
+		}
+	}
 
     public OnReadyUpController nextWaveButton;
     public static BlackHatMenu inst;
@@ -63,19 +68,15 @@ public class BlackHatMenu : MonoBehaviour
     }
 
     void Start() {
-        Construct();
-        updates_remaining = max_updates_remaining;
-        updatesRemainingValue.text = updates_remaining + "";
-    }
-
-    private void Construct() {
-        targettingStartTime = Time.time;
+		targettingStartTime = Time.time;
         packetStartTime = Time.time;
 
         currentMenu = -1;
         init_pos_of_nav_menu = new Vector3(nav_menu.localPosition.x, nav_menu.localPosition.y, nav_menu.localPosition.z); ;
 
         targettingCoolDownButton_text.text = "Confirm Strategy";
+
+        updates_remaining = max_updates_remaining;
     }
 
     private void handleGUIpositionsOnStateChanged()
@@ -105,68 +106,50 @@ public class BlackHatMenu : MonoBehaviour
 
     public void updateMalicPacketValues() {
         if (updates_remaining > 0) {
+			bool updateOccured = false;
 			while(Camera.main.transform.GetChild(3).GetComponent<AudioSource>().isPlaying); // Wait for the confirm sound to stop playing
 
-            packetStartTime = Time.time;
-
             int color = 0;
-            if (pink.isOn) {
-                color = 0;
-            }
-            if (green.isOn) {
-                color = 1;
-            }
-            if (blue.isOn) {
-                color = 2;
-            }
+            if (green.isOn) color = 1;
+            else if (blue.isOn) color = 2;
+			updateOccured |= Shared.inst.maliciousPacketProperties.color != color;
             Shared.inst.maliciousPacketProperties.color = color;
 
             int size = 0;
-            if (small.isOn) {
-                size = 0;
-            }
-            if (med.isOn) {
-                size = 1;
-            }
-            if (large.isOn) {
-                size = 2;
-            }
+            if (med.isOn) size = 1;
+            else if (large.isOn) size = 2;
+			updateOccured |= Shared.inst.maliciousPacketProperties.size != size;
             Shared.inst.maliciousPacketProperties.size = size;
 
             int shape = 0;
-            if (square.isOn) {
-                shape = 0;
-            }
-            if (cone.isOn) {
-                shape = 1;
-            }
-            if (sphere.isOn) {
-                shape = 2;
-            }
-
-
-            //       Debug.Log("SIZE: " + size + "\n" + "SHAPE: " + shape + "\n" + "color: " + color + "\n");
-
+            if (cone.isOn) shape = 1;
+            else if (sphere.isOn) shape = 2;
+			updateOccured |= Shared.inst.maliciousPacketProperties.shape != shape;
             Shared.inst.maliciousPacketProperties.shape = shape;
 
+			if(updateOccured){
+				packetStartTime = Time.time;
+				packetCoolDownButton.enabled = false;
 
-            packetCoolDownButton.enabled = false;
+				// Play settings update sound
+				Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
+				updates_remaining--;
 
-			// Play settings update sound
-			Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
-			updates_remaining--;
-            updatesRemainingValue.text = updates_remaining + "";
+				AutoHelpScreenBlackhatManager.inst.OnConfirmedType();
+		        if(!MainMenu.isMultiplayerSelectedFromMenu) {
+		            PacketPoolManager.inst.OnBlackhatUpdateStrategy();
+		        } else {
+
+		            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.UPDATE_MALIC_PACKETS, Shared.inst.maliciousPacketProperties.shape + "," + Shared.inst.maliciousPacketProperties.size + "," + Shared.inst.maliciousPacketProperties.color));
+		        }
+			} else
+				// Play settings failed to update sound
+				Camera.main.transform.GetChild(5).GetComponent<AudioSource>().Play();
         } else
 			// Play settings failed to update sound
 			Camera.main.transform.GetChild(5).GetComponent<AudioSource>().Play();
 
-        AutoHelpScreenBlackhatManager.inst.OnConfirmedType();
-        if(!MainMenu.isMultiplayerSelectedFromMenu) {
-            PacketPoolManager.inst.OnBlackhatUpdateStrategy();
-        } else {
 
-            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.UPDATE_MALIC_PACKETS, Shared.inst.maliciousPacketProperties.shape + "," + Shared.inst.maliciousPacketProperties.size + "," + Shared.inst.maliciousPacketProperties.color));
-        }
     }
 
 
@@ -174,8 +157,6 @@ public class BlackHatMenu : MonoBehaviour
     {
         if (updates_remaining > 0) {
 			while(Camera.main.transform.GetChild(3).GetComponent<AudioSource>().isPlaying); // Wait for the confirm sound to stop playing
-
-            targettingStartTime = Time.time;
 
             float percentage = s1.value + s2.value + s3.value;
 
@@ -186,6 +167,7 @@ public class BlackHatMenu : MonoBehaviour
             t2 = s2.value / percentage;
             t3 = s3.value / percentage;
 
+			bool updateOccured = Shared.inst.gameMetrics.target_probabilities["LEFT"] != t1 || Shared.inst.gameMetrics.target_probabilities["RIGHT"] != t2 || Shared.inst.gameMetrics.target_probabilities["CENTRE"] != t3;
 
             if (MainMenu.isMultiplayerSelectedFromMenu) {
                 Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "LEFT" + "," + t1));
@@ -198,31 +180,30 @@ public class BlackHatMenu : MonoBehaviour
                 PacketPoolManager.inst.OnBlackhatUpdateStrategy();
 
             }
-            targettingCoolDownButton.enabled = false;
-            AutoHelpScreenBlackhatManager.inst.OnConfirmedTarget();
 
-            //       text.text = trgt(1, t1) + "\n" + trgt(2, t2) + "\n" + trgt(3, t3);
+			if(updateOccured){
+				targettingStartTime = Time.time;
+				targettingCoolDownButton.enabled = false;
+	            AutoHelpScreenBlackhatManager.inst.OnConfirmedTarget();
 
-			// Play settings update sound
-			Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
-			updates_remaining--;
-            updatesRemainingValue.text = updates_remaining + "";
+				// Play settings update sound
+				Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
+				updates_remaining--;
+			} else
+				// Play settings failed to update sound
+				Camera.main.transform.GetChild(5).GetComponent<AudioSource>().Play();
 
 			// TODO: Is check if this is updating properly
-        } else {
+        } else
 			// Play settings failed to update sound
 			Camera.main.transform.GetChild(5).GetComponent<AudioSource>().Play();
-		}
 
 
     }
 
     public void updateTargetPercentagesTutorial() {
         if (updates_remaining > 0) {
-            updates_remaining--;
-            updatesRemainingValue.text = updates_remaining + "";
-
-            targettingStartTime = Time.time;
+			while(Camera.main.transform.GetChild(3).GetComponent<AudioSource>().isPlaying); // Wait for the confirm sound to stop playing
 
             float percentage = s1.value + s2.value;
 
@@ -232,6 +213,7 @@ public class BlackHatMenu : MonoBehaviour
             t1 = s1.value / percentage;
             t2 = s2.value / percentage;
 
+			bool updateOccured = Shared.inst.gameMetrics.target_probabilities["TOP"] != t1 || Shared.inst.gameMetrics.target_probabilities["BOTTOM"] != t2;
 
             if (MainMenu.isMultiplayerSelectedFromMenu) {
                 Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "TOP" + "," + t1));
@@ -242,11 +224,21 @@ public class BlackHatMenu : MonoBehaviour
                 PacketPoolManager.inst.OnBlackhatUpdateStrategy();
 
             }
-            targettingCoolDownButton.enabled = false;
-            AutoHelpScreenBlackhatManager.inst.OnConfirmedTarget();
 
-            //       text.text = trgt(1, t1) + "\n" + trgt(2, t2) + "\n" + trgt(3, t3);
-        }
+			if(updateOccured){
+				targettingStartTime = Time.time;
+				targettingCoolDownButton.enabled = false;
+	            AutoHelpScreenBlackhatManager.inst.OnConfirmedTarget();
+
+				// Play settings update sound
+				Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
+				updates_remaining--;
+			} else
+				// Play settings failed to update sound
+				Camera.main.transform.GetChild(5).GetComponent<AudioSource>().Play();
+        } else
+			// Play settings failed to update sound
+			Camera.main.transform.GetChild(5).GetComponent<AudioSource>().Play();
 
 
     }
@@ -297,4 +289,11 @@ public class BlackHatMenu : MonoBehaviour
     {
         currentMenu = types.NO_MENU;
     }
+
+	public void OnWaveEnd(){
+		nextWaveButton.OnWaveEnd();
+
+		// Between each wave give the blackhat their updates back
+		updates_remaining = max_updates_remaining;
+	}
 }

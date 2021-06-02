@@ -281,7 +281,7 @@ public class GameManager : MonoBehaviour {
 	public void OnWaveEnd() {
 		ScoreManager.inst.OnEnteredBetweenWavesState();
 		// Make sure the ready buttons disappear
-		BlackHatMenu.inst.nextWaveButton.OnWaveEnd();
+		BlackHatMenu.inst.OnWaveEnd();
 		WhiteHatMenu.inst.nextWaveButton.OnWaveEnd();
 		Shared.inst.unReadyPlayers();
 		poolHasSpawned = false;

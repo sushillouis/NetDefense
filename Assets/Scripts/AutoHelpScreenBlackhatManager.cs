@@ -32,13 +32,13 @@ public class AutoHelpScreenBlackhatManager : MonoBehaviour
 
 
     public void OnConfirmedTarget() {
-        Destroy(confirmTarget.gameObject);
+        if(confirmTarget) Destroy(confirmTarget.gameObject);
         hasConfirmedTarget = true;
         OnUpdated();
     }
 
     public void OnConfirmedType() {
-        Destroy(confirmType.gameObject);
+        if(confirmType) Destroy(confirmType.gameObject);
         hasConfirmedType = true;
         OnUpdated();
     }

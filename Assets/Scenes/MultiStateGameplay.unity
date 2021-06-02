@@ -939,6 +939,11 @@ PrefabInstance:
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 587845081}
+    - target: {fileID: 2593429323328308774, guid: c71d4f58fbd021944ac84781934156b2,
+        type: 3}
+      propertyPath: m_IsOn
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3238286217169350924, guid: c71d4f58fbd021944ac84781934156b2,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -18905,7 +18910,7 @@ PrefabInstance:
     - target: {fileID: 2593429323328308774, guid: c71d4f58fbd021944ac84781934156b2,
         type: 3}
       propertyPath: m_IsOn
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2593429323328308774, guid: c71d4f58fbd021944ac84781934156b2,
         type: 3}
@@ -23296,7 +23301,7 @@ MonoBehaviour:
   large: {fileID: 330607014}
   updatesRemainingValue: {fileID: 513510927}
   max_updates_remaining: 5
-  updates_remaining: 0
+  _updates_remaining: 0
   nextWaveButton: {fileID: 406487730}
 --- !u!1 &1096211191
 GameObject:
@@ -25350,6 +25355,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetSize
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593429323328308774, guid: c71d4f58fbd021944ac84781934156b2,
+        type: 3}
+      propertyPath: m_IsOn
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3238286217169350924, guid: c71d4f58fbd021944ac84781934156b2,
         type: 3}
