@@ -105,7 +105,12 @@ public class RouterManager : MonoBehaviour {
             selected.SetColor(color);
             selected.updatesRemaining--;
             updatesRemainingText.text = "Updates " + selected.updatesRemaining;
-        }
+
+			// Play settings update sound
+			Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
+        } else
+			// Play settings failed to update sound
+			Camera.main.transform.GetChild(5).GetComponent<AudioSource>().Play();
 
         DisablePanel.SetActive(selected.updatesRemaining == 0);
         updateBtn.interactable = selected.updatesRemaining != 0;

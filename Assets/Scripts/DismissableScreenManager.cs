@@ -25,7 +25,7 @@ public class DismissableScreenManager : MonoBehaviour {
     void Update() {
         if(Input.GetKeyDown(KeyCode.Space) && (Shared.inst.gameState.currentState == SharedGameStates.PLAY || Shared.inst.gameState.currentState == SharedGameStates.OVER)) {
             mainContent.isValid = !mainContent.isValid;
-            
+
         }
 
         if (activeIndex == 2) {
@@ -37,6 +37,8 @@ public class DismissableScreenManager : MonoBehaviour {
     public void DismissScreen() {
         mainContent.isValid = false;
 
+		// Play settings update sound
+		Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
     }
 
 

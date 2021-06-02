@@ -53,6 +53,9 @@ public class Destination : MonoBehaviour {
             tempMaterials[0] = newMaterial;
             GetComponent<Renderer>().materials = tempMaterials;
         }
+
+		// Play the router place sound (if we are creating a honeypot and the player is a whitehat)
+		if(value && Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT) Camera.main.transform.GetChild(4).GetComponent<AudioSource>().Play();
     }
     public static Destination getDestinationByID(string id) {
         foreach (Destination d in destinations) {

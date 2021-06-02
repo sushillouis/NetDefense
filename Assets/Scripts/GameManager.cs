@@ -186,11 +186,13 @@ public class GameManager : MonoBehaviour {
 
         if (poolHasSpawned && PacketPoolManager.inst.getAlivePackets() == 0) {
             if (currentWave >= maxWaves - 1) {
-                // game over
+				// game over
                 if (!MainMenu.isMultiplayerSelectedFromMenu)
                     Shared.inst.gameState.currentState = SharedGameStates.OVER;
                 else if (EntityManager.inst.isServer)
                     Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_NETWORK_STATE, ((int)(Shared.inst.gameState.currentState = SharedGameStates.OVER)) + ""));
+
+				OnGameOver();
             } else {
 				// next wave
 				isBetweenWaves = true;
@@ -284,5 +286,12 @@ public class GameManager : MonoBehaviour {
 		Shared.inst.unReadyPlayers();
 		poolHasSpawned = false;
 		PacketPoolManager.inst.Reset();
+	}
+
+	public void OnGameOver(){
+		// If this player won... play a congradulatory sound!
+		bool whitehatWon = Shared.inst.gameMetrics.whitehat_score > Shared.inst.gameMetrics.blackhat_score;
+		if( (whitehatWon && Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT) || (!whitehatWon && Shared.inst.getDevicePlayer().role == SharedPlayer.BLACKHAT) )
+			Camera.main.transform.GetChild(2).GetComponent<AudioSource>().Play();
 	}
 }

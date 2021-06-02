@@ -10,6 +10,9 @@ public class OnReadyUpController : MonoBehaviour {
     public void OnReadyUp() {
         Shared.inst.setPlayerToReady(SharedPlayer.playerIdForThisDevice);
         AutoHelpScreenBlackhatManager.inst.OnReady();
+
+		// Play settings update sound
+		Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
     }
 
 	public void OnWaveStart(){

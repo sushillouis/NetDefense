@@ -137,6 +137,8 @@ public class Router : MonoBehaviour {
         // hud.hide();
         selectedRing.SetActive(false);
         GameManager.inst.routersPlaceable--;
+		// Play the router place sound (if the player is a whitehat)
+		if(Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT) Camera.main.transform.GetChild(4).GetComponent<AudioSource>().Play();
         WhiteHatMenu.inst.OnRouterPlaced();
 
     }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// TODO: Need to confirm that an update actually took place before taking one away from the user...
+// TODO: Need to give more updates between each wave?
+
 public class BlackHatMenu : MonoBehaviour
 {
     public static class types
@@ -102,8 +105,7 @@ public class BlackHatMenu : MonoBehaviour
 
     public void updateMalicPacketValues() {
         if (updates_remaining > 0) {
-            updates_remaining--;
-            updatesRemainingValue.text = updates_remaining + "";
+			while(Camera.main.transform.GetChild(3).GetComponent<AudioSource>().isPlaying); // Wait for the confirm sound to stop playing
 
             packetStartTime = Time.time;
 
@@ -149,7 +151,15 @@ public class BlackHatMenu : MonoBehaviour
 
 
             packetCoolDownButton.enabled = false;
-        }
+
+			// Play settings update sound
+			Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
+			updates_remaining--;
+            updatesRemainingValue.text = updates_remaining + "";
+        } else
+			// Play settings failed to update sound
+			Camera.main.transform.GetChild(5).GetComponent<AudioSource>().Play();
+
         AutoHelpScreenBlackhatManager.inst.OnConfirmedType();
         if(!MainMenu.isMultiplayerSelectedFromMenu) {
             PacketPoolManager.inst.OnBlackhatUpdateStrategy();
@@ -163,8 +173,7 @@ public class BlackHatMenu : MonoBehaviour
     public void updateTargetPercentages()
     {
         if (updates_remaining > 0) {
-            updates_remaining--;
-            updatesRemainingValue.text = updates_remaining + "";
+			while(Camera.main.transform.GetChild(3).GetComponent<AudioSource>().isPlaying); // Wait for the confirm sound to stop playing
 
             targettingStartTime = Time.time;
 
@@ -193,7 +202,17 @@ public class BlackHatMenu : MonoBehaviour
             AutoHelpScreenBlackhatManager.inst.OnConfirmedTarget();
 
             //       text.text = trgt(1, t1) + "\n" + trgt(2, t2) + "\n" + trgt(3, t3);
-        }
+
+			// Play settings update sound
+			Camera.main.transform.GetChild(3).GetComponent<AudioSource>().Play();
+			updates_remaining--;
+            updatesRemainingValue.text = updates_remaining + "";
+
+			// TODO: Is check if this is updating properly
+        } else {
+			// Play settings failed to update sound
+			Camera.main.transform.GetChild(5).GetComponent<AudioSource>().Play();
+		}
 
 
     }
@@ -248,7 +267,7 @@ public class BlackHatMenu : MonoBehaviour
             targettingCoolDownButton_text.text = "Cooling Down... ";
         }
 
-       
+
         packet_elapsed = Time.time - packetStartTime;
 
         if (packet_elapsed > packetMaxCoolDown) {
