@@ -46,7 +46,19 @@ public class SimpleEnemyController : NetworkBehaviour {
     public static int instance_id;
 
     //Target destination
-    public Destination destination;
+	[SerializeField]
+	private Destination _destination; // Backing for the public property
+    public Destination destination {
+		get => _destination;
+		set {
+			// Make sure that the new value isn't going to a honeypot (unless its malicious)
+			while(value.isHoneypot && !malicious)
+				// Randomly assign a new destination until one is found that isn't a honeypot
+				value = Destination.destinations[Random.Range(0, Destination.destinations.Count)];
+
+			_destination = value;
+		}
+	}
 
     //Path for packet to follow
     public Path path;

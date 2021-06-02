@@ -14,6 +14,8 @@ public class WhiteHatMenu : MonoBehaviour {
     public Text endgame_timer_lbl;
 
     public GameObject honeyPotButton;
+	public GameObject honeyPotHidePanel;
+	public Button honeyPotButtonInteractible;
 
     public static WhiteHatMenu inst;
 
@@ -30,6 +32,7 @@ public class WhiteHatMenu : MonoBehaviour {
     private void Start() {
 
         honeyPotButton.SetActive(MainMenu.difficulty == Difficulty.HARD);
+		honeyPotHidePanel.SetActive(false);
         OnRouterPlaced();
     }
 
@@ -61,4 +64,16 @@ public class WhiteHatMenu : MonoBehaviour {
             d.updateSelection();
         }
     }
+
+	public void OnWaveStart(){
+		nextWaveButton.OnWaveStart();
+		honeyPotHidePanel.SetActive(true); // Disable HoneyPot placeing during waves
+		honeyPotButtonInteractible.interactable = false;
+	}
+
+	public void OnWaveEnd() {
+		nextWaveButton.OnWaveEnd();
+		honeyPotHidePanel.SetActive(false); // Enable HoneyPot placing between waves
+		honeyPotButtonInteractible.interactable = true;
+	}
 }

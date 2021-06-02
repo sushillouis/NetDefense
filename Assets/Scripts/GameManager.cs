@@ -274,7 +274,7 @@ public class GameManager : MonoBehaviour {
 	public void OnWaveStart(){
 		// Make sure the ready buttons appear
 		BlackHatMenu.inst.nextWaveButton.OnWaveStart();
-		WhiteHatMenu.inst.nextWaveButton.OnWaveStart();
+		WhiteHatMenu.inst.OnWaveStart();
 	}
 
 	// Called each time a wave ends (all of the packets have reached their destination)
@@ -282,7 +282,7 @@ public class GameManager : MonoBehaviour {
 		ScoreManager.inst.OnEnteredBetweenWavesState();
 		// Make sure the ready buttons disappear
 		BlackHatMenu.inst.OnWaveEnd();
-		WhiteHatMenu.inst.nextWaveButton.OnWaveEnd();
+		WhiteHatMenu.inst.OnWaveEnd();
 		Shared.inst.unReadyPlayers();
 		poolHasSpawned = false;
 		PacketPoolManager.inst.Reset();
