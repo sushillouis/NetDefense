@@ -293,5 +293,8 @@ public class GameManager : MonoBehaviour {
 		bool whitehatWon = Shared.inst.gameMetrics.whitehat_score > Shared.inst.gameMetrics.blackhat_score;
 		if( (whitehatWon && Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT) || (!whitehatWon && Shared.inst.getDevicePlayer().role == SharedPlayer.BLACKHAT) )
 			Camera.main.transform.GetChild(2).GetComponent<AudioSource>().Play();
+
+		// Upload the scores to the database
+		StartCoroutine(ScoreDatabaseManager.inst.postScores());
 	}
 }
