@@ -130,8 +130,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void UpdateGameOverState() {
-        ScoreManager.inst.CalculateEndGameStats();
-
         if (Shared.inst.getDevicePlayer().playerID == 0)
             Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_METRICS,
                 ScoreManager.inst.totalFriendlyPacketsSpawned

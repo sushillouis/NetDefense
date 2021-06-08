@@ -53,6 +53,7 @@ public class PacketCompletedMetric {
 
 public class ScoreManager : MonoBehaviour {
     public static ScoreManager inst;
+	public void Awake() { inst = this; }
 
     public int updatesGivenPerWave;
 
@@ -70,11 +71,8 @@ public class ScoreManager : MonoBehaviour {
     public float fraction_black_hat_score;
     public float fraction_white_hat_score;
 
-    public float friendly_spawn_probability;
-    public float bad_spawn_probability;
-
-    public int black_hat_score_total_for_end_game;
-    public int white_hat_score_total_for_end_game;
+    // public int black_hat_score_total_for_end_game;
+    // public int white_hat_score_total_for_end_game;
 
     public float white_score_derivative;
     public float black_score_derivative;
@@ -84,7 +82,6 @@ public class ScoreManager : MonoBehaviour {
 
     public float update_score_rate; // update score by rate of change every n seconds
     public float timer;
-    public float elapsed;
 
     public int maxPacketsConsidered; // history size
     public List<PacketCompletedMetric> packetMetrics; // packet lifecycle history about last n instances
@@ -94,11 +91,9 @@ public class ScoreManager : MonoBehaviour {
 
     public int getFrequencyOfProfile(PacketProfile profile) {
         int frequency = 0;
-        foreach (PacketProfile pp in packetTypeHistory) {
-            if (profile.color == pp.color && profile.shape == pp.shape && profile.size == pp.size) {
+        foreach (PacketProfile pp in packetTypeHistory)
+            if (profile.color == pp.color && profile.shape == pp.shape && profile.size == pp.size)
                 frequency++;
-            }
-        }
 
         return frequency;
     }
@@ -108,24 +103,17 @@ public class ScoreManager : MonoBehaviour {
         for (int i = 0; i < 3 * 3 * 3; i++)
             histogram.Add(new KeyValuePair<PacketProfile, int>(PacketProfileTypes.profiles[i], getFrequencyOfProfile(PacketProfileTypes.profiles[i])));
 
-
-        histogram.Sort(delegate (KeyValuePair<PacketProfile, int> e1, KeyValuePair<PacketProfile, int> e2) {
-
-            return e2.Value.CompareTo(e1.Value);
+		histogram.Sort(delegate (KeyValuePair<PacketProfile, int> e1, KeyValuePair<PacketProfile, int> e2) {
+			return e2.Value.CompareTo(e1.Value);
         });
     }
 
     public PacketCompletedMetric getMetricById(int id) {
-        foreach (PacketCompletedMetric metric in packetMetrics) {
+        foreach (PacketCompletedMetric metric in packetMetrics)
             if (metric.id == id)
                 return metric;
-        }
 
         return null;
-    }
-
-    public void Awake() {
-        inst = this;
     }
 
     public void Start() {
@@ -139,24 +127,16 @@ public class ScoreManager : MonoBehaviour {
         timer = Time.time;
 
 
-        if (MainMenu.difficulty == Difficulty.EASY) {
+        if (MainMenu.difficulty == Difficulty.EASY)
             updatesGivenPerWave = 2;
-        }
-        if (MainMenu.difficulty == Difficulty.MEDIUM) {
+        else if (MainMenu.difficulty == Difficulty.MEDIUM || MainMenu.difficulty == Difficulty.HARD)
             updatesGivenPerWave = 1;
-        }
-        if (MainMenu.difficulty == Difficulty.HARD) {
-            updatesGivenPerWave = 1;
-        }
     }
 
     public void Update() {
 
         if (GameManager.inst.isBetweenWaves || Shared.inst.gameState.currentState == SharedGameStates.OVER)
             return;
-
-        friendly_spawn_probability = 1 - PacketPoolManager.inst.badSpawnProbability;
-        bad_spawn_probability = 1 - friendly_spawn_probability;
 
         if (packetMetrics.Count < 3)
             return;
@@ -165,29 +145,25 @@ public class ScoreManager : MonoBehaviour {
         int badPacketSuccesses = 0;
         int totalbadPackets = 0;
         foreach (PacketCompletedMetric metric in packetMetrics) {
-            if (metric.wasMalic && metric.status == PacketLifeStatus.SUCCESSFUL) {
+            if (metric.wasMalic && metric.status == PacketLifeStatus.SUCCESSFUL)
                 badPacketSuccesses++;
 
-            }
-            if (metric.wasMalic)
+			if (metric.wasMalic)
                 totalbadPackets++;
-            // Debug.Log("looping " + metric.status + " ismalic " + metric.wasMalic);
-
         }
 
         if (totalbadPackets == 0)
             return;
 
-        fraction_black_hat_score = (badPacketSuccesses / (float)totalbadPackets);
-        fraction_white_hat_score = (1f - fraction_black_hat_score);
+        if ((Time.time - timer) > update_score_rate) {
+			// There is no point in calculating this stuff if enouph time hasn't elapsed
+			fraction_black_hat_score = (badPacketSuccesses / (float)totalbadPackets);
+	        fraction_white_hat_score = (1f - fraction_black_hat_score);
 
-		// Debug.Log(fraction_white_hat_score + " - " + fraction_black_hat_score);
+	        white_score_derivative = (fraction_white_hat_score * scoreFactor);
+	        black_score_derivative = (fraction_black_hat_score * scoreFactor);
 
-        white_score_derivative = (fraction_white_hat_score * scoreFactor);
-        black_score_derivative = (fraction_black_hat_score * scoreFactor);
-
-        elapsed = Time.time - timer;
-        if (elapsed > update_score_rate) {
+			// Add the derivative to the score
             white_score += white_score_derivative;
             black_score += black_score_derivative;
             timer = Time.time;
@@ -197,7 +173,11 @@ public class ScoreManager : MonoBehaviour {
     public void OnEnteredBetweenWavesState() {
         WhiteHatNPC.inst.OnBetweenWaves();
         BlackHatNPC.inst.OnBetweenWaves();
+
+		// Show end of wave screen
         DismissableScreenManager.inst.mainContent.isValid = true;
+
+		// Give more updates to each router
         GameObject[] routers = GameObject.FindGameObjectsWithTag("Router");
         foreach (GameObject go in routers) {
             Router r = go.GetComponent<Router>();
@@ -205,21 +185,6 @@ public class ScoreManager : MonoBehaviour {
                 r.updatesRemaining += updatesGivenPerWave;
         }
         RouterManager.inst.settings.SetActive(false);
-    }
-
-    public void CalculateEndGameStats() {
-        totalPacketsSpawned = totalBadPacketsSpawned + totalFriendlyPacketsSpawned;
-
-		// TODO: Why do we use this seperate method for calculating end game score? We don't we just use the normal score?
-        // white_hat_score_total_for_end_game = (int)((friendlyPacketSuccesses / (float)totalFriendlyPacketsSpawned) * scoreFactor);
-        // black_hat_score_total_for_end_game = (int)((badPacketSuccesses / (float)totalBadPacketsSpawned) * scoreFactor);
-		white_hat_score_total_for_end_game = (int)white_score;
-		black_hat_score_total_for_end_game = (int)black_score;
-    }
-
-    public void OnWhiteHatEarnMoney(int amt) {
-        Shared.inst.gameMetrics.whitehat_cash -= amt;
-        WhiteHatMenu.inst.OnCashChanged();
     }
 
     public void OnFriendlyPacketTransfered(int instanceID) {
@@ -267,14 +232,11 @@ public class ScoreManager : MonoBehaviour {
     }
 
     public void OnMetricsUpdated() {
-        // update ui here
+		// Calculate total number of packets that have spawned
+		totalPacketsSpawned = totalBadPacketsSpawned + totalFriendlyPacketsSpawned;
 
         // for plot of total spawned vs filtered
         badPacketsFilteredHistory.Add(new KeyValuePair<float, float>(totalBadPacketsSpawned, badPacketSuccesses));
-
-        score_black.text = (int)Shared.inst.gameMetrics.blackhat_score + "";
-        score_white.text = (int)Shared.inst.gameMetrics.whitehat_score + "";
-
 
         if (!MainMenu.isMultiplayerSelectedFromMenu) {
             Shared.inst.gameMetrics.whitehat_score = (int)white_score;
@@ -287,5 +249,8 @@ public class ScoreManager : MonoBehaviour {
             Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SCORES, (int)black_score + "," + (int)white_score));
             Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SCORE_DERRIVATIVES, (int)black_score_derivative + "," + (int)white_score_derivative));
         }
+
+		// update ui here
+        UpdateUIClient();
     }
 }

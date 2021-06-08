@@ -4634,7 +4634,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 58.2, y: -34.15496}
-  m_SizeDelta: {x: -53.44, y: 11}
+  m_SizeDelta: {x: -38.91, y: 11}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &251970743
 MonoBehaviour:
@@ -4667,7 +4667,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 9999
+  m_Text: 0
 --- !u!222 &251970744
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31761,17 +31761,12 @@ MonoBehaviour:
   friendlyPacketSuccesses: 0
   fraction_black_hat_score: 0
   fraction_white_hat_score: 0
-  friendly_spawn_probability: 0.96153843
-  bad_spawn_probability: 0.03846154
-  black_hat_score_total_for_end_game: 0
-  white_hat_score_total_for_end_game: 0
   white_score_derivative: 0
   black_score_derivative: 0
   white_score: 0
   black_score: 0
   update_score_rate: 1
   timer: 0
-  elapsed: 0
   maxPacketsConsidered: 25
   packetMetrics: []
   packetTypeHistory: []
