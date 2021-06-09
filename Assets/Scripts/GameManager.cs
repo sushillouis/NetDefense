@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour {
         whiteHatUI = UI.transform.GetChild(0).gameObject;
         blackHatUI = UI.transform.GetChild(1).gameObject;
 
-
+		Shared.inst.gameMetrics.startTime = getCurrentEpochTime();
 
         if (!MainMenu.isMultiplayerSelectedFromMenu) {
             /* Shared.inst.getDevicePlayer().username = "Player 1";
@@ -90,6 +90,12 @@ public class GameManager : MonoBehaviour {
             Shared.inst.getDevicePlayer().username = "You";
         }
     }
+
+	// Get the number of seconds since January 1st, 1970
+	public ulong getCurrentEpochTime(){
+		System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+		return (ulong)(System.DateTime.UtcNow - epochStart).TotalSeconds;
+	}
 
     public void forceNetworkIdentiesAwake() {
         poolManager.SetActive(true);
@@ -291,6 +297,8 @@ public class GameManager : MonoBehaviour {
 		bool whitehatWon = Shared.inst.gameMetrics.whitehat_score > Shared.inst.gameMetrics.blackhat_score;
 		if( (whitehatWon && Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT) || (!whitehatWon && Shared.inst.getDevicePlayer().role == SharedPlayer.BLACKHAT) )
 			Camera.main.transform.GetChild(2).GetComponent<AudioSource>().Play();
+
+		Shared.inst.gameMetrics.endTime = getCurrentEpochTime();
 
 		// Upload the scores to the database
 		StartCoroutine(ScoreDatabaseManager.inst.postScores());

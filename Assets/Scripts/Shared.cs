@@ -289,6 +289,9 @@ public class GameMetrics {
     public float derrivative_whitehat_score;
     public float derrivative_blackhat_score;
 
+	public ulong startTime = 0;
+	public ulong endTime = 0;
+
     public float[] metrics; // metrics for end of game report
 
     public Dictionary<string, float> target_probabilities = new Dictionary<string, float>();

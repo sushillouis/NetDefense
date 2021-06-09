@@ -3615,6 +3615,8 @@ MonoBehaviour:
     blackhat_score: 0
     derrivative_whitehat_score: 0
     derrivative_blackhat_score: 0
+    startTime: 0
+    endTime: 0
     metrics: []
   gameState:
     _currentState: 0

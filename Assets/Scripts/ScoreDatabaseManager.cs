@@ -22,7 +22,9 @@ public class ScoreDatabaseManager : MonoBehaviour
 		// Put together the request URL
 		SharedPlayer devicePlayer = Shared.inst.getDevicePlayer();
 		string request = "?action=save&hat=" + (devicePlayer.role == SharedPlayer.WHITEHAT ? "white" : "black")
-			+ "&name=" + UnityWebRequest.EscapeURL(devicePlayer.username) + "&score=" + (devicePlayer.role == SharedPlayer.WHITEHAT ? Shared.inst.gameMetrics.whitehat_score : Shared.inst.gameMetrics.blackhat_score );
+			+ "&name=" + UnityWebRequest.EscapeURL(devicePlayer.username) + "&score=" + (devicePlayer.role == SharedPlayer.WHITEHAT ? Shared.inst.gameMetrics.whitehat_score : Shared.inst.gameMetrics.blackhat_score )
+			+ "&diff=" + (int)MainMenu.difficulty + "&start=" + Shared.inst.gameMetrics.startTime + "&end=" + Shared.inst.gameMetrics.endTime
+			+ "&updates=" + (devicePlayer.role == SharedPlayer.WHITEHAT ? whiteHatUpdatesRemaining() : BlackHatMenu.inst.updates_remaining);
 		// TODO: How should we deal with acquiring the player's name? (Random based on IP or mac address?)
 
 		// Send the store request
@@ -32,6 +34,19 @@ public class ScoreDatabaseManager : MonoBehaviour
 		// Check to see if there are any errors
         if(www.error != null) Debug.Log(www.error);
 		else Debug.Log("Data successfully saved to server.");
+	}
+
+	private int whiteHatUpdatesRemaining() {
+		int ret = 0;
+		// Give more updates to each router
+        GameObject[] routers = GameObject.FindGameObjectsWithTag("Router");
+        foreach (GameObject go in routers) {
+            Router r = go.GetComponent<Router>();
+            if (r != null)
+                ret += r.updatesRemaining;
+        }
+
+		return ret;
 	}
 
 	// This function information
