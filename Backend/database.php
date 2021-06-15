@@ -37,8 +37,8 @@
 		$uuid = md5($name . $remoteIP);
 
 		// If the score currently in the database is greater than the new score... don't bother saving it
-		$savedScore = $db->query("SELECT Score FROM Scores WHERE UUID='" . $uuid. "' AND Hat='" . $databaseHat . "' AND Difficulty='" . $difficulty . "';")->fetchArray();
-		if($savedScore && $score < $savedScore[0]) return;
+		// $savedScore = $db->query("SELECT Score FROM Scores WHERE UUID='" . $uuid. "' AND Hat='" . $databaseHat . "' AND Difficulty='" . $difficulty . "';")->fetchArray();
+		// if($savedScore && $score < $savedScore[0]) return;
 
 		// Add the row to the database (overwriting if it is already present)
 		echo 'INSERT OR REPLACE INTO Scores (UUID, Hat, Difficulty, Name, Score, UpdatesRemaining, StartTime, EndTime) VALUES (\'' . $uuid . '\', \'' . $databaseHat . '\', \'' . $difficulty . '\', \'' . $name . '\', \'' . $score . '\', \'' . $updatesRemaining . '\', \'' . $startTime . '\', \'' . $endTime . '\'); ';
@@ -60,16 +60,6 @@
 		$results = $db->query($query);
 		while($row = $results->fetchArray())
 			$data[] = $row['UUID'] . ", " . $row['Hat'] .  ", " . level2string($row['Difficulty']) . ", " . $row['Name'] . ", " . $row['Score'] . ", " . $row['UpdatesRemaining'] . ", " . date($dateFormat, $row['StartTime']) . ", " . date($dateFormat, $row['EndTime']);
-
-		// // If both hats are selected get the data from the other hat as well
-		// if(isset($_GET['hat']) && $_GET['hat'] == "both"){
-		// 	$results = $db->query('SELECT * FROM WhiteHatScores;');
-		// 	while($row = $results->fetchArray())
-		// 		$data[] = $row['UUID'] . ", WhiteHat, " . $row['Name'] . ", " . $row['Score'];
-		// }
-
-		// Make sure the data is sorted by UUID
-		// sort($data);
 
 		// Print out the data as standard CSV
 		echo "UUID, HAT, DIFFICULTY, NAME, SCORE, UPDATES REMAINING, START TIME, END TIME\n";
