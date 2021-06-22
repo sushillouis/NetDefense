@@ -2772,14 +2772,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 171201073}
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1447696247}
   m_Father: {fileID: 934501335}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 55, y: 0, z: 0}
 --- !u!1 &174378616
 GameObject:
   m_ObjectHideFlags: 0
@@ -27981,7 +27981,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301974687}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 72.95, z: 2.61}
+  m_LocalPosition: {x: 0, y: 48.47, z: 19.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 934501335}
@@ -33803,9 +33803,9 @@ MonoBehaviour:
   - {fileID: 4300000, guid: 17b19acf8db6b4b429a8a62505b25437, type: 3}
   - {fileID: 4300000, guid: 458464cad38215042a40dd85185cca44, type: 3}
   sizes:
-  - 0.5
   - 1
-  - 1.5
+  - 2
+  - 3
   UI: {fileID: 661537090}
   match_length: 60
   GraphWidget: {fileID: 1188183794}
@@ -38533,8 +38533,8 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     chained: 1
-  - position: {x: -3.0053804, y: 79.12598, z: 2.728608}
-    rotation: {x: 0.41868806, y: -0.000000003513949, z: 0.0000000010991501, w: 0.9081301}
+  - position: {x: 0, y: 52.581097, z: 3.3938217}
+    rotation: {x: 0.32063338, y: 0, z: 0, w: 0.9472034}
     handleprev: {x: 0, y: 0, z: 0}
     handlenext: {x: 0, y: 0, z: 0}
     curveTypeRotation: 0
