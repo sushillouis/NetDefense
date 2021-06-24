@@ -144,7 +144,7 @@ public class LobbyScreenManager : MonoBehaviour {
 	void playerLeft(Player _){
 		// If the host left then we leave the room as well
 		if(!NetworkingManager.isHost){
-			NetworkingManager.inst.LeaveRoom();
+			NetworkingManager.instance.LeaveRoom();
 			init();
 		}
 	}
@@ -168,14 +168,14 @@ public class LobbyScreenManager : MonoBehaviour {
 		updatePlayerAlias();
 
 		string name = roomLabels[index].text.Split('.')[1].Trim();
-		NetworkingManager.inst.JoinRoom(name);
+		NetworkingManager.instance.JoinRoom(name);
 	}
 
 	// Function called when the WhiteHat toggle is pressed, makes the host player the whitehat or blackhat depending
 	public void OnWhitehatToggleStateChanged(bool state){
 		if(multiplayerToggle.isOn)
 			// Update the room's properties to reflect the new hat state
-			NetworkingManager.inst.SetRoomProperties(new ExitGames.Client.Photon.Hashtable(){
+			NetworkingManager.instance.SetRoomProperties(new ExitGames.Client.Photon.Hashtable(){
 				{NetworkingManager.IS_HOST_WHITE_HAT, state} // hat
 			});
 		else {
@@ -192,7 +192,7 @@ public class LobbyScreenManager : MonoBehaviour {
 		// If we aren't the host then toggle our ready state
 		if(!NetworkingManager.isHost){
 			NetworkingManager.localPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable(){
-				{NetworkingManager.IS_PLAYER_READY, !NetworkingManager.inst.isPlayerReady(NetworkingManager.localPlayer)}
+				{NetworkingManager.IS_PLAYER_READY, !NetworkingManager.instance.isPlayerReady(NetworkingManager.localPlayer)}
 			});
 
 			updateStartButton();
@@ -206,7 +206,7 @@ public class LobbyScreenManager : MonoBehaviour {
 	// Function called when the leave room button is pressed
 	public void OnLeaveRoomButtonPressed(){
 		if(multiplayerToggle.isOn)
-			NetworkingManager.inst.LeaveRoom();
+			NetworkingManager.instance.LeaveRoom();
 		else
 			init();
 	}
@@ -238,7 +238,7 @@ public class LobbyScreenManager : MonoBehaviour {
 
 		// Update the start button to reflect the number of players in the room
 		if(NetworkingManager.isRoomFull && !NetworkingManager.isSingleplayer){
-			if(NetworkingManager.inst.allPlayersReady()){
+			if(NetworkingManager.instance.allPlayersReady()){
 				startButton.interactable = true;
 				buttonText.text = "Start";
 			} else {

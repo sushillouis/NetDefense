@@ -5,9 +5,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class NetworkingManager : MonoBehaviourPunCallbacks {
-	// The singleton instance of this class
-	public static NetworkingManager inst = null;
+public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<NetworkingManager> {
 	// Constant used to determine the hashtable key holding weather or not the host is a whitehat
 	public const string IS_HOST_WHITE_HAT = "w";
 	// Constant used to determine the hashtable key holding weather or not the player is readied up
@@ -45,17 +43,10 @@ public class NetworkingManager : MonoBehaviourPunCallbacks {
 	public static int whiteHatPlayerIndex = -1, blackHatPlayerIndex = -1;
 
 
-	// Make sure this object doesn't get destroyed as we swap between scenes
-	void Awake(){ DontDestroyOnLoad(this); }
 
 	// When enabled we setup the singleton and make sure we are connected to the PhotonNetwork
 	public override void OnEnable(){
 		base.OnEnable();
-
-		// If there is another NetworkingManager delete this object and that object becomes the new manager
-		if(inst != null)
-			Destroy(inst.gameObject);
-		inst = this;
 
 		// Connect to the photon network
 		PhotonNetwork.ConnectUsingSettings();
@@ -67,14 +58,12 @@ public class NetworkingManager : MonoBehaviourPunCallbacks {
 	public override void OnDisable(){
 		base.OnDisable();
 
-		if(inst != this) return;
-		inst = null;
-
 		PhotonNetwork.Disconnect();
 	}
 
 
 	// -- Networking Callbacks --
+
 
 	// Once we connect to the network we should automatically join the lobby
 	public override void OnConnectedToMaster(){
