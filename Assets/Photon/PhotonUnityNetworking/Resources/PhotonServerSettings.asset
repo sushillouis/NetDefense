@@ -38,6 +38,10 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - RPC_SetProperties
+  - RPC_InitPath
+  - RPC_SetDestination
+  - RPC_SetStartPoint
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

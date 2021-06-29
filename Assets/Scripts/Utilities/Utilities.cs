@@ -19,4 +19,21 @@ public class Utilities {
 		// If none of the cases fail then the point is between the two end points
 		return true;
 	}
+
+	// Creates a Vector3 where every axis is the same (value)
+	public static Vector3 toVec(float value){
+		return new Vector3(value, value, value);
+	}
+
+	// Returns a new Vector3 with the given <y> value applied to the given <position>
+	public static Vector3 positionSetY(Vector3 position, float y){
+		return new Vector3(position.x, y, position.z);
+	}
+
+	// Returns a new Vector3 where the y value of the given <position> is 0
+	public static Vector3 positionNoY(Vector3 position) {
+		return positionSetY(position, 0);
+	}
+
+
 }

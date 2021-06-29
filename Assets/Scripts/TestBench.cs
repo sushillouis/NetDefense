@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class TestBench : MonoBehaviour {
 	public PathNodeBase target;
+
+	void Awake(){
+		PhotonNetwork.OfflineMode = true;
+		PhotonNetwork.JoinRandomRoom();
+	}
 
     // Start is called before the first frame update
     void Start() {
@@ -15,6 +21,8 @@ public class TestBench : MonoBehaviour {
 		foreach(var c in path)
 			debug += c + ", ";
 		Debug.Log(debug);
+
+
     }
 
 }

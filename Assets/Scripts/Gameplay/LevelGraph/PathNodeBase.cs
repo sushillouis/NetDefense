@@ -63,7 +63,7 @@ public class PathNodeBase : MonoBehaviour {
 
 
 	// On awake make sure that the graph connections are updated
-	void Awake(){
+	virtual protected void Awake(){
 		UpdateLocalGraphConnections();
 	}
 
@@ -95,7 +95,7 @@ public class PathNodeBase : MonoBehaviour {
 
 					// Calculate the distance to this node
 					float distance = (positionNoY - nodePositionNoY).magnitude;
-					// If that distance is less than every other distance then this is the cloest node in this direction (but only save it if we can connect in this direction)
+					// If that distance is less than every other distance then this is the closest node in this direction (but only save it if we can connect in this direction)
 					if(distance < minDist && (node.connectableMask & opposite(direction)) > 0){
 						minDist = distance;
 						minObj = node;
@@ -105,7 +105,7 @@ public class PathNodeBase : MonoBehaviour {
 
 				// Set the closest node found as the connected node in that direction
 				connectedNodes[toIndex(direction)] = minObj;
-				// If the cloest node exists, set this node as the closest node to that node in the opposite direction
+				// If the closest node exists, set this node as the closest node to that node in the opposite direction
 				if(minObj != null) minObj.connectedNodes[toIndex(opposite(direction))] = this;
 			}
 	}
@@ -121,10 +121,6 @@ public class PathNodeBase : MonoBehaviour {
 			node = _node;
 			distance = dist;
 		}
-
-		public override string ToString(){
-			return node.name + "(" + visited + ")=" + distance;
-		}
 	}
 
 	// Finds the (theoretically) shortest path to the target node using Dijkstra's algorithm
@@ -132,7 +128,7 @@ public class PathNodeBase : MonoBehaviour {
 		// Create a list of node distance information
 		List<NodeDistInfo> nodeDistances = new List<NodeDistInfo>();
 
-		// Add all of the nodes to a list of node/distance pairs (all of the distances are infnity, except this node which is 0)
+		// Add all of the nodes to a list of node/distance pairs (all of the distances are infinity, except this node which is 0)
 		PathNodeBase[] tempAllNodes = FindObjectsOfType<PathNodeBase>();
 		foreach(PathNodeBase node in tempAllNodes)
 			if(node == this) nodeDistances.Add(new NodeDistInfo(node, 0));
@@ -149,12 +145,12 @@ public class PathNodeBase : MonoBehaviour {
 			foreach(PathNodeBase neighbor in currentNode.connectedNodes){
 				if(neighbor == null) continue; // Make sure it exists
 
-				// Get the neigbor's info
+				// Get the neighbor's info
 				NodeDistInfo neighborDistancePair = nodeDistances.Find(pair => pair.node == neighbor);
-				if(neighborDistancePair.visited) continue; // Skip the neigbor if it has already been visited
+				if(neighborDistancePair.visited) continue; // Skip the neighbor if it has already been visited
 
 				// Check if the distance to the neighbor through this node is less than any other path we have tried so far...
-				float newNeighborDist = currentDistancePair.distance + (neighbor.transform.position - transform.position).magnitude;
+				float newNeighborDist = currentDistancePair.distance + (Utilities.positionNoY(neighbor.transform.position) - Utilities.positionNoY(transform.position)).magnitude;
 				if(newNeighborDist < neighborDistancePair.distance){
 					// If it is, update the distance and mark this node as the neighbor's previous node
 					neighborDistancePair.distance = newNeighborDist;
@@ -164,7 +160,7 @@ public class PathNodeBase : MonoBehaviour {
 
 			// Mark the current node as visited
 			currentDistancePair.visited = true;
-			// If the current node is the target we are done
+			// If the current node is the target, we are done
 			if(currentNode == target) break;
 
 			// Find the unvisited node with the smallest distance (which isn't infinity)
@@ -178,7 +174,7 @@ public class PathNodeBase : MonoBehaviour {
 							currentNode = nodePair.node;
 						}
 					}
-			// If we can't find an unvisited node who's distance isn't infinity we are done
+			// If we can't find an unvisited node who's distance isn't infinity, we are done
 			if(currentNode == null) break;
 		}
 
@@ -186,10 +182,10 @@ public class PathNodeBase : MonoBehaviour {
 		List<PathNodeBase> path = new List<PathNodeBase>();
 		while(currentNode != null){
 			path.Add(currentNode);
-			currentNode = nodeDistances.Find(pair => pair.node == currentNode).previous;
+			currentNode = nodeDistances.Find(pair => pair.node == currentNode).previous; // The current node becomes the previous node
 		}
 
-		// The path starts with the target node, so we reverse it
+		// The path starts with the target node, so we reverse it so it starts with the start point node
 		path.Reverse();
 		return path;
 	}
@@ -214,6 +210,5 @@ public class PathNodeBase : MonoBehaviour {
 		foreach(PathNodeBase node in allNodes)
 			node.connectedNodes = new PathNodeBase[4];
 	}
-
 #endif
 }
