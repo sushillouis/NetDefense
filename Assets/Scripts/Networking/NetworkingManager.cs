@@ -31,6 +31,15 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	public static RoomPropertiesEventCallback roomPropertiesUpdateEvent;
 	public static RoomPlayerPropertiesEventCallback roomPlayerPropertiesUpdateEvent;
 
+	// Variable used to track what happens when we disconnect
+	enum DisconnectState {
+		Simple,
+		Reconnect,
+		Offline,
+		CreateOfflineRoom,
+	}
+	DisconnectState disconnectState = DisconnectState.Simple;
+
 
 	// Variables used when room creation fails and we need to try again
 	int createRoomFailAttempts = 1;
@@ -48,10 +57,8 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	public override void OnEnable(){
 		base.OnEnable();
 
-		// Connect to the photon network
-		PhotonNetwork.ConnectUsingSettings();
-		// Make sure that scene transitions are done automatically
-		PhotonNetwork.AutomaticallySyncScene = true;
+		// Ensure we are connected to Photon
+		Reconnect();
 	}
 
 	// When disabled we cleanup the singleton and disconnect from the PhotonNetwork
@@ -75,12 +82,21 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 
 	// When we disconnect from the network make sure to reset the player indices
 	public override void OnDisconnected (DisconnectCause cause){
-		Debug.Log("Disconnected from Photon beacuse " + cause);
+		Debug.Log("Disconnected from Photon beacuse " + cause + " with state " + disconnectState);
 
 		whiteHatPlayerIndex = -1;
 		blackHatPlayerIndex = -1;
 
-		disconnectedEvent();
+		// If the disconnect was a part of a larger strategy then finish that action, otherwise fire the event
+		switch(disconnectState){
+			case DisconnectState.Simple: disconnectedEvent(); break;
+			case DisconnectState.Reconnect: Reconnect(); break;
+			case DisconnectState.Offline: GoOffline(); break;
+			case DisconnectState.CreateOfflineRoom: CreateOfflineRoom(); break;
+		}
+
+		// Make sure that the disconnect state is reset
+		disconnectState = DisconnectState.Simple;
 	}
 
 	// Pass along room updates to the connected listeners
@@ -203,6 +219,44 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 		PhotonNetwork.CurrentRoom.SetCustomProperties(changed);
 	}
 
+	// Disconnect then reconnect to the PhotonNetwork
+	public void Reconnect(){
+		// If we are connected... first disconnect
+		if(PhotonNetwork.IsConnected){
+			disconnectState = DisconnectState.Reconnect;
+			PhotonNetwork.Disconnect();
+			return;
+		}
+
+		// Connect to the photon network
+		PhotonNetwork.ConnectUsingSettings();
+		// Make sure that scene transitions are done automatically
+		PhotonNetwork.AutomaticallySyncScene = true;
+	}
+
+	// Disconnect from the PhotonNetwork then go into offline mode
+	public void GoOffline(){
+		// If we are connected... first disconnect
+		if(PhotonNetwork.IsConnected){
+			disconnectState = DisconnectState.Offline;
+			PhotonNetwork.Disconnect();
+			return;
+		}
+
+		// Switch into offline mode
+		PhotonNetwork.OfflineMode = true;
+	}
+
+	// Disconnect from the PhotonNetwork, go into offline mode, and create an offline room
+	public void CreateOfflineRoom(){
+		// Switch into offline mode
+		GoOffline();
+		if(PhotonNetwork.IsConnected) disconnectState = DisconnectState.CreateOfflineRoom;
+
+		// Join a random room while in offline mode
+		PhotonNetwork.JoinRandomRoom();
+	}
+
 
 	// -- Ready Functions
 
@@ -230,7 +284,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 
 	// Returns true if we are in a singleplayer session
 	public static bool isSingleplayer {
-		get => PhotonNetwork.CurrentRoom == null;
+		get => PhotonNetwork.OfflineMode == true;
 	}
 
 	// Returns true if we are the multiplayer session's host or if we are in a singleplayer session
@@ -257,6 +311,11 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 			if(isSingleplayer) return blackHatPlayerIndex == 0;
 			return PhotonNetwork.PlayerList[blackHatPlayerIndex].ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber;
 		}
+	}
+
+	// Returns true if we are currently in a room
+	public static bool inRoom {
+		get => PhotonNetwork.CurrentRoom != null;
 	}
 
 	// Returns true if the room is currently at its maximum capacity

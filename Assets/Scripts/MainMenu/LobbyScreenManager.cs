@@ -109,12 +109,6 @@ public class LobbyScreenManager : MonoBehaviour {
 		updateStartButton();
 	}
 
-	// Some additional logic which runs when we joined a singleplayer room
-	void joinedRoomSingleplayer(){
-		joinedRoom();
-		whiteHatToggle.gameObject.SetActive(true);
-	}
-
 	// Updates the player status text as players join and leave the room, or when the player who is the whitehat changes
 	void roomPropertiesChanged(ExitGames.Client.Photon.Hashtable _){
 		if(NetworkingManager.whiteHatPlayerIndex != -1)
@@ -160,7 +154,7 @@ public class LobbyScreenManager : MonoBehaviour {
 		if(multiplayerToggle.isOn)
 			NetworkingManager.instance.CreateRoom(2, true);
 		else
-			joinedRoomSingleplayer();
+			NetworkingManager.instance.CreateOfflineRoom();
 	}
 
 	// Function called when one of the join room buttons is pressed (it joins the specified room)
@@ -208,7 +202,7 @@ public class LobbyScreenManager : MonoBehaviour {
 		if(multiplayerToggle.isOn)
 			NetworkingManager.instance.LeaveRoom();
 		else
-			init();
+			NetworkingManager.instance.Reconnect();
 	}
 
 
@@ -245,9 +239,12 @@ public class LobbyScreenManager : MonoBehaviour {
 				startButton.interactable = false;
 				buttonText.text = "Waiting for Ready...";
 			}
-		} else {
+		} else if(!NetworkingManager.isSingleplayer) {
 			startButton.interactable = false;
 			buttonText.text = "Waiting for Players...";
+		} else {
+			startButton.interactable = true;
+			buttonText.text = "Start Singleplayer";
 		}
 	}
 }
