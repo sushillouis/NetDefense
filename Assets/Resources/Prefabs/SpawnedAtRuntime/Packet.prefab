@@ -208,6 +208,7 @@ MonoBehaviour:
   startPoint: {fileID: 0}
   destination: {fileID: 0}
   path: []
+  timeToRotate: 0.33333334
 --- !u!1001 &5391370679644756503
 PrefabInstance:
   m_ObjectHideFlags: 0

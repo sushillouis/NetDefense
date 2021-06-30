@@ -5,6 +5,9 @@ using UnityEngine;
 using Photon.Pun;
 
 public class Packet : MonoBehaviourPun {
+	// -- Types --
+
+
 	// Enum defining a packet's color
 	[Serializable]
 	public enum Color {
@@ -75,6 +78,10 @@ public class Packet : MonoBehaviourPun {
 		public static bool operator !=(Details a, Details b){ return !a.Equals(b); }
 	}
 
+
+	// -- Settings --
+
+
 	// This packet's mesh filter
 	public MeshFilter filter;
 	// This packet's mesh renderer
@@ -90,6 +97,10 @@ public class Packet : MonoBehaviourPun {
 	public Material material;
 	// List of colors for the packet to become
 	public UnityEngine.Color[] colors;
+
+
+	// -- Properties --
+	
 
 	// Property defining the packet's details (color, size, shape) (automatically network synced)
 	[SerializeField]

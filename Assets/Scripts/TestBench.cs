@@ -7,8 +7,10 @@ public class TestBench : MonoBehaviour {
 	public PathNodeBase target;
 
 	void Awake(){
-		PhotonNetwork.OfflineMode = true;
-		PhotonNetwork.JoinRandomRoom();
+		if(!PhotonNetwork.IsConnected){
+			PhotonNetwork.OfflineMode = true;
+			PhotonNetwork.JoinRandomRoom();
+		}
 	}
 
     // Start is called before the first frame update
