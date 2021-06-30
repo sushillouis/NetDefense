@@ -43,7 +43,7 @@ public class PacketPoolManager : Core.Utilities.Singleton<PacketPoolManager> {
 			// For each packet we should spawn...
 			for(int i = 0; i < toSpawn; i++){
 				// Spawn the packet over the network
-				Packet spawned = PhotonNetwork.InstantiateRoomObject(packetPrefabPath, Vector3.zero, Quaternion.identity).GetComponent<Packet>();
+				Packet spawned = PhotonNetwork.InstantiateRoomObject(packetPrefabPath, new Vector3(0, 100, 0), Quaternion.identity).GetComponent<Packet>();
 				// Locally parent it to ourselves
 				spawned.transform.parent = transform;
 

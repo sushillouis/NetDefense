@@ -16,9 +16,9 @@ public class Packet : MonoBehaviourPun {
 	// Enum defining a packet's size
 	[Serializable]
 	public enum Size {
-		Large = 1,
+		Small = 1,
 		Medium = 4,
-		Small = 6,
+		Large = 6,
 	}
 
 	// Enum defining a packet's shape
@@ -134,6 +134,22 @@ public class Packet : MonoBehaviourPun {
 		FollowPath();
 	}
 
+	// Function called whenever the packet interacts with another trigger
+	void OnTriggerEnter(Collider collider){
+		if(!NetworkingManager.isHost) return;
+
+		// If the trigger was a destination...
+		if(collider.transform.tag == "Destination"){
+			// TODO: Update scoring information
+
+			// Destroy the packet after it has had a few seconds to enter the destination
+			StartCoroutine(DestroyAfterSeconds(1));
+		}
+	}
+
+
+	// -- Movement Functions --
+
 
 	// Function which moves the packet along the path
 	int pathIndex = 1; // Variable defining the next waypoint in the path
@@ -154,7 +170,7 @@ public class Packet : MonoBehaviourPun {
 			// Look at the next waypoint (if it exists)
 			if(pathIndex + 1 < path.Count){
 				++pathIndex; // Updates the current waypoint to the next waypoint
-				transform.LookAt(Utilities.positionSetY(path[pathIndex].transform.position, transform.position.y));
+				StartCoroutine(GradualRotation(transform.rotation, Quaternion.LookRotation(Utilities.positionNoY(path[pathIndex].transform.position) - Utilities.positionNoY(path[pathIndex - 1].transform.position))));
 			}
 
 			// Reset previous distance
@@ -163,16 +179,17 @@ public class Packet : MonoBehaviourPun {
 		} else lastDistance = distance;
 	}
 
-	// Function called whenever the packet interacts with another trigger
-	void OnTriggerEnter(Collider collider){
-		if(!NetworkingManager.isHost) return;
-
-		// If the trigger was a destination...
-		if(collider.transform.tag == "Destination"){
-			// TODO: Update scoring information
-
-			// Destroy the packet after it has had a few seconds to enter the destination
-			StartCoroutine(DestroyAfterSeconds(1));
+	// Coroutine which gradually rotates the packet from the starting direction to the target direction
+	public float timeToRotate = 1f/3f; // The amount of time that it should take to rotate
+	float startTime; // Start time when the coroutine begins
+	IEnumerator GradualRotation(Quaternion startingDirection, Quaternion targetDirection){
+		// Save the start time
+		startTime = Time.time;
+		// While the scaled time is less than 110% of the total time (some extra buffer just in case)
+		while((Time.time - startTime) / timeToRotate < 1.1){
+			// Lerp from the starting direction to the target direction based on scaled time
+			transform.rotation = Quaternion.Slerp(startingDirection, targetDirection, (Time.time - startTime) / timeToRotate);
+			yield return null;
 		}
 	}
 
@@ -255,5 +272,4 @@ public class Packet : MonoBehaviourPun {
 
 		PhotonNetwork.Destroy(gameObject);
 	}
-
 }
