@@ -29,12 +29,60 @@ public class Packet : MonoBehaviourPun {
 		Cone
 	}
 
+	// Structure which stores the details (color, size, and shape) of a packet
+	[Serializable]
+	public struct Details {
+		public Color color;
+		public Size size;
+		public Shape shape;
+
+		public Details(Color color, Size size, Shape shape){
+			this.color = color;
+			this.size = size;
+			this.shape = shape;
+		}
+
+		// Variable representing the details for a malicious packet
+		public static Details maliciousPacketDetails = new Details(Color.Blue, Size.Large, Shape.Cone); // TODO: Replace with global malicious packet settings
+		// Generates a random set of details, ensuring that the returned values aren't considered malicious
+		public static Details randomNonMaliciousDetails() {
+			Details details = new Details(Utilities.randomEnum<Color>(), Utilities.randomEnum<Size>(), Utilities.randomEnum<Shape>());
+			if(details == /*TODO: Needs to be swapped for a per turn malicious packet*/ maliciousPacketDetails) details = randomNonMaliciousDetails();
+			return details;
+		}
+
+		// Object equality (Required to override ==)
+		public override bool Equals(System.Object obj) {
+			if (obj == null)
+				return false;
+			Details? o = obj as Details?;
+			return Equals(o.Value);
+		}
+
+		// Details equality
+		public bool Equals(Details o){
+			return color == o.color
+				&& size == o.size
+				&& shape == o.shape;
+		}
+
+		// Required to override Equals
+		public override int GetHashCode() { return base.GetHashCode(); }
+
+		// Equality Operator
+		public static bool operator ==(Details a, Details b){ return a.Equals(b); }
+		// Inequality Operator (Required if == is overriden)
+		public static bool operator !=(Details a, Details b){ return !a.Equals(b); }
+	}
+
 	// This packet's mesh filter
 	public MeshFilter filter;
 	// This packet's mesh renderer
 	new public MeshRenderer renderer;
 	// This packet's rigidbody
 	new public Rigidbody rigidbody;
+	// This object's selection cylinder
+	public GameObject selectionCylinder;
 
 	// List of meshes which define this packet's shape
 	public Mesh[] meshes;
@@ -43,28 +91,12 @@ public class Packet : MonoBehaviourPun {
 	// List of colors for the packet to become
 	public UnityEngine.Color[] colors;
 
-	// Property defining the packet's color (automatically network synced)
+	// Property defining the packet's details (color, size, shape) (automatically network synced)
 	[SerializeField]
-	Color _color;
-	public Color color {
-		get => _color;
-		set => SetProperties(value, _size, _shape, _movementSpeed);
-	}
-
-	// Property defining the packet's size (automatically network synced)
-	[SerializeField]
-	Size _size;
-	public Size size {
-		get => _size;
-		set => SetProperties(_color, value, _shape, _movementSpeed);
-	}
-
-	// Property defining the packet's shape (automatically network synced)
-	[SerializeField]
-	Shape _shape;
-	public Shape shape {
-		get => _shape;
-		set => SetProperties(_color, _size, value, _movementSpeed);
+	Details _details;
+	public Details details {
+		get => _details;
+		set => SetProperties(value, _movementSpeed, _isMalicious);
 	}
 
 	// Property defining the packet's movement speed (automatically network synced)
@@ -72,7 +104,15 @@ public class Packet : MonoBehaviourPun {
 	float _movementSpeed = 1;
 	public float movementSpeed {
 		get => _movementSpeed;
-		set => SetProperties(_color, _size, _shape, value);
+		set => SetProperties(_details, value, _isMalicious);
+	}
+
+	// Property defining if the packet is malicious (automatically network synced)
+	[SerializeField]
+	bool _isMalicious = false;
+	public bool isMalicious {
+		get => _isMalicious;
+		set => SetProperties(_details, _movementSpeed, value);
 	}
 
 
@@ -81,12 +121,6 @@ public class Packet : MonoBehaviourPun {
 	// Path to get from the start point to the destination point
 	public List<PathNodeBase> path = null;
 
-
-
-    // Start is called before the first frame update
-    void Start() {
-		SetProperties(Color.Blue, Size.Small, Shape.Sphere, 1);
-    }
 
 	// Manages packet movement
 	void Update() {
@@ -129,36 +163,54 @@ public class Packet : MonoBehaviourPun {
 		} else lastDistance = distance;
 	}
 
+	// Function called whenever the packet interacts with another trigger
+	void OnTriggerEnter(Collider collider){
+		if(!NetworkingManager.isHost) return;
+
+		// If the trigger was a destination...
+		if(collider.transform.tag == "Destination"){
+			// TODO: Update scoring information
+
+			// Destroy the packet after it has had a few seconds to enter the destination
+			StartCoroutine(DestroyAfterSeconds(1));
+		}
+	}
+
 
 	// -- Network Synchronization Functions --
 
 
 	// Synchronizes the properties across the network
-	public void SetProperties(Color color, Size size, Shape shape, float movementSpeed){ photonView.RPC("RPC_SetProperties", RpcTarget.AllBuffered, color, size, shape, movementSpeed); }
-	[PunRPC] void RPC_SetProperties(Color color, Size size, Shape shape, float movementSpeed){
+	public void SetProperties(Color color, Size size, Shape shape, float movementSpeed, bool isMalicious){ SetProperties(color, size, shape, movementSpeed, isMalicious); }
+	public void SetProperties(Details details, float movementSpeed, bool isMalicious){ photonView.RPC("RPC_Packet_SetProperties", RpcTarget.AllBuffered, details.color, details.size, details.shape, movementSpeed, isMalicious); }
+	[PunRPC] void RPC_Packet_SetProperties(Color color, Size size, Shape shape, float movementSpeed, bool isMalicious){
 		// Ensure the local properties match the remote ones
-		_color = color;
-		_size = size;
-		_shape = shape;
+		if(isMalicious) _details = Details.maliciousPacketDetails;  // TODO: Global malicious packet settings
+		else _details = new  Details(color, size, shape);
 		_movementSpeed = movementSpeed;
+		_isMalicious = isMalicious;
 
 		// Set the mesh based on the shape
-		filter.mesh = meshes[(int)shape];
+		filter.mesh = meshes[(int)details.shape];
 
 		// Get the list of materials off the mesh
 		Material[] mats = renderer.materials;
 		// Replace the first one with a new instance of the packet material
 		mats[0] = new Material(material);
-		mats[0].SetColor( "_EmissionColor", colors[(int) color] * ((int)size) * .5f ); // Set the packet color and emmisive intensity
+		mats[0].SetColor( "_EmissionColor", colors[(int)details.color] * ((int)details.size) * .5f ); // Set the packet color and emmisive intensity
 		// Copy the material changes back to the model
 		renderer.materials = mats;
 
 		// Set the size of the packet
-		switch(size){
+		switch(details.size){
 			case Size.Small: transform.localScale = Utilities.toVec(.1f); break;
 			case Size.Medium: transform.localScale = Utilities.toVec(.2f); break;
 			case Size.Large: transform.localScale = Utilities.toVec(.3f); break;
 		}
+
+		// TODO: this check should also be based off of difficulty
+		if(isMalicious) selectionCylinder.SetActive(true);
+		else selectionCylinder.SetActive(false);
 	}
 
 	// Wrapper function which calls all of the functions needed to setup this packet's path
@@ -169,8 +221,8 @@ public class Packet : MonoBehaviourPun {
 	}
 
 	// Sets the start point (network synced)
-	public void SetStartPoint(PathNodeBase startPoint){ photonView.RPC("RPC_SetStartPoint", RpcTarget.AllBuffered, startPoint.name); }
-	[PunRPC] void RPC_SetStartPoint(string startPointName){
+	public void SetStartPoint(PathNodeBase startPoint){ photonView.RPC("RPC_Packet_SetStartPoint", RpcTarget.AllBuffered, startPoint.name); }
+	[PunRPC] void RPC_Packet_SetStartPoint(string startPointName){
 		startPoint = GameObject.Find(startPointName).GetComponent<PathNodeBase>();
 
 		// If we are the host make sure that the object is properly positioned
@@ -179,15 +231,29 @@ public class Packet : MonoBehaviourPun {
 	}
 
 	// Sets the destination (network synced)
-	public void SetDestination(PathNodeBase Destination){ photonView.RPC("RPC_SetDestination", RpcTarget.AllBuffered, Destination.name); }
-	[PunRPC] void RPC_SetDestination(string DestinationName){
+	public void SetDestination(PathNodeBase Destination){ photonView.RPC("RPC_Packet_SetDestination", RpcTarget.AllBuffered, Destination.name); }
+	[PunRPC] void RPC_Packet_SetDestination(string DestinationName){
 		destination = GameObject.Find(DestinationName).GetComponent<PathNodeBase>();
 	}
 
 	// Generates a path from the start point to the destination (network synced)
-	public void InitPath(){ photonView.RPC("RPC_InitPath", RpcTarget.AllBuffered); }
-	[PunRPC] void RPC_InitPath(){
+	public void InitPath(){ photonView.RPC("RPC_Packet_InitPath", RpcTarget.AllBuffered); }
+	[PunRPC] void RPC_Packet_InitPath(){
 		path = startPoint.findPathTo(destination);
+	}
+
+
+	// Coroutine which destroys the packet after the specified number of seconds
+	IEnumerator DestroyAfterSeconds(float seconds){
+		yield return new WaitForSeconds(seconds);
+		Destroy();
+	}
+	// Destroys the packet (network synced)
+	public void Destroy(){ photonView.RPC("RPC_Packet_Destroy", RpcTarget.AllBuffered); }
+	[PunRPC] void RPC_Packet_Destroy(){
+		if(!NetworkingManager.isHost) return;
+
+		PhotonNetwork.Destroy(gameObject);
 	}
 
 }

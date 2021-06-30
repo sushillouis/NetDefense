@@ -35,13 +35,11 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
-  - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
-  - RPC_SetProperties
-  - RPC_InitPath
-  - RPC_SetDestination
-  - RPC_SetStartPoint
+  - RPC_Packet_Destroy
+  - RPC_Packet_InitPath
+  - RPC_Packet_SetDestination
+  - RPC_Packet_SetProperties
+  - RPC_Packet_SetStartPoint
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
