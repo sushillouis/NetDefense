@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class HoverManager : MonoBehaviour {
+public class HoverManager : Core.Utilities.Singleton<HoverManager> {
 	// Interace which defines that an object is hoverable
 	public interface IHoverable {
 		void OnHoverChanged(GameObject newHover);
@@ -15,7 +15,7 @@ public class HoverManager : MonoBehaviour {
 	public static HoverEventCallback hoverChanged;
 
 	// Reference to the currently hovered item
-	public static GameObject currentHover = null;
+	public GameObject hovered = null;
 	// Reference to the mouse position action
 	public InputActionReference mousePositionAction;
 
@@ -36,18 +36,18 @@ public class HoverManager : MonoBehaviour {
 			// When the mouse moves raycast into the scene
 			if(Physics.Raycast( currentCamera.ScreenPointToRay(ctx.ReadValue<Vector2>()), out hit )){
 				// If we hit something different than we are currently hovering over
-				if(hit.transform && hit.transform.gameObject != currentHover){
+				if(hit.transform && hit.transform.gameObject != hovered){
 					// If the object has hover logic, then fire the hover changed event
 					Utilities.GetInterfaces(out hoverables, hit.transform.gameObject);
 					if(hoverables.Count > 0){
 						hoverChanged(hit.transform.gameObject);
-						currentHover = hit.transform.gameObject;
+						hovered = hit.transform.gameObject;
 					}
 				}
 			// If the raycast failed to hit anything, then the current hover is null
 			} else {
 				hoverChanged(null);
-				currentHover = null;
+				hovered = null;
 			}
 	}
 }

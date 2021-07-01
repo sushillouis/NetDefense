@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Utilities {
 
+	// Event which doesn't take any parameters
+	public delegate void VoidEventCallback();
+
 	// Function which removes unnecessary parts from the prefab path that can be copied from unity. If these parts are not removed then the resource loader will fail to find the prefab!
 	public static void PreparePrefabPath(ref string path) { path = path.Replace("Assets/Resources/", "").Replace(".prefab", ""); }
 	public static void PreparePrefabPaths(ref string[] paths){
@@ -52,14 +55,20 @@ public class Utilities {
 	// Gets a list of components that implement the specified interface on the provided game object
 	// Code from: https://answers.unity.com/questions/523409/strategy-pattern-with-monobehaviours.html
 	public static void GetInterfaces<T>(out List<T> resultList, GameObject objectToSearch) where T: class {
-         MonoBehaviour[] list = objectToSearch.GetComponents<MonoBehaviour>();
-         resultList = new List<T>();
-         foreach(MonoBehaviour mb in list){
-             if(mb is T){
-                 //found one
-                 resultList.Add((T)((System.Object)mb));
-             }
-         }
-     }
+        MonoBehaviour[] list = objectToSearch.GetComponents<MonoBehaviour>();
+        resultList = new List<T>();
+        foreach(MonoBehaviour mb in list){
+			if(mb is T)
+				//found one
+                resultList.Add((T)((System.Object)mb));
+        }
+	}
 
+	// Gets the total bounds of the object, considering all of its active children
+	public static Bounds GetBoundsInChildren(GameObject obj) {
+		var bounds = new Bounds(obj.transform.position, Vector3.zero);
+		foreach (Renderer r in obj.GetComponentsInChildren<Renderer>())
+		 	bounds.Encapsulate(r.bounds);
+		return bounds;
+	}
 }

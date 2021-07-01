@@ -16,7 +16,7 @@ public class HoverHighlighter : MonoBehaviour, HoverManager.IHoverable /* It has
 	public void OnHoverChanged(GameObject newHover){
 		if(newHover == gameObject)
 			requestHoverEnable(true);
-		else if(HoverManager.currentHover == gameObject && newHover != gameObject)
+		else if(HoverManager.instance.hovered == gameObject && newHover != gameObject)
 			requestHoverEnable(false);
 	}
 

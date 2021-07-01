@@ -7,7 +7,6 @@ using Photon.Pun;
 public class Packet : MonoBehaviourPun {
 	// -- Types --
 
-
 	// Enum defining a packet's color
 	[Serializable]
 	public enum Color {
@@ -76,6 +75,10 @@ public class Packet : MonoBehaviourPun {
 		public static bool operator ==(Details a, Details b){ return a.Equals(b); }
 		// Inequality Operator (Required if == is overriden)
 		public static bool operator !=(Details a, Details b){ return !a.Equals(b); }
+
+		public override string ToString(){
+			return "Color: " + color + ", Size: " + size + ", Shape: " + shape;
+		}
 	}
 
 
@@ -100,7 +103,7 @@ public class Packet : MonoBehaviourPun {
 
 
 	// -- Properties --
-	
+
 
 	// Property defining the packet's details (color, size, shape) (automatically network synced)
 	[SerializeField]
@@ -230,11 +233,16 @@ public class Packet : MonoBehaviourPun {
 		renderer.materials = mats;
 
 		// Set the size of the packet
+		selectionCylinder.transform.parent = null;
 		switch(details.size){
 			case Size.Small: transform.localScale = Utilities.toVec(.1f); break;
 			case Size.Medium: transform.localScale = Utilities.toVec(.2f); break;
 			case Size.Large: transform.localScale = Utilities.toVec(.3f); break;
 		}
+
+		// Ensure that the malicious packet indicator is properly positioned
+		selectionCylinder.transform.position = renderer.bounds.center;
+		selectionCylinder.transform.parent = transform;
 
 		// TODO: this check should also be based off of difficulty
 		if(isMalicious) selectionCylinder.SetActive(true);

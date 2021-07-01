@@ -40,6 +40,7 @@ MonoBehaviour:
   - RPC_Packet_SetDestination
   - RPC_Packet_SetProperties
   - RPC_Packet_SetStartPoint
+  - RPC_Router_SetGateColor
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

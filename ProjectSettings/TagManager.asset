@@ -9,6 +9,7 @@ TagManager:
   - Destination
   - FirewallTarget
   - SwitchTarget
+  - Firewall
   layers:
   - Default
   - TransparentFX

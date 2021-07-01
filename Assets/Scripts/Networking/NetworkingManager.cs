@@ -12,17 +12,16 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	public const string IS_PLAYER_READY = "r";
 
 	// Event callbacks
-	public delegate void VoidEventCallback();
 	public delegate void RoomListEventCallback(List<RoomInfo> roomList);
 	public delegate void RoomPropertiesEventCallback(ExitGames.Client.Photon.Hashtable propertiesThatChanged);
 	public delegate void RoomPlayerPropertiesEventCallback(Player targetPlayer, ExitGames.Client.Photon.Hashtable propertiesThatChanged);
 	public delegate void OtherPlayerEventCallback(Player otherPlayer);
 	// (Dis)connect
-	public static VoidEventCallback connectedEvent;
-	public static VoidEventCallback disconnectedEvent;
+	public static Utilities.VoidEventCallback connectedEvent;
+	public static Utilities.VoidEventCallback disconnectedEvent;
 	// Join/Leave room
-	public static VoidEventCallback roomJoinEvent;
-	public static VoidEventCallback roomLeaveEvent;
+	public static Utilities.VoidEventCallback roomJoinEvent;
+	public static Utilities.VoidEventCallback roomLeaveEvent;
 	public static OtherPlayerEventCallback roomOtherJoinEvent;
 	public static OtherPlayerEventCallback roomOtherLeaveEvent;
 	// Room List
