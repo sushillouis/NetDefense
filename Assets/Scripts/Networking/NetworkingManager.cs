@@ -74,7 +74,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	// Once we connect to the network we should automatically join the lobby
 	public override void OnConnectedToMaster(){
 		Debug.Log("Connected to Photon (server " + PhotonNetwork.CloudRegion + ")");
-		connectedEvent();
+		connectedEvent?.Invoke();
 
 		PhotonNetwork.JoinLobby();
 	}
@@ -88,7 +88,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 
 		// If the disconnect was a part of a larger strategy then finish that action, otherwise fire the event
 		switch(disconnectState){
-			case DisconnectState.Simple: disconnectedEvent(); break;
+			case DisconnectState.Simple: disconnectedEvent?.Invoke(); break;
 			case DisconnectState.Reconnect: Reconnect(); break;
 			case DisconnectState.Offline: GoOffline(); break;
 			case DisconnectState.CreateOfflineRoom: CreateOfflineRoom(); break;
@@ -99,7 +99,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	}
 
 	// Pass along room updates to the connected listeners
-	public override void OnRoomListUpdate (List<RoomInfo> roomList){ roomListUpdateEvent(roomList); }
+	public override void OnRoomListUpdate (List<RoomInfo> roomList){ roomListUpdateEvent?.Invoke(roomList); }
 
 	// If we failed to create a room (it is likely because the name was already taken) so add 1 to the room's name and try again
 	public override void OnCreateRoomFailed (short returnCode, string message){
@@ -113,7 +113,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	public override void OnJoinedRoom(){
 		Debug.Log("Joined a room (" + PhotonNetwork.CurrentRoom.Name + ")");
 		createRoomFailAttempts = 1;
-		roomJoinEvent();
+		roomJoinEvent?.Invoke();
 	}
 
 	// When we leave a room, we might need to return to the main menu, if that is the case then do so
@@ -126,7 +126,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 		// Make sure we are still in the Lobby
 		PhotonNetwork.JoinLobby();
 
-		roomLeaveEvent();
+		roomLeaveEvent?.Invoke();
 
 		// Return to the main menu if requested
 		if(shouldReturnToMenuOnLeave){
@@ -136,9 +136,9 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	}
 
 	// Pass player joining room events along to the listeners
-	public override void OnPlayerEnteredRoom (Player newPlayer){ roomOtherJoinEvent(newPlayer); }
+	public override void OnPlayerEnteredRoom (Player newPlayer){ roomOtherJoinEvent?.Invoke(newPlayer); }
 	// Pass player leaving room events along to the listeners
-	public override void OnPlayerLeftRoom (Player otherPlayer){ roomOtherLeaveEvent(otherPlayer); }
+	public override void OnPlayerLeftRoom (Player otherPlayer){ roomOtherLeaveEvent?.Invoke(otherPlayer); }
 
 	// When the room properties update, we need to recalculate which player is the whitehat and which player is the blackhat
 	public override void OnRoomPropertiesUpdate (ExitGames.Client.Photon.Hashtable propertiesThatChanged){
@@ -162,11 +162,11 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 		}
 
 		// Propagate the event
-		roomPropertiesUpdateEvent(propertiesThatChanged);
+		roomPropertiesUpdateEvent?.Invoke(propertiesThatChanged);
 	}
 
 	// Pass player property updates along to the listeners
-	public override void OnPlayerPropertiesUpdate (Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps){ roomPlayerPropertiesUpdateEvent(targetPlayer, changedProps); }
+	public override void OnPlayerPropertiesUpdate (Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps){ roomPlayerPropertiesUpdateEvent?.Invoke(targetPlayer, changedProps); }
 
 
 	// -- Public Interaction Functions (Providing the Outside World a way to manipulate the network)

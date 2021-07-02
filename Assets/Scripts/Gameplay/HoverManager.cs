@@ -40,13 +40,13 @@ public class HoverManager : Core.Utilities.Singleton<HoverManager> {
 					// If the object has hover logic, then fire the hover changed event
 					Utilities.GetInterfaces(out hoverables, hit.transform.gameObject);
 					if(hoverables.Count > 0){
-						hoverChanged(hit.transform.gameObject);
+						hoverChanged?.Invoke(hit.transform.gameObject);
 						hovered = hit.transform.gameObject;
 					}
 				}
 			// If the raycast failed to hit anything, then the current hover is null
 			} else {
-				hoverChanged(null);
+				hoverChanged?.Invoke(null);
 				hovered = null;
 			}
 	}
