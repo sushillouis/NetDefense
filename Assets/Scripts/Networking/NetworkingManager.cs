@@ -37,7 +37,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 		Offline,
 		CreateOfflineRoom,
 	}
-	DisconnectState disconnectState = DisconnectState.Simple;
+	static DisconnectState disconnectState = DisconnectState.Simple;
 
 
 	// Variables used when room creation fails and we need to try again
@@ -45,7 +45,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	byte createPlayerCountCache;
 	bool createIsWhiteHatCache;
 	// Variable used to determine if we should return to the main menu when we leave a room or not
-	bool shouldReturnToMenuOnLeave = false;
+	static bool shouldReturnToMenuOnLeave = false;
 
 	// The index (in PhotonNetwork.PlayerList) of the white and blackhat players
 	public static int whiteHatPlayerIndex = -1, blackHatPlayerIndex = -1;
@@ -64,7 +64,8 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	public override void OnDisable(){
 		base.OnDisable();
 
-		PhotonNetwork.Disconnect();
+		if(shouldReturnToMenuOnLeave) Reconnect();
+		else PhotonNetwork.Disconnect();
 	}
 
 
@@ -96,6 +97,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 
 		// Make sure that the disconnect state is reset
 		disconnectState = DisconnectState.Simple;
+		shouldReturnToMenuOnLeave = false;
 	}
 
 	// Pass along room updates to the connected listeners
@@ -129,10 +131,8 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 		roomLeaveEvent?.Invoke();
 
 		// Return to the main menu if requested
-		if(shouldReturnToMenuOnLeave){
-			shouldReturnToMenuOnLeave = false;
+		if(shouldReturnToMenuOnLeave)
 			SceneManager.LoadScene(0);
-		}
 	}
 
 	// Pass player joining room events along to the listeners

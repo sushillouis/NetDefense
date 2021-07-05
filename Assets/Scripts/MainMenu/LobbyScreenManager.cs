@@ -66,6 +66,10 @@ public class LobbyScreenManager : MonoBehaviour {
 			Destroy(loadingPrompt);
 			loadingPrompt = null;
 		}
+
+		// Ensure that the player's alias is saved between loads to the main menu
+		aliasTextbox.text = NetworkingManager.localPlayer.NickName;
+		if(aliasTextbox.text == "You") aliasTextbox.text = "";
 	}
 
 	// Updates the list of rooms that can be joined
