@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PacketPoolManager : Core.Utilities.Singleton<PacketPoolManager> {
+public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPoolManager> {
 
 	// Path to the packet prefab we should spawn
 	public string packetPrefabPath;
 
 	// The number of seconds that should elapse before another packet spawns
 	public float secondsBetweenPackets = 1.5f;
-	// The probability of a packet being malicious
-	public float maliciousProbability = .33333f;
 
 	// Property tracking weather or not we are currently spawning packets
 	bool _isSpawning = false;
@@ -47,13 +45,11 @@ public class PacketPoolManager : Core.Utilities.Singleton<PacketPoolManager> {
 				// Locally parent it to ourselves
 				spawned.transform.parent = transform;
 
-				// Determine if is malicious or not (network synced)
-				spawned.isMalicious = Random.Range(0f, 1f) <= maliciousProbability;
-				// If it isn't malicious, determine what it looks like (network synced)
-				if(!spawned.isMalicious) spawned.details = Packet.Details.randomNonMaliciousDetails();
-
-				// Pick a random starting point amd destination for it (network synced)
+				// Pick a random starting point and destination for it (network synced)
 				spawned.setStartDestinationAndPath(StartingPoint.startingPoints[Random.Range(0, StartingPoint.startingPoints.Length)], Destination.destinations[Random.Range(0, Destination.destinations.Length)]);
+
+				// Setup the packet's appearance and malicious status (network synced)
+				spawned.initPacketDetails();
 
 				// Wait for the configured time between packets
 				yield return new WaitForSeconds(secondsBetweenPackets);

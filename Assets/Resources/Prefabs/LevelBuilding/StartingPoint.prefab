@@ -50,6 +50,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  maliciousPacketDetails:
+    color: 0
+    size: 1
+    shape: 0
+  maliciousPacketProbability: 0.33333
 --- !u!1 &6676117428811601370
 GameObject:
   m_ObjectHideFlags: 0

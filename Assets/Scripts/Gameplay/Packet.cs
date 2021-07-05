@@ -44,15 +44,6 @@ public class Packet : MonoBehaviourPun {
 			this.shape = shape;
 		}
 
-		// Variable representing the details for a malicious packet
-		public static Details maliciousPacketDetails = new Details(Color.Blue, Size.Large, Shape.Cone); // TODO: Replace with global malicious packet settings
-		// Generates a random set of details, ensuring that the returned values aren't considered malicious
-		public static Details randomNonMaliciousDetails() {
-			Details details = new Details(Utilities.randomEnum<Color>(), Utilities.randomEnum<Size>(), Utilities.randomEnum<Shape>());
-			if(details == /*TODO: Needs to be swapped for a per turn malicious packet*/ maliciousPacketDetails) details = randomNonMaliciousDetails();
-			return details;
-		}
-
 		// Object equality (Required to override ==)
 		public override bool Equals(System.Object obj) {
 			if (obj == null)
@@ -76,6 +67,7 @@ public class Packet : MonoBehaviourPun {
 		// Inequality Operator (Required if == is overriden)
 		public static bool operator !=(Details a, Details b){ return !a.Equals(b); }
 
+		// To string method used for selection debugging // TODO: remove
 		public override string ToString(){
 			return "Color: " + color + ", Size: " + size + ", Shape: " + shape;
 		}
@@ -131,7 +123,8 @@ public class Packet : MonoBehaviourPun {
 
 
 	// Nodes defining the start and end point of the packet's journey
-	public PathNodeBase startPoint, destination; // TODO: do we actually care about the startPoint and destination? Or do we only care about the path?
+	public StartingPoint startPoint;
+	public Destination destination; // TODO: do we actually care about the startPoint and destination? Or do we only care about the path?
 	// Path to get from the start point to the destination point
 	public List<PathNodeBase> path = null;
 
@@ -159,6 +152,15 @@ public class Packet : MonoBehaviourPun {
 			// Destroy the packet after it has had a few seconds to enter the destination
 			StartCoroutine(DestroyAfterSeconds(1));
 		}
+	}
+
+	// Function which determines if a packet is malicious or not and then generates/loads the appropriate packet details
+	public void initPacketDetails(){
+		// Determine if this packet is malicious or not (not network synced, we will network sync when we set the details)
+		_isMalicious = UnityEngine.Random.Range(0f, 1f) <= startPoint.maliciousPacketProbability;
+
+		// Set the packet details (if the packed is malicious the network property synchronizer will load the correct settings from the starting point)
+		details = startPoint.randomNonMaliciousDetails();
 	}
 
 
@@ -211,13 +213,48 @@ public class Packet : MonoBehaviourPun {
 	// -- Network Synchronization Functions --
 
 
+	// Wrapper function which calls all of the functions needed to setup this packet's path
+	// NOTE: The network syncing relies on each starting point and destination having a unique name!
+	public void setStartDestinationAndPath(StartingPoint startPoint, Destination destination){
+		SetStartPoint(startPoint);
+		SetDestination(destination);
+		InitPath();
+	}
+
+	// Sets the start point (network synced)
+	// NOTE: The network syncing relies on each starting point and destination having a unique name!
+	public void SetStartPoint(StartingPoint startPoint){ photonView.RPC("RPC_Packet_SetStartPoint", RpcTarget.AllBuffered, startPoint.name); }
+	[PunRPC] void RPC_Packet_SetStartPoint(string startPointName){
+		startPoint = GameObject.Find(startPointName).GetComponent<StartingPoint>();
+
+		// If we are the host make sure that the object is properly positioned
+		if(NetworkingManager.isHost)
+			transform.position = startPoint.transform.position;
+	}
+
+	// Sets the destination (network synced)
+	// NOTE: The network syncing relies on each starting point and destination having a unique name!
+	public void SetDestination(Destination Destination){ photonView.RPC("RPC_Packet_SetDestination", RpcTarget.AllBuffered, Destination.name); }
+	[PunRPC] void RPC_Packet_SetDestination(string DestinationName){
+		destination = GameObject.Find(DestinationName).GetComponent<Destination>();
+	}
+
+	// Generates a path from the start point to the destination (network synced)
+	// NOTE: The network syncing relies on each starting point and destination having a unique name!
+	public void InitPath(){ photonView.RPC("RPC_Packet_InitPath", RpcTarget.AllBuffered); }
+	[PunRPC] void RPC_Packet_InitPath(){
+		path = startPoint.findPathTo(destination);
+	}
+
+
 	// Synchronizes the properties across the network
+	// NOTE: The starting point must be set before this function can properly do its job
 	public void SetProperties(Color color, Size size, Shape shape, float movementSpeed, bool isMalicious){ SetProperties(color, size, shape, movementSpeed, isMalicious); }
 	public void SetProperties(Details details, float movementSpeed, bool isMalicious){ photonView.RPC("RPC_Packet_SetProperties", RpcTarget.AllBuffered, details.color, details.size, details.shape, movementSpeed, isMalicious); }
 	[PunRPC] void RPC_Packet_SetProperties(Color color, Size size, Shape shape, float movementSpeed, bool isMalicious){
 		// Ensure the local properties match the remote ones
-		if(isMalicious) _details = Details.maliciousPacketDetails;  // TODO: Global malicious packet settings
-		else _details = new  Details(color, size, shape);
+		if(!isMalicious) _details = new Details(color, size, shape);
+		else _details = startPoint.maliciousPacketDetails;
 		_movementSpeed = movementSpeed;
 		_isMalicious = isMalicious;
 
@@ -247,35 +284,6 @@ public class Packet : MonoBehaviourPun {
 		// TODO: this check should also be based off of difficulty
 		if(isMalicious) selectionCylinder.SetActive(true);
 		else selectionCylinder.SetActive(false);
-	}
-
-	// Wrapper function which calls all of the functions needed to setup this packet's path
-	public void setStartDestinationAndPath(PathNodeBase startPoint, PathNodeBase destination){
-		SetStartPoint(startPoint);
-		SetDestination(destination);
-		InitPath();
-	}
-
-	// Sets the start point (network synced)
-	public void SetStartPoint(PathNodeBase startPoint){ photonView.RPC("RPC_Packet_SetStartPoint", RpcTarget.AllBuffered, startPoint.name); }
-	[PunRPC] void RPC_Packet_SetStartPoint(string startPointName){
-		startPoint = GameObject.Find(startPointName).GetComponent<PathNodeBase>();
-
-		// If we are the host make sure that the object is properly positioned
-		if(NetworkingManager.isHost)
-			transform.position = startPoint.transform.position;
-	}
-
-	// Sets the destination (network synced)
-	public void SetDestination(PathNodeBase Destination){ photonView.RPC("RPC_Packet_SetDestination", RpcTarget.AllBuffered, Destination.name); }
-	[PunRPC] void RPC_Packet_SetDestination(string DestinationName){
-		destination = GameObject.Find(DestinationName).GetComponent<PathNodeBase>();
-	}
-
-	// Generates a path from the start point to the destination (network synced)
-	public void InitPath(){ photonView.RPC("RPC_Packet_InitPath", RpcTarget.AllBuffered); }
-	[PunRPC] void RPC_Packet_InitPath(){
-		path = startPoint.findPathTo(destination);
 	}
 
 
