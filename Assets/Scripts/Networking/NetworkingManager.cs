@@ -277,6 +277,16 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 		return true;
 	}
 
+	// Marks the local player as being ready
+	public void setReady(bool isReady){
+		localPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable(){
+			{IS_PLAYER_READY, isReady}
+		});
+	}
+
+	// Toggles weather or not the local player is ready.
+	public void toggleReady(){ setReady( !isPlayerReady(localPlayer) ); }
+
 
 	// -- Properties --
 
@@ -325,6 +335,14 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	// Pass along the local player, so that the rest of the game only has to interact with us (and not photon)
 	public static Player localPlayer {
 		get => PhotonNetwork.LocalPlayer;
+	}
+
+	// Returns true if the local player is marked as ready
+	public static bool isReady {
+		get {
+			if(localPlayer.CustomProperties[IS_PLAYER_READY] == null) return false;
+			return (bool)localPlayer.CustomProperties[IS_PLAYER_READY];
+		}
 	}
 
 	// Pass along the list of players currently in the room, so that the rest of the game only has to interact with us (and not photon)

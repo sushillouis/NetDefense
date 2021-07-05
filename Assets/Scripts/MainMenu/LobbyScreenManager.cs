@@ -185,9 +185,7 @@ public class LobbyScreenManager : MonoBehaviour {
 	public void OnStartGameButtonPressed(){
 		// If we aren't the host then toggle our ready state
 		if(!NetworkingManager.isHost){
-			NetworkingManager.localPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable(){
-				{NetworkingManager.IS_PLAYER_READY, !NetworkingManager.instance.isPlayerReady(NetworkingManager.localPlayer)}
-			});
+			NetworkingManager.instance.toggleReady();
 
 			updateStartButton();
 			return;

@@ -10,6 +10,8 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 
 	// The number of seconds that should elapse before another packet spawns
 	public float secondsBetweenPackets = 1.5f;
+	// The number of packets that should be spawned per wave
+	public int packetsPerWave = 30;
 
 	// Property tracking weather or not we are currently spawning packets
 	bool _isSpawning = false;
@@ -18,15 +20,29 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 		protected set { _isSpawning = value; }
 	}
 
+	// Property tracking how many packets have been spawned so far this wave
+	int _packetsCurrentlySpawned = 0;
+	public int packetsCurrentlySpawned {
+		get => _packetsCurrentlySpawned;
+		private set => _packetsCurrentlySpawned = value;
+	}
+
 	// Ensure that the packet path is valid if it was coppied from unity
 	protected override void Awake(){
 		base.Awake();
 		Utilities.PreparePrefabPath(ref packetPrefabPath);
 	}
 
-	void Start(){
-		StartSpawningPackets(30);
+	// Un/register us to the wave start event
+	public void OnEnable(){ GameManager.waveStartEvent += OnWaveStart; }
+	public void OnDisable(){ GameManager.waveStartEvent -= OnWaveStart; }
+
+	// When a wave starts we should start spawning packets
+	public void OnWaveStart(){
+		StartSpawningPackets(packetsPerWave);
 	}
+
+
 
 	// Function which begins spawning the specified number of packets
 	public void StartSpawningPackets(int toSpawn){ StartCoroutine(SpawnPackets(toSpawn)); }
@@ -42,7 +58,7 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 			isSpawning = true;
 
 			// For each packet we should spawn...
-			for(int i = 0; i < toSpawn; i++){
+			for(packetsCurrentlySpawned = 0; packetsCurrentlySpawned < toSpawn; packetsCurrentlySpawned++){
 				// Spawn the packet over the network
 				Packet spawned = PhotonNetwork.InstantiateRoomObject(packetPrefabPath, new Vector3(0, 100, 0), Quaternion.identity).GetComponent<Packet>();
 				// Locally parent it to ourselves
@@ -65,9 +81,8 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 	}
 
 
-
-
-	public bool hasChildren {
+	// Property which returns true if there are packets from this wave which still exist
+	public bool packetsExist {
 		get => transform.childCount > 0;
 	}
 }
