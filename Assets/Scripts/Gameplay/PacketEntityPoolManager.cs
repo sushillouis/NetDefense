@@ -32,7 +32,10 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 	public void StartSpawningPackets(int toSpawn){ StartCoroutine(SpawnPackets(toSpawn)); }
 	// Coroutine which spawns the specified number of packets
 	IEnumerator SpawnPackets(int toSpawn){
-		Debug.Log(NetworkingManager.isHost);
+		// Generate the weighted lists used to determine the start and end points
+		StartingPoint[] startingPoints = StartingPoint.getWeightedList();
+		Destination[] destinations = Destination.getWeightedList();
+
 		// Packet spawning can only be preformed by the host
 		if(NetworkingManager.isHost){
 			// Mark that we are spawning
@@ -46,7 +49,8 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 				spawned.transform.parent = transform;
 
 				// Pick a random starting point and destination for it (network synced)
-				spawned.setStartDestinationAndPath(StartingPoint.startingPoints[Random.Range(0, StartingPoint.startingPoints.Length)], Destination.destinations[Random.Range(0, Destination.destinations.Length)]);
+				spawned.setStartDestinationAndPath(startingPoints[Random.Range(0, startingPoints.Length)], destinations[Random.Range(0, destinations.Length)]);
+				spawned.transform.rotation = spawned.startPoint.transform.rotation; // Ensure that the packets have the same orientation as their spawners
 
 				// Setup the packet's appearance and malicious status (network synced)
 				spawned.initPacketDetails();
