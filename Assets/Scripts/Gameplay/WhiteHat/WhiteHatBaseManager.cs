@@ -7,6 +7,7 @@ public class WhiteHatBaseManager : Core.Utilities.SingletonPun<WhiteHatBaseManag
 	// Error codes used by the error handling system
 	public enum ErrorCodes {
 		Generic,
+		WrongPlayer,			// Error code stating that the wrong player tried to interact with the object
 		FirewallIsMoving,		// Error code stating that the firewall is still moving
 		FirewallNotSelected,	// Error code stating that no firewall has been selected
 		TargetNotSelected,		// Error code stating that no target has been selected
@@ -56,9 +57,14 @@ public class WhiteHatBaseManager : Core.Utilities.SingletonPun<WhiteHatBaseManag
 			ErrorHandler(ErrorCodes.FirewallNotSelected, "A Firewall to move must be selected!");
 			return false;
 		}
+		// Error if we don't own the firewall
+		if(toMove.photonView.Controller != NetworkingManager.localPlayer){
+			ErrorHandler(ErrorCodes.WrongPlayer, "You can't move firewalls you don't own!");
+			return false;
+		}
 		// Error if the path piece to move too is null
 		if(targetPathPiece == null){
-			ErrorHandler(ErrorCodes.TargetNotSelected, "A location to move to must be selcted!");
+			ErrorHandler(ErrorCodes.TargetNotSelected, "A location to move to must be selected!");
 			return false;
 		}
 		// Error if the path piece can't have firewalls on it
@@ -85,11 +91,23 @@ public class WhiteHatBaseManager : Core.Utilities.SingletonPun<WhiteHatBaseManag
 	}
 
 	// Function which destroys the given firewall
-	protected virtual void DestroyFirewall(Firewall toDestroy){
+	protected virtual bool DestroyFirewall(Firewall toDestroy){
+		// Error if the firewall to destroy is null
+		if(toDestroy == null){
+			ErrorHandler(ErrorCodes.FirewallNotSelected, "A Firewall to destroy must be selected!");
+			return false;
+		}
+		// Error if we don't own the firewall
+		if(toDestroy.photonView.Controller != NetworkingManager.localPlayer){
+			ErrorHandler(ErrorCodes.WrongPlayer, "You can't destroy firewalls you don't own!");
+			return false;
+		}
+
 		// TODO: Possibly add a particle system!
 
 		// Network destroy the firewall
 		PhotonNetwork.Destroy(toDestroy.gameObject);
+		return true;
 	}
 
 
