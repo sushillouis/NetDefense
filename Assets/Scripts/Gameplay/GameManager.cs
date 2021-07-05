@@ -8,8 +8,11 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 	// Events called when a wave starts or ends
     public static Utilities.VoidEventCallback waveStartEvent;
 	public static Utilities.VoidEventCallback waveEndEvent;
+	// Event called when the game ends
+	public static Utilities.VoidEventCallback gameEndEvent;
 
-	// Property determining if the wave is currently started
+
+	// Property which returns true if the wave is currently started
 	bool _waveStarted = false;
 	public bool waveStarted {
 		get => _waveStarted;
@@ -18,11 +21,20 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 
 	// Reference to the ready button's text
 	public TMPro.TextMeshProUGUI readyText;
+	// Reference to the Game Over screen
+	public GameObject endGameScreen;
+	// References to the win and lose text in the game over screen
+	public GameObject winText, loseText;
 
-
-	// When we are dis/enabled register ourselves as a listener to playerPropertyUpdateEvents
-	void OnEnable(){ NetworkingManager.roomPlayerPropertiesUpdateEvent += OnPlayerRoomPropertiesUpdate; }
-	void OnDisable(){ NetworkingManager.roomPlayerPropertiesUpdateEvent -= OnPlayerRoomPropertiesUpdate; }
+	// When we are dis/enabled register ourselves as a listener to playerPropertyUpdateEvents and roomOtherLeaveEvent
+	void OnEnable(){
+		NetworkingManager.roomPlayerPropertiesUpdateEvent += OnPlayerRoomPropertiesUpdate;
+		NetworkingManager.roomOtherLeaveEvent += OnOtherPlayerLeave;
+	}
+	void OnDisable(){
+		NetworkingManager.roomPlayerPropertiesUpdateEvent -= OnPlayerRoomPropertiesUpdate;
+		NetworkingManager.roomOtherLeaveEvent -= OnOtherPlayerLeave;
+	}
 
 	void Start(){
 		// When we load into the scene make sure that every player is not readied
@@ -56,9 +68,19 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 			StartNextWave();
 	}
 
-	// Function called when the ready up button is pressed
+	// When the ready up button is pressed... ready up
 	public void toggleReady(){
 		setReady(!NetworkingManager.isReady);
+	}
+
+	// Whenever the disconnect button (or return to main menu button in the win screen) is pressed, leave the game and go back to the main menu
+	public void OnDisconnectButtonPressed(){
+		NetworkingManager.instance.LeaveRoomAndReturnToMainMenu();
+	}
+
+	// When the other play leaves the game, the player who remains wins the game
+	public void OnOtherPlayerLeave(Player otherPlayer){
+		EndGame(NetworkingManager.localPlayer);
 	}
 
 
@@ -93,5 +115,15 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		setReady(false);
 	}
 
+	// Function which ends the game, marking which player won
+	public void EndGame(Player winningPlayer) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayer.ActorNumber); }
+	public void EndGame(int winningPlayerID) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayerID); }
+	[PunRPC] void RPC_GameManager_EndGame(int winningPlayerID){
+		endGameScreen.SetActive(true);
+		if(winningPlayerID == NetworkingManager.localPlayer.ActorNumber)
+			winText.SetActive(true);
+		else loseText.SetActive(true);
 
+		gameEndEvent?.Invoke();
+	}
 }
