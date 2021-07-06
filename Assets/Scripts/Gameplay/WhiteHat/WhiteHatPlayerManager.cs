@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
@@ -15,7 +16,15 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Reference to the GUI element where we drop error messages
 	public TMPro.TextMeshProUGUI errorText;
 
-	public GameObject routerCursor;
+	// Reference to the cursor displayed when placing a firewall
+	public GameObject firewallCursor;
+
+	// Reference to the panel which displays infromation about firewalls and packets
+	public GameObject firewallPacketPanel;
+	// Reference to the firewall and packet header labels
+	public GameObject firewallPacketPanelFirewallText, firewallPacketPanelPacketText;
+	// References to all of the toggles in the firewall panel
+	public Toggle[] firewallPacketPanelToggles;
 
 	// Enum what a click currently means
 	enum ClickState {
@@ -38,6 +47,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		cancelAction.action.performed += OnCancel;
 		HoverManager.hoverChanged += OnHoverChanged;
 		SelectionManager.packetSelectEvent += OnPacketSelected;
+		SelectionManager.firewallSelectEvent += OnFirewallSelected;
 	}
 	void OnDisable(){
 		leftClickAction.action.performed -= OnClickPressed;
@@ -45,6 +55,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		cancelAction.action.performed -= OnCancel;
 		HoverManager.hoverChanged -= OnHoverChanged;
 		SelectionManager.packetSelectEvent -= OnPacketSelected;
+		SelectionManager.firewallSelectEvent -= OnFirewallSelected;
 	}
 
 
@@ -61,6 +72,16 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		Firewall selected = SelectionManager.instance.selected?.GetComponent<Firewall>();
 		SelectionManager.instance.selected = null; // Make sure that the selection manager is not pointed at the item when we delete it
 		DestroyFirewall(selected);
+
+		// Make sure the firewall panel closes
+		OnClosePacketFirewallPanel();
+	}
+
+	// Function called when the close button of the firewall panel is pressed
+	public void OnClosePacketFirewallPanel(){
+		firewallPacketPanel.SetActive(false);
+		firewallPacketPanelFirewallText.SetActive(false);
+		firewallPacketPanelPacketText.SetActive(false);
 	}
 
 	// Callback which responds to click events (ignoring cick release events and events already handled by the UI)
@@ -78,6 +99,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		}
 	}
 
+	// Callback which responds to cancel (escape and right click) events
 	void OnCancel(InputAction.CallbackContext ctx){
 		// Ignore click releases
 		if(!ctx.ReadValueAsButton()) return;
@@ -90,8 +112,18 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 	// Callback which handles when the selected packet changes
 	void OnPacketSelected(Packet p){
-		// Simply print out the details of the packet
-		Debug.Log(p.details);
+		showPacketPanel(p);
+	}
+
+	// Callback which handles when the selected firewall changes
+	void OnFirewallSelected(Firewall f){
+		// Error if we don't own the firewall
+		if(f.photonView.Controller != NetworkingManager.localPlayer){
+			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify the settings of a Firewall you don't own.");
+			return;
+		}
+
+		showFirewallPanel(f);
 	}
 
 	// Callback which handles when the currently hovered grid piece changes
@@ -102,14 +134,40 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		  || !(clickState == ClickState.SpawningFirewall || clickState == ClickState.MovingFirewall || (clickState == ClickState.SelectingFirewallToMove && SelectionManager.instance.selected?.GetComponent<Firewall>() != null))
 		){
 			// Disable the firewall cursor
-			routerCursor.SetActive(false);
+			firewallCursor.SetActive(false);
 			return;
 		}
 
 		// Otherwise enable the firewall cursor and snap it to the hovered point
-		routerCursor.SetActive(true);
-		routerCursor.transform.position = newHover.transform.position;
-		routerCursor.transform.rotation = newHover.transform.rotation;
+		firewallCursor.SetActive(true);
+		firewallCursor.transform.position = newHover.transform.position;
+		firewallCursor.transform.rotation = newHover.transform.rotation;
+	}
+
+	// Callback which handles when one of the toggles in the firewall panel is adjusted
+	public void OnFirewallToggleSelected(int deltaNumber){
+		// Don't bother with this function if we don't have a firewall selected
+		Firewall selected = SelectionManager.instance.selected?.GetComponent<Firewall>();
+		if(selected == null) return;
+
+		// Error if we don't own the firewall
+		if(selected.photonView.Controller != NetworkingManager.localPlayer){
+			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify the settings of a Firewall you don't own.");
+			return;
+		}
+
+		// Set the correct filter rules based on the given input
+		switch(deltaNumber){
+			case 0: selected.SetFilterRules(Packet.Size.Small); break;
+			case 1: selected.SetFilterRules(Packet.Size.Medium); break;
+			case 2: selected.SetFilterRules(Packet.Size.Large); break;
+			case 3: selected.SetFilterRules(Packet.Shape.Cube); break;
+			case 4: selected.SetFilterRules(Packet.Shape.Sphere); break;
+			case 5: selected.SetFilterRules(Packet.Shape.Cone); break;
+			case 6: selected.SetFilterRules(Packet.Color.Pink); break;
+			case 7: selected.SetFilterRules(Packet.Color.Green); break;
+			case 8: selected.SetFilterRules(Packet.Color.Blue); break;
+		}
 	}
 
 
@@ -159,6 +217,59 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 			// Make sure the placement cursor is hidden
 			OnHoverChanged(HoverManager.instance.hovered);
 		}
+	}
+
+
+	// -- Show Panels --
+
+
+	// Function which shows the firewall panel
+	public void showFirewallPanel(Firewall f){
+		// Set all of the toggles as interactable
+		foreach(Toggle t in firewallPacketPanelToggles)
+			t.interactable = true;
+
+		// Set the correct toggle states
+		firewallPacketPanelToggles[0].isOn = f.filterRules.size == Packet.Size.Small;
+		firewallPacketPanelToggles[1].isOn = f.filterRules.size == Packet.Size.Medium;
+		firewallPacketPanelToggles[2].isOn = f.filterRules.size == Packet.Size.Large;
+		firewallPacketPanelToggles[3].isOn = f.filterRules.shape == Packet.Shape.Cube;
+		firewallPacketPanelToggles[4].isOn = f.filterRules.shape == Packet.Shape.Sphere;
+		firewallPacketPanelToggles[5].isOn = f.filterRules.shape == Packet.Shape.Cone;
+		firewallPacketPanelToggles[6].isOn = f.filterRules.color == Packet.Color.Pink;
+		firewallPacketPanelToggles[7].isOn = f.filterRules.color == Packet.Color.Green;
+		firewallPacketPanelToggles[8].isOn = f.filterRules.color == Packet.Color.Blue;
+
+		// Display the correct header
+		firewallPacketPanelFirewallText.SetActive(true);
+		firewallPacketPanelPacketText.SetActive(false);
+		// Display the panel
+		firewallPacketPanel.SetActive(true);
+	}
+
+
+	// Function which shows the packet panel
+	public void showPacketPanel(Packet p){
+		// Set all of the toggles as uninteractable
+		foreach(Toggle t in firewallPacketPanelToggles)
+			t.interactable = false;
+
+		// Set the correct toggle states
+		firewallPacketPanelToggles[0].isOn = p.details.size == Packet.Size.Small;
+		firewallPacketPanelToggles[1].isOn = p.details.size == Packet.Size.Medium;
+		firewallPacketPanelToggles[2].isOn = p.details.size == Packet.Size.Large;
+		firewallPacketPanelToggles[3].isOn = p.details.shape == Packet.Shape.Cube;
+		firewallPacketPanelToggles[4].isOn = p.details.shape == Packet.Shape.Sphere;
+		firewallPacketPanelToggles[5].isOn = p.details.shape == Packet.Shape.Cone;
+		firewallPacketPanelToggles[6].isOn = p.details.color == Packet.Color.Pink;
+		firewallPacketPanelToggles[7].isOn = p.details.color == Packet.Color.Green;
+		firewallPacketPanelToggles[8].isOn = p.details.color == Packet.Color.Blue;
+
+		// Display the correct header
+		firewallPacketPanelFirewallText.SetActive(false);
+		firewallPacketPanelPacketText.SetActive(true);
+		// Display the panel
+		firewallPacketPanel.SetActive(true);
 	}
 
 

@@ -8,9 +8,13 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 	// Callbacks
 	public delegate void FirwallCallback(Firewall newSelect);
 	public delegate void PacketCallback(Packet newSelect);
+	public delegate void StartingPointCallback(StartingPoint newSelect);
+	public delegate void DestinationCallback(Destination newSelect);
 	// Events
 	public static FirwallCallback firewallSelectEvent;
 	public static PacketCallback packetSelectEvent;
+	public static StartingPointCallback startingPointSelectEvent;
+	public static DestinationCallback destinationSelectEvent;
 	public static Utilities.VoidEventCallback deselectEvent;
 
 	// Reference the mouse's position
@@ -68,6 +72,22 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 				// Trigger a packet selection event (if we are triggering events)
 				if(shouldTriggerEvents)
 					packetSelectEvent?.Invoke(p);
+			// If we hit a starting point...
+			} else if(hit.transform.tag == "StartingPoint"){
+				// Select it
+				selected = hit.transform.gameObject;
+
+				// Trigger a StartingPoint selection event (if we are triggering events)
+				if(shouldTriggerEvents)
+					startingPointSelectEvent?.Invoke(selected.GetComponent<StartingPoint>());
+			// If we hit a destination...
+			} else if(hit.transform.tag == "Destination"){
+				// Select it
+				selected = hit.transform.gameObject;
+
+				// Trigger a StartingPoint selection event (if we are triggering events)
+				if(shouldTriggerEvents)
+					destinationSelectEvent?.Invoke(selected.GetComponent<Destination>());
 			}
 		// If the raycast failed to find anything trigger a deselect event (if we are triggering events)
 		} else if(selected != null){

@@ -5,22 +5,32 @@ using Photon.Pun;
 
 public class Firewall : MonoBehaviourPun {
 	// Reference to the attached mesh renderer
-	new public readonly MeshRenderer renderer;
-	// Reference to the attached selectionCylinder
-	public readonly GameObject selectionCylinder;
+	new public MeshRenderer renderer;
 
 	// The material which represents the firewall's gate
 	public Material gateMaterial;
 	// The colors that the firewall's gate can become
 	public Color[] colors;
 
+	// The details of packets that should be filtered
+	public Packet.Details filterRules;
 
-	// TODO: public Packet.Details filterRules;
 
+	// Update the packet rules (Network Synced)
+	public void SetFilterRules(Packet.Color color){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, color, filterRules.size, filterRules.shape); }
+	public void SetFilterRules(Packet.Size size){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, filterRules.color, size, filterRules.shape); }
+	public void SetFilterRules(Packet.Shape shape){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, filterRules.color, filterRules.size, shape); }
+	public void SetFilterRules(Packet.Color color, Packet.Size size, Packet.Shape shape){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, color, size, shape); }
+	public void SetFilterRules(Packet.Details details){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, details.color, details.size, details.shape); }
+	[PunRPC] void RPC_Firewall_SetFilterRules(Packet.Color color, Packet.Size size, Packet.Shape shape){
+		filterRules = new Packet.Details(color, size, shape);
+
+		SetGateColor(color);
+	}
 
 	// Function which sets the firewall's gate color (network synced)
-	public void SetGateColor(Packet.Color color, bool _default = false){ photonView.RPC("RPC_Router_SetGateColor", RpcTarget.AllBuffered, color, _default); }
-	[PunRPC] void RPC_Router_SetGateColor(Packet.Color color, bool _default){
+	public void SetGateColor(Packet.Color color, bool _default = false){ photonView.RPC("RPC_Firewall_SetGateColor", RpcTarget.AllBuffered, color, _default); }
+	[PunRPC] void RPC_Firewall_SetGateColor(Packet.Color color, bool _default){
 		// Get the list of materials off the mesh
 		Material[] mats = renderer.materials;
 		// Replace the second one with a new instance of the gate material

@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1658416177707021965}
+  - component: {fileID: 1764676947063278097}
   - component: {fileID: 6362363783303290421}
   m_Layer: 0
   m_Name: StartingPoint
-  m_TagString: Untagged
+  m_TagString: StartingPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +33,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1764676947063278097
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402874235894236318}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &6362363783303290421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50,6 +64,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  packetSourceLikelihood: 1
   maliciousPacketDetails:
     color: 0
     size: 1
@@ -66,7 +81,6 @@ GameObject:
   - component: {fileID: 5471975234361836945}
   - component: {fileID: 3583869289177880329}
   - component: {fileID: 1710113496868173697}
-  - component: {fileID: 6931816714002614467}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -138,16 +152,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6931816714002614467
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6676117428811601370}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 1.9999996}
-  m_Center: {x: 0, y: 0, z: 0}

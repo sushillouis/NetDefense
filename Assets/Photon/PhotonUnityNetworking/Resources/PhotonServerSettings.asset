@@ -27,7 +27,7 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: usw
+  DevRegion: 
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
@@ -35,16 +35,17 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
+  - RPC_Firewall_SetFilterRules
+  - RPC_Firewall_SetGateColor
+  - RPC_GameManager_EndGame
+  - RPC_GameManager_EndWave
+  - RPC_GameManager_StartNextWave
+  - RPC_GameManager_UnreadyAllPlayers
   - RPC_Packet_Destroy
   - RPC_Packet_InitPath
   - RPC_Packet_SetDestination
   - RPC_Packet_SetProperties
   - RPC_Packet_SetStartPoint
-  - RPC_Router_SetGateColor
-  - RPC_GameManager_UnreadyAllPlayers
-  - RPC_GameManager_EndWave
-  - RPC_GameManager_StartNextWave
-  - RPC_GameManager_EndGame
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

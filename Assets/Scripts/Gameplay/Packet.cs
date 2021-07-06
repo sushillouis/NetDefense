@@ -147,10 +147,30 @@ public class Packet : MonoBehaviourPun {
 
 		// If the trigger was a destination...
 		if(collider.transform.tag == "Destination"){
-			// TODO: Update scoring information
+			if(isMalicious){
+				// TODO: Update scoring information
+
+				Debug.Log("Malicious packet arived at destination!");
+			}
 
 			// Destroy the packet after it has had a few seconds to enter the destination
 			StartCoroutine(DestroyAfterSeconds(1));
+		} else if(collider.transform.tag == "Firewall") {
+			Firewall firewall = collider.gameObject.GetComponent<Firewall>();
+
+			if(firewall.filterRules == details){
+				StartCoroutine(DestroyAfterSeconds(.5f));
+
+				if(isMalicious){
+					// TODO: Update scoring information
+
+					Debug.Log("Malicious packet destroyed!");
+				} else {
+					// TODO: Update scoring information
+
+					Debug.Log("Good packet destroyed ;(");
+				}
+			}
 		}
 	}
 
@@ -229,7 +249,7 @@ public class Packet : MonoBehaviourPun {
 
 		// If we are the host make sure that the object is properly positioned
 		if(NetworkingManager.isHost)
-			transform.position = startPoint.transform.position;
+			transform.position = Utilities.positionSetY(startPoint.transform.position, .25f);
 	}
 
 	// Sets the destination (network synced)

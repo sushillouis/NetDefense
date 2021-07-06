@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8555208836303907518}
   m_Layer: 2
-  m_Name: RouterCursor
+  m_Name: FirewallCursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
