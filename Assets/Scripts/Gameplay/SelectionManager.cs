@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
+	public const string SELECTION_CYLINDER_PREFAB_PATH = "SelectionCylinder/SelectionCylinder";
+
 
 	// Callbacks
 	public delegate void FirwallCallback(Firewall newSelect);
@@ -41,6 +43,10 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 	// Function which updates the selection to whatever is currently under the mouse
 	RaycastHit hit; // Raycast target
 	public void SelectUnderCursor(bool shouldTriggerEvents = true){
+		// If the selection cyldinder gets deleted, then spawn a new one
+		if(selectionCylinder == null)
+			selectionCylinder = Instantiate(Resources.Load(SELECTION_CYLINDER_PREFAB_PATH) as GameObject, Vector3.zero, Quaternion.identity);
+
 		// Reset the selection cylinder's parent
 		selectionCylinder.transform.parent = transform;
 		selectionCylinder.SetActive(false);
