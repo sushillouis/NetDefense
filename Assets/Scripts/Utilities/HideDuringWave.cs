@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 // Class which disables the attached game object during waves
 public class HideDuringWave : MonoBehaviour {
+	// Object caching the active state of the object before the wave starts
+	bool activeCache;
+
     void Awake(){
 		GameManager.waveStartEvent += OnWaveStart;
 		GameManager.waveEndEvent += OnWaveEnd;
@@ -16,7 +19,13 @@ public class HideDuringWave : MonoBehaviour {
 	}
 
 	// When a wave starts disable this object
-	void OnWaveStart(){ gameObject.SetActive(false); }
+	void OnWaveStart(){
+		// Cache the active status
+		activeCache = gameObject.activeSelf;
+		gameObject.SetActive(false);
+	}
 	// When a wave ends enable this object
-	void OnWaveEnd(){ gameObject.SetActive(true); }
+	void OnWaveEnd(){
+		gameObject.SetActive(activeCache); // Restore the cached active status
+	}
 }
