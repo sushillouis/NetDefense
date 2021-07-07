@@ -15,6 +15,9 @@ public class TestBench : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+		// Mute the musicPlayer
+		(AudioManager.instance as AudioManager).musicPlayer.volume = 0;
+
         PathNodeBase pnb = GetComponent<PathNodeBase>();
 
 		var path = pnb.findPathTo(target);
