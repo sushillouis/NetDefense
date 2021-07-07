@@ -116,6 +116,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	}
 
 	// Callback which handles when the selected firewall changes
+	bool firewallJustSelected = false; // Boolean which tracks if we just selected the firewall, and if we did it prevents toggle updates from registering
 	void OnFirewallSelected(Firewall f){
 		// Error if we don't own the firewall
 		if(f.photonView.Controller != NetworkingManager.localPlayer){
@@ -123,7 +124,9 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 			return;
 		}
 
+		firewallJustSelected = true;
 		showFirewallPanel(f);
+		firewallJustSelected = false;
 	}
 
 	// Callback which handles when the currently hovered grid piece changes
@@ -146,6 +149,8 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 	// Callback which handles when one of the toggles in the firewall panel is adjusted
 	public void OnFirewallToggleSelected(int deltaNumber){
+		// Disable filter settings when we are just opening the pannel for the first time
+		if(firewallJustSelected) return;
 		// Don't bother with this function if we don't have a firewall selected
 		Firewall selected = SelectionManager.instance.selected?.GetComponent<Firewall>();
 		if(selected == null) return;
@@ -164,9 +169,9 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 			case 3: selected.SetFilterRules(Packet.Shape.Cube); break;
 			case 4: selected.SetFilterRules(Packet.Shape.Sphere); break;
 			case 5: selected.SetFilterRules(Packet.Shape.Cone); break;
-			case 6: selected.SetFilterRules(Packet.Color.Pink); break;
+			case 6: selected.SetFilterRules(Packet.Color.Blue); break;
 			case 7: selected.SetFilterRules(Packet.Color.Green); break;
-			case 8: selected.SetFilterRules(Packet.Color.Blue); break;
+			case 8: selected.SetFilterRules(Packet.Color.Pink); break;
 		}
 	}
 
@@ -185,6 +190,8 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 			// Make sure the placement cursor is hidden
 			OnHoverChanged(HoverManager.instance.hovered);
+			// Show the config pannel for the new firewall
+			showFirewallPanel(spawned);
 		}
 	}
 
@@ -236,9 +243,9 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		firewallPacketPanelToggles[3].isOn = f.filterRules.shape == Packet.Shape.Cube;
 		firewallPacketPanelToggles[4].isOn = f.filterRules.shape == Packet.Shape.Sphere;
 		firewallPacketPanelToggles[5].isOn = f.filterRules.shape == Packet.Shape.Cone;
-		firewallPacketPanelToggles[6].isOn = f.filterRules.color == Packet.Color.Pink;
+		firewallPacketPanelToggles[6].isOn = f.filterRules.color == Packet.Color.Blue;
 		firewallPacketPanelToggles[7].isOn = f.filterRules.color == Packet.Color.Green;
-		firewallPacketPanelToggles[8].isOn = f.filterRules.color == Packet.Color.Blue;
+		firewallPacketPanelToggles[8].isOn = f.filterRules.color == Packet.Color.Pink;
 
 		// Display the correct header
 		firewallPacketPanelFirewallText.SetActive(true);
@@ -261,9 +268,9 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		firewallPacketPanelToggles[3].isOn = p.details.shape == Packet.Shape.Cube;
 		firewallPacketPanelToggles[4].isOn = p.details.shape == Packet.Shape.Sphere;
 		firewallPacketPanelToggles[5].isOn = p.details.shape == Packet.Shape.Cone;
-		firewallPacketPanelToggles[6].isOn = p.details.color == Packet.Color.Pink;
+		firewallPacketPanelToggles[6].isOn = p.details.color == Packet.Color.Blue;
 		firewallPacketPanelToggles[7].isOn = p.details.color == Packet.Color.Green;
-		firewallPacketPanelToggles[8].isOn = p.details.color == Packet.Color.Blue;
+		firewallPacketPanelToggles[8].isOn = p.details.color == Packet.Color.Pink;
 
 		// Display the correct header
 		firewallPacketPanelFirewallText.SetActive(false);
