@@ -13,7 +13,7 @@ public class Firewall : MonoBehaviourPun {
 	public Color[] colors;
 
 	// The details of packets that should be filtered
-	public Packet.Details filterRules;
+	public Packet.Details filterRules = Packet.Details.Default;
 
 
 	// Update the packet rules (Network Synced)

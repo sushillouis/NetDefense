@@ -18,6 +18,7 @@ public class Packet : MonoBehaviourPun {
 	// Enum defining a packet's size
 	[Serializable]
 	public enum Size {
+		Invalid = 0,
 		Small = 1,
 		Medium = 4,
 		Large = 6,
@@ -38,10 +39,12 @@ public class Packet : MonoBehaviourPun {
 		public Size size;
 		public Shape shape;
 
-		public Details(Color color, Size size, Shape shape){
-			this.color = color;
-			this.size = size;
-			this.shape = shape;
+		public static readonly Details Default = new Details(Color.Blue, Size.Small, Shape.Cube);
+
+		public Details(Color _color, Size _size, Shape _shape){
+			color = _color;
+			size = _size == Size.Invalid ? Size.Small : _size;
+			shape = _shape;
 		}
 
 		// Object equality (Required to override ==)
