@@ -167,6 +167,12 @@ public class Packet : MonoBehaviourPun {
 		// Determine if this packet is malicious or not (not network synced, we will network sync when we set the details)
 		_isMalicious = UnityEngine.Random.Range(0f, 1f) <= startPoint.maliciousPacketProbability;
 
+		// If the packet is malicious, change its target to be based on the malicious weights
+		if(isMalicious){
+			Destination[] destinations = Destination.getMaliciousWeightedList();
+			setStartDestinationAndPath(startPoint, destinations[UnityEngine.Random.Range(0, destinations.Length)]);
+		}
+
 		// Set the packet details (if the packed is malicious the network property synchronizer will load the correct settings from the starting point)
 		details = startPoint.randomNonMaliciousDetails();
 	}

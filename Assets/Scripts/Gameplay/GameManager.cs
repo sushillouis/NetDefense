@@ -62,6 +62,15 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 
 		// When the game starts ensure that the difficulty level is synced with all of the players
 		SetDifficulty(difficulty);
+
+		if(NetworkingManager.instance) // Skip this step in debugging
+		// Transfer control of the starting points and destinations to the BlackHatPlayer
+		if(NetworkingManager.isHost){
+			foreach(StartingPoint p in StartingPoint.startingPoints)
+				p.photonView.TransferOwnership(NetworkingManager.blackHatPlayer);
+			foreach(Destination d in Destination.destinations)
+				d.photonView.TransferOwnership(NetworkingManager.blackHatPlayer);
+		}
 	}
 
 	void Update(){

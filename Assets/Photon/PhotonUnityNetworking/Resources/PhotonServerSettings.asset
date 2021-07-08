@@ -47,6 +47,11 @@ MonoBehaviour:
   - RPC_Packet_SetProperties
   - RPC_Packet_SetStartPoint
   - RPC_ScoreManager_ProcessScoreEvent
+  - RPC_GameManager_SetDifficulty
+  - RPC_StartingPoint_SetMaliciousPacketDetails
+  - RPC_StartingPoint_SetPacketDestinationLikelihood
+  - RPC_Destination_SetMaliciousPacketDestinationLikelihood
+  - RPC_StartingPoint_SetMaliciousPacketProbability
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
