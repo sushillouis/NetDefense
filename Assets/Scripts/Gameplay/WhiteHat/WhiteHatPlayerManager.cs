@@ -69,7 +69,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 	// Function which responds to the remove selected firewall button
 	public void OnRemoveSelectedFirewall(){
-		Firewall selected = SelectionManager.instance.selected?.GetComponent<Firewall>();
+		Firewall selected = getSelected<Firewall>();
 		SelectionManager.instance.selected = null; // Make sure that the selection manager is not pointed at the item when we delete it
 		DestroyFirewall(selected);
 
@@ -149,30 +149,28 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 	// Callback which handles when one of the toggles in the firewall panel is adjusted
 	public void OnFirewallToggleSelected(int deltaNumber){
-		// Disable filter settings when we are just opening the pannel for the first time
+		// Disable filter settings when we are just opening the panel for the first time
 		if(firewallJustSelected) return;
 		// Don't bother with this function if we don't have a firewall selected
-		Firewall selected = SelectionManager.instance.selected?.GetComponent<Firewall>();
+		Firewall selected = getSelected<Firewall>();
 		if(selected == null) return;
 
-		// Error if we don't own the firewall
-		if(selected.photonView.Controller != NetworkingManager.localPlayer){
-			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify the settings of a Firewall you don't own.");
-			return;
-		}
+		Packet.Details rules = selected.filterRules;
 
 		// Set the correct filter rules based on the given input
 		switch(deltaNumber){
-			case 0: selected.SetFilterRules(Packet.Size.Small); break;
-			case 1: selected.SetFilterRules(Packet.Size.Medium); break;
-			case 2: selected.SetFilterRules(Packet.Size.Large); break;
-			case 3: selected.SetFilterRules(Packet.Shape.Cube); break;
-			case 4: selected.SetFilterRules(Packet.Shape.Sphere); break;
-			case 5: selected.SetFilterRules(Packet.Shape.Cone); break;
-			case 6: selected.SetFilterRules(Packet.Color.Blue); break;
-			case 7: selected.SetFilterRules(Packet.Color.Green); break;
-			case 8: selected.SetFilterRules(Packet.Color.Pink); break;
+			case 0: rules.size = Packet.Size.Small; break;
+			case 1: rules.size = Packet.Size.Medium; break;
+			case 2: rules.size = Packet.Size.Large; break;
+			case 3: rules.shape = Packet.Shape.Cube; break;
+			case 4: rules.shape = Packet.Shape.Sphere; break;
+			case 5: rules.shape = Packet.Shape.Cone; break;
+			case 6: rules.color = Packet.Color.Blue; break;
+			case 7: rules.color = Packet.Color.Green; break;
+			case 8: rules.color = Packet.Color.Pink; break;
 		}
+
+		SetFirewallFilterRules(selected, rules);
 	}
 
 
@@ -190,7 +188,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 			// Make sure the placement cursor is hidden
 			OnHoverChanged(HoverManager.instance.hovered);
-			// Show the config pannel for the new firewall
+			// Show the config panel for the new firewall
 			showFirewallPanel(spawned);
 		}
 	}
@@ -198,7 +196,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Function which handles clicks when we should be selecting a firewall to move
 	void OnClick_SelectingFirewallToMove(){
 		// If we need to select a firewall...
-		if(SelectionManager.instance.selected?.GetComponent<Firewall>() == null){
+		if(getSelected<Firewall>() == null){
 			// Tell the selection manager to select whatever is under it
 			SelectionManager.instance.SelectUnderCursor(/*No events*/ false);
 
@@ -218,7 +216,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 	// Function which handles clicks when we are supposed to be moving firewalls
 	void OnClick_MovingFirewall(){
-		if(MoveFirewall(SelectionManager.instance.selected.GetComponent<Firewall>(), HoverManager.instance.hovered)){
+		if(MoveFirewall(getSelected<Firewall>(), HoverManager.instance.hovered)){
 			clickState = ClickState.Selecting;
 
 			// Make sure the placement cursor is hidden
@@ -284,7 +282,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 
 	// Override the error handler.
-	protected override void ErrorHandler(ErrorCodes errorCode, string error){
+	protected override void ErrorHandler(BaseSharedBetweenHats.ErrorCodes errorCode, string error){
 		// Continue all of the logic in the base handler
 		base.ErrorHandler(errorCode, error);
 

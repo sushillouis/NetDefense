@@ -4,8 +4,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
+	// Path to the selection cylinder prefab
 	public const string SELECTION_CYLINDER_PREFAB_PATH = "SelectionCylinder/SelectionCylinder";
 
+	// Interface objects must implement to be selectable
+	public interface ISelectable { }
 
 	// Callbacks
 	public delegate void FirwallCallback(Firewall newSelect);

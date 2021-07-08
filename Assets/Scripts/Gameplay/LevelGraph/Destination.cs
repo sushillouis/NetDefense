@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Destination : PathNodeBase {
+public class Destination : PathNodeBase, SelectionManager.ISelectable {
 	public static Destination[] destinations = null;
 
 	// Cache of the attached photon view

@@ -349,4 +349,18 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 	public static Player[] roomPlayers {
 		get => PhotonNetwork.PlayerList;
 	}
+
+	public static Player whiteHatPlayer {
+		get {
+			if(whiteHatPlayerIndex < 0) return null;
+			return roomPlayers[whiteHatPlayerIndex];
+		}
+	}
+
+	public static Player blackHatPlayer {
+		get {
+			if(blackHatPlayerIndex < 0) return null;
+			return roomPlayers[blackHatPlayerIndex];
+		}
+	}
 }

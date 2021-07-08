@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class StartingPoint : PathNodeBase {
+public class StartingPoint : PathNodeBase, SelectionManager.ISelectable {
 	public static StartingPoint[] startingPoints = null;
 
 	// Cache of the attached photon view
@@ -45,7 +45,7 @@ public class StartingPoint : PathNodeBase {
 	}
 	// The likelihood that a packet coming from this starting point will be malicious (Network Synced)
 	[SerializeField] float _maliciousPacketProbability = .33333f;
-	public float maliciousPacketProbability{
+	public float maliciousPacketProbability {
 		get => _maliciousPacketProbability;
 		set => SetMaliciousPacketProbability(value);
 	}

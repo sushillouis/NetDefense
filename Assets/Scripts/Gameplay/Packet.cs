@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Packet : MonoBehaviourPun {
+public class Packet : MonoBehaviourPun, SelectionManager.ISelectable {
 	// -- Types --
 
 	// Enum defining a packet's color

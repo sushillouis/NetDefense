@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class WhiteHatBaseManager : Core.Utilities.SingletonPun<WhiteHatBaseManager> {
+public class WhiteHatBaseManager : BaseSharedBetweenHats {
 	// Error codes used by the error handling system
-	public enum ErrorCodes {
-		Generic,
-		WrongPlayer,			// Error code stating that the wrong player tried to interact with the object
-		FirewallIsMoving,		// Error code stating that the firewall is still moving
-		FirewallNotSelected,	// Error code stating that no firewall has been selected
-		TargetNotSelected,		// Error code stating that no target has been selected
-		InvalidTarget,			// Error code stating that the selected target is invalid
+	new public class ErrorCodes : BaseSharedBetweenHats.ErrorCodes {
+		public static readonly int FirewallIsMoving = 3;		// Error code stating that the firewall is still moving
+		public static readonly int FirewallNotSelected = 4;	// Error code stating that no firewall has been selected
+		public static readonly int TargetNotSelected = 5;	// Error code stating that no target has been selected
+
+		// Required function to get the class up to par
+		public ErrorCodes() {}
+		public ErrorCodes(int _value) : base(_value) {}
+		public static implicit operator int(ErrorCodes e) => e.value;
+		public static implicit operator ErrorCodes(int value) => new ErrorCodes(value);
 	}
+
+	// Override instance to represent the Whitehat type
+	new static public WhiteHatBaseManager instance {
+		get => BaseSharedBetweenHats.instance as WhiteHatBaseManager;
+	}
+
 
 	// A string referencing the firewall prefab path
 	public string firewallPrefabPath;
@@ -31,7 +40,7 @@ public class WhiteHatBaseManager : Core.Utilities.SingletonPun<WhiteHatBaseManag
 	protected Firewall SpawnFirewall(GameObject targetPathPiece){
 		// Error on invalid path piece
 		if(targetPathPiece == null){
-			ErrorHandler(ErrorCodes.TargetNotSelected, "A location to place the firewall at must be selcted!");
+			ErrorHandler(ErrorCodes.TargetNotSelected, "A location to place the firewall at must be selected!");
 			return null;
 		}
 		// Error if the path piece can't have firewalls on it
@@ -49,7 +58,7 @@ public class WhiteHatBaseManager : Core.Utilities.SingletonPun<WhiteHatBaseManag
 	}
 
 	// Function which moves a firewall to the targetedPathPiece
-	// This function returns true if the move was successfull, and false if any errors occured
+	// This function returns true if the move was successful, and false if any errors occurred
 	// The function by default causes the firewall to be smoothly moved to its new location over the course of half a second (this behavior can be disabled by passing false to animated)
 	protected virtual bool MoveFirewall(Firewall toMove, GameObject targetPathPiece, bool animated = true){
 		// Error if the firewall to move is null
@@ -110,19 +119,20 @@ public class WhiteHatBaseManager : Core.Utilities.SingletonPun<WhiteHatBaseManag
 		return true;
 	}
 
+	// Function which updates the settings of the given firewall
+	protected virtual bool SetFirewallFilterRules(Firewall toModify, Packet.Details filterRules){
+		// Error if the firewall to destroy is null
+		if(toModify == null){
+			ErrorHandler(ErrorCodes.FirewallNotSelected, "A Firewall to modify must be selected!");
+			return false;
+		}
+		// Error if we don't own the firewall
+		if(toModify.photonView.Controller != NetworkingManager.localPlayer){
+			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify firewalls you don't own!");
+			return false;
+		}
 
-	// -- GameState Accessors --
-
-
-	public static GameObject[] getFirewallTargets(){ return GameObject.FindGameObjectsWithTag("FirewallTarget"); }
-	public static GameObject[] getSwitchTargets(){ return GameObject.FindGameObjectsWithTag("SwitchTarget"); }
-
-
-	// -- Error Handling --
-
-
-	protected virtual void ErrorHandler(ErrorCodes errorCode, string error){
-		Debug.LogError(error);
+		toModify.SetFilterRules(filterRules);
+		return true;
 	}
-	protected virtual void ErrorHandler(string error){ ErrorHandler(ErrorCodes.Generic, error); }
 }

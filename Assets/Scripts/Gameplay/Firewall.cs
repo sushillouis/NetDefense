@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Firewall : MonoBehaviourPun {
+public class Firewall : MonoBehaviourPun, SelectionManager.ISelectable {
 	// Reference to the attached mesh renderer
 	new public MeshRenderer renderer;
 
