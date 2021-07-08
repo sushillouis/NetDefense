@@ -147,11 +147,8 @@ public class Packet : MonoBehaviourPun {
 
 		// If the trigger was a destination...
 		if(collider.transform.tag == "Destination"){
-			if(isMalicious){
-				// TODO: Update scoring information
-
-				Debug.Log("Malicious packet arived at destination!");
-			}
+			// Process scoring
+			ScoreManager.instance.ProcessScoreEvent(isMalicious ? ScoreManager.ScoreEvent.MaliciousSuccess : ScoreManager.ScoreEvent.GoodSuccess);
 
 			// Destroy the packet after it has had a few seconds to enter the destination
 			StartCoroutine(DestroyAfterSeconds(1));
@@ -159,17 +156,10 @@ public class Packet : MonoBehaviourPun {
 			Firewall firewall = collider.gameObject.GetComponent<Firewall>();
 
 			if(firewall.filterRules == details){
+				// Process scoring
+				ScoreManager.instance.ProcessScoreEvent(isMalicious ? ScoreManager.ScoreEvent.MaliciousDestroyed : ScoreManager.ScoreEvent.GoodDestroyed);
+
 				StartCoroutine(DestroyAfterSeconds(.5f));
-
-				if(isMalicious){
-					// TODO: Update scoring information
-
-					Debug.Log("Malicious packet destroyed!");
-				} else {
-					// TODO: Update scoring information
-
-					Debug.Log("Good packet destroyed ;(");
-				}
 			}
 		}
 	}
@@ -273,10 +263,10 @@ public class Packet : MonoBehaviourPun {
 	public void SetProperties(Details details, float movementSpeed, bool isMalicious){ photonView.RPC("RPC_Packet_SetProperties", RpcTarget.AllBuffered, details.color, details.size, details.shape, movementSpeed, isMalicious); }
 	[PunRPC] void RPC_Packet_SetProperties(Color color, Size size, Shape shape, float movementSpeed, bool isMalicious){
 		// Ensure the local properties match the remote ones
-		if(!isMalicious) _details = new Details(color, size, shape);
+		_isMalicious = isMalicious;
+		if(!_isMalicious) _details = new Details(color, size, shape);
 		else _details = startPoint.maliciousPacketDetails;
 		_movementSpeed = movementSpeed;
-		_isMalicious = isMalicious;
 
 		// Set the mesh based on the shape
 		filter.mesh = meshes[(int)details.shape];
