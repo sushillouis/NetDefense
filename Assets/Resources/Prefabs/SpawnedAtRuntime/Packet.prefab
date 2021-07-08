@@ -199,11 +199,14 @@ MonoBehaviour:
   - {r: 0.0627451, g: 0.3137255, b: 0.4392157, a: 1}
   - {r: 0.8784314, g: 0.1254902, b: 0.8627451, a: 1}
   - {r: 0.15686275, g: 0.8784314, b: 0.1254902, a: 1}
+  speeds:
+  - 0.8
+  - 1
+  - 1
   _details:
     color: 0
     size: 1
     shape: 0
-  _movementSpeed: 1
   _isMalicious: 0
   startPoint: {fileID: 0}
   destination: {fileID: 0}

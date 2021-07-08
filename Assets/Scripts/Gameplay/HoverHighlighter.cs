@@ -20,9 +20,8 @@ public class HoverHighlighter : MonoBehaviour, HoverManager.IHoverable /* It has
 			requestHoverEnable(false);
 	}
 
-	// Funciton which enables the hovering logic
+	// Function which enables the hovering logic
 	void requestHoverEnable(bool enable){
-		// TODO: add code to disable hovers if we are placing a firewall or a switch
 		highlightObject.SetActive(enable);
 	}
 }

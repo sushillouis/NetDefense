@@ -12,6 +12,26 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 	public static Utilities.VoidEventCallback gameEndEvent;
 
 
+	// Enum providing possible difficulty values
+	[System.Serializable]
+	public enum Difficulty {
+		Easy = 0,
+		Medium = 1,
+		Hard = 2
+	}
+	// Static property describing the difficulty of the game
+	static Difficulty _difficulty = Difficulty.Easy;
+	public static Difficulty difficulty{
+		get => _difficulty;
+		set {
+			// If an instance exists then network sync any changes
+			if(instanceExists) instance.SetDifficulty(difficulty);
+			// If an instance doesn't exist, then just hold the new value
+			else _difficulty = difficulty;
+		}
+	}
+
+
 	// Property which returns true if the wave is currently started
 	bool _waveStarted = false;
 	public bool waveStarted {
@@ -39,6 +59,9 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 	void Start(){
 		// When we load into the scene make sure that every player is not readied
 		if(NetworkingManager.instance) NetworkingManager.instance.setReady(false);
+
+		// When the game starts ensure that the difficulty level is synced with all of the players
+		SetDifficulty(difficulty);
 	}
 
 	void Update(){
@@ -108,14 +131,14 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		waveStarted = false; // mark that the wave has ended
 	}
 
-	// Function which ensures that all of the players are marked as unready
+	// Function which ensures that all of the players are marked as unready (Network Synced)
 	public void UnreadyAllPlayers() { photonView.RPC("RPC_GameManager_UnreadyAllPlayers", RpcTarget.AllBuffered); }
 	[PunRPC] void RPC_GameManager_UnreadyAllPlayers(){
 		// Mark the local player as not ready
 		setReady(false);
 	}
 
-	// Function which ends the game, marking which player won
+	// Function which ends the game, marking which player won (Network Synced)
 	public void EndGame(Player winningPlayer) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayer.ActorNumber); }
 	public void EndGame(int winningPlayerID) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayerID); }
 	[PunRPC] void RPC_GameManager_EndGame(int winningPlayerID){
@@ -125,5 +148,11 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		else loseText.SetActive(true);
 
 		gameEndEvent?.Invoke();
+	}
+
+	// Function which sets the difficulty (Network Synced, ignores calls from players who aren't the host)
+	public void SetDifficulty(Difficulty diff) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_SetDifficulty", RpcTarget.AllBuffered, diff); }
+	[PunRPC] void RPC_GameManager_SetDifficulty(Difficulty diff) {
+		_difficulty = diff;
 	}
 }

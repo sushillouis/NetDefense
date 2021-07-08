@@ -67,7 +67,7 @@ public class Packet : MonoBehaviourPun {
 		// Inequality Operator (Required if == is overriden)
 		public static bool operator !=(Details a, Details b){ return !a.Equals(b); }
 
-		// To string method used for selection debugging // TODO: remove
+		// To string method used for selection debugging
 		public override string ToString(){
 			return "Color: " + color + ", Size: " + size + ", Shape: " + shape;
 		}
@@ -93,6 +93,9 @@ public class Packet : MonoBehaviourPun {
 	// List of colors for the packet to become
 	public UnityEngine.Color[] colors;
 
+	// Speed of the packets depending on difficulty
+	public float[] speeds = new float[3] {/*easy*/.8f, /*medium*/1, /*hard*/1};
+
 
 	// -- Properties --
 
@@ -102,15 +105,7 @@ public class Packet : MonoBehaviourPun {
 	Details _details;
 	public Details details {
 		get => _details;
-		set => SetProperties(value, _movementSpeed, _isMalicious);
-	}
-
-	// Property defining the packet's movement speed (automatically network synced)
-	[SerializeField]
-	float _movementSpeed = 1;
-	public float movementSpeed {
-		get => _movementSpeed;
-		set => SetProperties(_details, value, _isMalicious);
+		set => SetProperties(value, _isMalicious);
 	}
 
 	// Property defining if the packet is malicious (automatically network synced)
@@ -118,13 +113,13 @@ public class Packet : MonoBehaviourPun {
 	bool _isMalicious = false;
 	public bool isMalicious {
 		get => _isMalicious;
-		set => SetProperties(_details, _movementSpeed, value);
+		set => SetProperties(_details, value);
 	}
 
 
 	// Nodes defining the start and end point of the packet's journey
 	public StartingPoint startPoint;
-	public Destination destination; // TODO: do we actually care about the startPoint and destination? Or do we only care about the path?
+	public Destination destination;
 	// Path to get from the start point to the destination point
 	public List<PathNodeBase> path = null;
 
@@ -184,7 +179,7 @@ public class Packet : MonoBehaviourPun {
 		// Determine the direction we should be heading in
 		Vector3 direction = (Utilities.positionNoY(path[pathIndex].transform.position) - Utilities.positionNoY(path[pathIndex - 1].transform.position)).normalized;
 		// Apply that direction to the rigidbody's velocity
-		rigidbody.velocity = direction * movementSpeed;
+		rigidbody.velocity = direction * speeds[(int)GameManager.difficulty];
 		// Calculate the distance to the next waypoint
 		float distance = Mathf.Abs((Utilities.positionNoY(path[pathIndex].transform.position) - Utilities.positionNoY(transform.position)).magnitude);
 
@@ -259,14 +254,13 @@ public class Packet : MonoBehaviourPun {
 
 	// Synchronizes the properties across the network
 	// NOTE: The starting point must be set before this function can properly do its job
-	public void SetProperties(Color color, Size size, Shape shape, float movementSpeed, bool isMalicious){ SetProperties(color, size, shape, movementSpeed, isMalicious); }
-	public void SetProperties(Details details, float movementSpeed, bool isMalicious){ photonView.RPC("RPC_Packet_SetProperties", RpcTarget.AllBuffered, details.color, details.size, details.shape, movementSpeed, isMalicious); }
-	[PunRPC] void RPC_Packet_SetProperties(Color color, Size size, Shape shape, float movementSpeed, bool isMalicious){
+	public void SetProperties(Color color, Size size, Shape shape, bool isMalicious){ SetProperties(color, size, shape, isMalicious); }
+	public void SetProperties(Details details, bool isMalicious){ photonView.RPC("RPC_Packet_SetProperties", RpcTarget.AllBuffered, details.color, details.size, details.shape, isMalicious); }
+	[PunRPC] void RPC_Packet_SetProperties(Color color, Size size, Shape shape, bool isMalicious){
 		// Ensure the local properties match the remote ones
 		_isMalicious = isMalicious;
 		if(!_isMalicious) _details = new Details(color, size, shape);
 		else _details = startPoint.maliciousPacketDetails;
-		_movementSpeed = movementSpeed;
 
 		// Set the mesh based on the shape
 		filter.mesh = meshes[(int)details.shape];
@@ -291,8 +285,8 @@ public class Packet : MonoBehaviourPun {
 		selectionCylinder.transform.position = renderer.bounds.center;
 		selectionCylinder.transform.parent = transform;
 
-		// TODO: this check should also be based off of difficulty
-		if(isMalicious) selectionCylinder.SetActive(true);
+		// Display the malicious circle indicator if the packet is malicious and the game difficulty is easy
+		if(isMalicious && GameManager.difficulty == GameManager.Difficulty.Easy) selectionCylinder.SetActive(true);
 		else selectionCylinder.SetActive(false);
 	}
 
