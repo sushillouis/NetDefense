@@ -40,8 +40,8 @@ public class Firewall : MonoBehaviourPun, SelectionManager.ISelectable {
 			if(color != filterRules.color || size != filterRules.size || shape != filterRules.shape)
 				updatesRemaining--;
 			photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, color, size, shape);
+			return true;
 		} else return false;
-		return true;
 	}
 	public bool SetFilterRules(Packet.Details details){ return SetFilterRules(details.color, details.size, details.shape); }
 	[PunRPC] void RPC_Firewall_SetFilterRules(Packet.Color color, Packet.Size size, Packet.Shape shape){

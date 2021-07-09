@@ -81,6 +81,9 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 
 	// Helper function used to set the ready state even when debugging without a networking manager instance
 	void setReady(bool isReady){
+		// Play a sound to indicate that we are ready
+		if(isReady) AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdated");
+
 		if(NetworkingManager.instance)
 			NetworkingManager.instance.setReady(isReady);
 		else if(isReady) StartNextWave();

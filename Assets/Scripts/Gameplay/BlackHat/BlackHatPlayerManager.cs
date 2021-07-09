@@ -246,11 +246,17 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 	// Function called whenever a firewall's settings are meaninfully updated (updated and actually changed)
 	protected override void StartingPointSettingsUpdated(StartingPoint updated){
 		packetStartPanelStartHeader.text = "Start Point - " + updated.updatesRemaining;
+
+		// Play the success sound
+		if(updated.updatesRemaining > 0) AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdated");
 	}
 
 	// Function called whenever a firewall's settings are meaninfully updated (updated and actually changed)
 	protected override void DestinationSettingsUpdated(Destination updated){
 		probabilityLikelihoodPanelLikelihoodHeader.text = "Likelihood - " + updated.updatesRemaining;
+
+		// Play the success sound
+		if(updated.updatesRemaining > 0) AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdated");
 	}
 
 
@@ -261,6 +267,10 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 	protected override void ErrorHandler(BaseSharedBetweenHats.ErrorCodes errorCode, string error){
 		// Continue all of the logic in the base handler
 		base.ErrorHandler(errorCode, error);
+
+		// Play the settings error sound if this is a no updates remaining
+		if(errorCode == ErrorCodes.NoUpdatesRemaining)
+			AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdateFailed", .5f);
 
 		// But also present the new error to the screen
 		errorText.text = error;

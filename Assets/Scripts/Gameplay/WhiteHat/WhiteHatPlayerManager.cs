@@ -186,6 +186,9 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 			// Make sure the placement cursor is hidden
 			OnHoverChanged(HoverManager.instance.hovered);
+
+			// Play a sound to indicate that it has spawned
+			AudioManager.instance.soundFXPlayer.PlayTrackImmediate("FirewallSpawn", .5f);
 		}
 	}
 
@@ -217,6 +220,9 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 			// Make sure the placement cursor is hidden
 			OnHoverChanged(HoverManager.instance.hovered);
+
+			// Play a sound to indicate that it has moved
+			AudioManager.instance.soundFXPlayer.PlayTrackImmediate("FirewallSpawn", .5f);
 		}
 	}
 
@@ -288,6 +294,9 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Function called whenever a firewall's settings are meaninfully updated (updated and actually changed)
 	protected override void FirewallSettingsUpdated(Firewall updated){
 		firewallPacketPanelFirewallText.text = "Firewall - " + updated.updatesRemaining;
+
+		// Play the success sound
+		if(updated.updatesRemaining > 0) AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdated");
 	}
 
 
@@ -298,6 +307,10 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	protected override void ErrorHandler(BaseSharedBetweenHats.ErrorCodes errorCode, string error){
 		// Continue all of the logic in the base handler
 		base.ErrorHandler(errorCode, error);
+
+		// Play the settings error sound if this is a no updates remaining
+		if(errorCode == ErrorCodes.NoUpdatesRemaining)
+			AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdateFailed", .5f);
 
 		// But also present the new error to the screen
 		errorText.text = error;

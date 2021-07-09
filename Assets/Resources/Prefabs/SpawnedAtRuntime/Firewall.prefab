@@ -109,6 +109,8 @@ MonoBehaviour:
     color: 0
     size: 0
     shape: 0
+  updatesGrantedPerWave: 040000000400000004000000
+  updatesRemaining: 1
   gradualMoveFirewallTimeTaken: 0.33333334
   gradualMoveFirewallIsMoving: 0
 --- !u!1 &7339655082423332147

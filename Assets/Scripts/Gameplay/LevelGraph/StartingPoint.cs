@@ -66,6 +66,7 @@ public class StartingPoint : PathNodeBase, SelectionManager.ISelectable {
 
 
 	// Update the starting point's malicious packet details (Network Synced)
+	// Returns true if we successfully updated, returns false otherwise
 	public bool SetMaliciousPacketDetails(Packet.Color color, Packet.Size size, Packet.Shape shape) {
 		// Only update the settings if we have updates remaining
 		if(updatesRemaining > 0){
@@ -73,8 +74,8 @@ public class StartingPoint : PathNodeBase, SelectionManager.ISelectable {
 			if(color != maliciousPacketDetails.color || size != maliciousPacketDetails.size || shape != maliciousPacketDetails.shape)
 				updatesRemaining--;
 			photonView.RPC("RPC_StartingPoint_SetMaliciousPacketDetails", RpcTarget.AllBuffered, color, size, shape);
+			return true;
 		} else return false;
-		return true;
 	}
 	public bool SetMaliciousPacketDetails(Packet.Details details) { return SetMaliciousPacketDetails(details.color, details.size, details.shape); }
 	[PunRPC] void RPC_StartingPoint_SetMaliciousPacketDetails(Packet.Color color, Packet.Size size, Packet.Shape shape){
@@ -83,6 +84,7 @@ public class StartingPoint : PathNodeBase, SelectionManager.ISelectable {
 
 
 	// Function which updates the probability of a spawned packet being malicious (Network Synced)
+	// Returns true if we successfully updated, returns false otherwise
 	public bool SetMaliciousPacketProbability(float probability) {
 		// Only update the settings if we have updates remaining
 		if(updatesRemaining > 0){
@@ -90,8 +92,8 @@ public class StartingPoint : PathNodeBase, SelectionManager.ISelectable {
 			if(maliciousPacketProbability != probability)
 				updatesRemaining--;
 			photonView.RPC("RPC_StartingPoint_SetMaliciousPacketProbability", RpcTarget.AllBuffered, probability);
+			return true;
 		} else return false;
-		return false;
 	}
 	[PunRPC] void RPC_StartingPoint_SetMaliciousPacketProbability(float probability){
 		maliciousPacketProbability = probability;

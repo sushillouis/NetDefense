@@ -59,6 +59,7 @@ public class Destination : PathNodeBase, SelectionManager.ISelectable {
 	}
 
 	// Function which updates the likelihood of a malicious packet targeting this destination (Network Synced)
+	// Returns true if we successfully updated, returns false otherwise
 	public bool SetMaliciousPacketDestinationLikelihood(int likelihood) {
 		// Only update the settings if we have updates remaining
 		if(updatesRemaining > 0){
@@ -66,8 +67,8 @@ public class Destination : PathNodeBase, SelectionManager.ISelectable {
 			if(packetDestinationLikelihood != likelihood)
 				updatesRemaining--;
 			photonView.RPC("RPC_Destination_SetMaliciousPacketDestinationLikelihood", RpcTarget.AllBuffered, likelihood);
+			return true;
 		} else return false;
-		return true;
 	}
 	[PunRPC] void RPC_Destination_SetMaliciousPacketDestinationLikelihood(int likelihood){
 		_maliciousPacketDestinationLikelihood = likelihood;

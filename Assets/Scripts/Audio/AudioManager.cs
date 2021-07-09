@@ -13,6 +13,11 @@ public class AudioManager : AudioManagerBase {
 	// References to the players we create
 	public AudioManagerBase.AudioPlayer musicPlayer, uiSoundFXPlayer, soundFXPlayer;
 
+	// Override instance to represent the Whitehat type
+	new static public AudioManager instance {
+		get => AudioManagerBase.instance as AudioManager;
+	}
+
 	void Start(){
 		// Create a music player and set it off cycling through the music tracks indefinately
 		musicPlayer = CreateAudioPlayer("music", musicClips);
@@ -26,7 +31,5 @@ public class AudioManager : AudioManagerBase {
 		// Create a SoundFX player
 		soundFXPlayer = CreateAudioPlayer("soundFX", soundFxClips);
 		soundFXPlayer.source.loop = false;
-		// Play one of the sound effects in the soundFX player for testing
-		soundFXPlayer.PlayTrackImmediate("FirewallKill");
 	}
 }
