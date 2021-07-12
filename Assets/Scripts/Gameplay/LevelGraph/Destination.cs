@@ -34,6 +34,9 @@ public class Destination : PathNodeBase, SelectionManager.ISelectable {
 		destinations = FindObjectsOfType<Destination>();
 	}
 
+	// The particle system to spawn when a malicious packet hits us
+	public GameObject particleSystemPrefab;
+
 	// The number of updates gained after each wave (based on difficulty)
 	public int[] updatesGrantedPerWave = new int[3] {/*easy*/2, /*medium*/2, /*hard*/2};
 	// Property representing the number of updates currently available
@@ -72,6 +75,26 @@ public class Destination : PathNodeBase, SelectionManager.ISelectable {
 	}
 	[PunRPC] void RPC_Destination_SetMaliciousPacketDestinationLikelihood(int likelihood){
 		_maliciousPacketDestinationLikelihood = likelihood;
+	}
+
+	// Function which plays the malicious packet particle simulation (Network Synced)
+	public void PlayParticleSimulation() { photonView.RPC("RPC_Destination_PlayParticleSimulation", RpcTarget.AllBuffered); }
+	[PunRPC] void RPC_Destination_PlayParticleSimulation(){
+		// Spawn and play the particle simulation
+		ParticleSystem ps = Instantiate(particleSystemPrefab, Utilities.positionSetY(transform.position, .25f), transform.rotation * Quaternion.Euler(0, -90, 0)).GetComponent<ParticleSystem>();
+		ps.Play();
+		// Destroy the particle simulation once it is done playing
+		StartCoroutine(destroyWhenDonePlaying(ps));
+	}
+
+	// Coroutine which destroys a particle simulation once it is done playing
+	IEnumerator destroyWhenDonePlaying(ParticleSystem toDestroy){
+		// While the particle simulation is playing, wait...
+		while(toDestroy.isPlaying)
+			yield return null;
+
+		// Destroy it
+		Destroy(toDestroy.gameObject);
 	}
 
 	// Function which returns a weighted list of destinations

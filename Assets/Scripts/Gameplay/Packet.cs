@@ -147,8 +147,11 @@ public class Packet : MonoBehaviourPun, SelectionManager.ISelectable {
 		if(collider.transform.tag == "Destination"){
 			// Process scoring
 			ScoreManager.instance.ProcessScoreEvent(isMalicious ? ScoreManager.ScoreEvent.MaliciousSuccess : ScoreManager.ScoreEvent.GoodSuccess);
-			if(isMalicious)
+			// If the packet is malicious play a sound and particle effect
+			if(isMalicious){
 				AudioManager.instance.soundFXPlayer.PlayTrackImmediate("MaliciousSuccess");
+				destination.PlayParticleSimulation();
+			}
 
 			// Destroy the packet after it has had a few seconds to enter the destination
 			StartCoroutine(DestroyAfterSeconds(1));
@@ -158,8 +161,8 @@ public class Packet : MonoBehaviourPun, SelectionManager.ISelectable {
 			if(firewall.filterRules == details){
 				// Process scoring
 				ScoreManager.instance.ProcessScoreEvent(isMalicious ? ScoreManager.ScoreEvent.MaliciousDestroyed : ScoreManager.ScoreEvent.GoodDestroyed);
-				if(isMalicious)
-					AudioManager.instance.soundFXPlayer.PlayTrackImmediate("MaliciousDestroyed");
+				// Play a sound depending on if the packet is malicious or not
+				if(isMalicious)	AudioManager.instance.soundFXPlayer.PlayTrackImmediate("MaliciousDestroyed");
 				else AudioManager.instance.soundFXPlayer.PlayTrackImmediate("MaliciousSuccess");
 
 				StartCoroutine(DestroyAfterSeconds(.5f));
