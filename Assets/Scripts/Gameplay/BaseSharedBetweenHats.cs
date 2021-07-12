@@ -9,6 +9,7 @@ public class BaseSharedBetweenHats : Core.Utilities.Singleton<BaseSharedBetweenH
 		public static readonly int Generic = 0;
 		public static readonly int WrongPlayer = 1;			// Error code stating that the wrong player tried to interact with the object
 		public static readonly int InvalidTarget = 2;		// Error code stating that the selected target is invalid
+		public static readonly int NoUpdatesRemaining = 3;	// Error code stating that the selected target doesn't have any updates left
 
 		public int value = Generic;
 

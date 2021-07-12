@@ -87,6 +87,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  updatesGrantedPerWave: 050000000500000005000000
+  updatesRemaining: 0
   packetSourceLikelihood: 1
   maliciousPacketDetails:
     color: 0

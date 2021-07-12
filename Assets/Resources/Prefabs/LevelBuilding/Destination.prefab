@@ -4904,6 +4904,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  updatesGrantedPerWave: 020000000200000002000000
+  updatesRemaining: 0
   packetDestinationLikelihood: 1
   _maliciousPacketDestinationLikelihood: 1
 --- !u!1 &6676117428811601370

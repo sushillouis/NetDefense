@@ -15,13 +15,35 @@ public class Firewall : MonoBehaviourPun, SelectionManager.ISelectable {
 	// The details of packets that should be filtered
 	public Packet.Details filterRules = Packet.Details.Default;
 
+	// The number of updates gained after each wave (based on difficulty)
+	public int[] updatesGrantedPerWave = new int[3] {/*easy*/4, /*medium*/4, /*hard*/4};
+	// Property representing the number of updates currently available
+	[SerializeField]
+	public int updatesRemaining = 1; // Starts at 1 to account for initial settings
+
+	// De/register the start function on wave ends
+	void OnEnable(){ GameManager.waveEndEvent += Start; }
+	void OnDisable(){ GameManager.waveEndEvent -= Start; }
+
+	// When the this is created or a wave starts grant its updates per wave
+	void Start(){
+		SetFilterRules(Packet.Details.Default); // Make sure that the base filter rules are applied
+		updatesRemaining += updatesGrantedPerWave[(int)GameManager.difficulty];
+	}
 
 	// Update the packet rules (Network Synced)
-	public void SetFilterRules(Packet.Color color){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, color, filterRules.size, filterRules.shape); }
-	public void SetFilterRules(Packet.Size size){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, filterRules.color, size, filterRules.shape); }
-	public void SetFilterRules(Packet.Shape shape){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, filterRules.color, filterRules.size, shape); }
-	public void SetFilterRules(Packet.Color color, Packet.Size size, Packet.Shape shape){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, color, size, shape); }
-	public void SetFilterRules(Packet.Details details){ photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, details.color, details.size, details.shape); }
+	// Returns true if we successfully updated, returns false otherwise
+	public bool SetFilterRules(Packet.Color color, Packet.Size size, Packet.Shape shape){
+		// Only update the settings if we have updates remaining
+		if(updatesRemaining > 0){
+			// Take away an update if something actually changed
+			if(color != filterRules.color || size != filterRules.size || shape != filterRules.shape)
+				updatesRemaining--;
+			photonView.RPC("RPC_Firewall_SetFilterRules", RpcTarget.AllBuffered, color, size, shape);
+		} else return false;
+		return true;
+	}
+	public bool SetFilterRules(Packet.Details details){ return SetFilterRules(details.color, details.size, details.shape); }
 	[PunRPC] void RPC_Firewall_SetFilterRules(Packet.Color color, Packet.Size size, Packet.Shape shape){
 		filterRules = new Packet.Details(color, size, shape);
 

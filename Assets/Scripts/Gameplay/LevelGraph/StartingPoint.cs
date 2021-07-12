@@ -34,21 +34,28 @@ public class StartingPoint : PathNodeBase, SelectionManager.ISelectable {
 		startingPoints = FindObjectsOfType<StartingPoint>();
 	}
 
+	// The number of updates gained after each wave (based on difficulty)
+	public int[] updatesGrantedPerWave = new int[3] {/*easy*/5, /*medium*/5, /*hard*/5};
+	// Property representing the number of updates currently available
+	public int updatesRemaining = 1; // Starts at 1 to account for initial settings
+
 	// All of the likelihoods are added together, then the probability of spawning a packet at this point is <likelihood>/<totalLikelihood>
-	public int packetSourceLikelihood = 1;
+	public int packetSourceLikelihood = 0;
+
+
+	// De/register the start function on wave ends
+	void OnEnable(){ GameManager.waveEndEvent += Start; }
+	void OnDisable(){ GameManager.waveEndEvent -= Start; }
+
+	// When the this is created or a wave starts grant its updates per wave
+	void Start(){
+		updatesRemaining += updatesGrantedPerWave[(int)GameManager.difficulty];
+	}
 
 	// The malicious packet for this starting point (NetworkSynced)
-	[SerializeField] Packet.Details _maliciousPacketDetails = Packet.Details.Default;
-	public Packet.Details maliciousPacketDetails {
-		get => _maliciousPacketDetails;
-		set => SetMaliciousPacketDetails(value);
-	}
+	public Packet.Details maliciousPacketDetails = Packet.Details.Default;
 	// The likelihood that a packet coming from this starting point will be malicious (Network Synced)
-	[SerializeField] float _maliciousPacketProbability = .33333f;
-	public float maliciousPacketProbability {
-		get => _maliciousPacketProbability;
-		set => SetMaliciousPacketProbability(value);
-	}
+	public float maliciousPacketProbability = .33333f;
 
 	// Generates a random set of details, ensuring that the returned values aren't considered malicious
 	public Packet.Details randomNonMaliciousDetails() {
@@ -59,17 +66,35 @@ public class StartingPoint : PathNodeBase, SelectionManager.ISelectable {
 
 
 	// Update the starting point's malicious packet details (Network Synced)
-	public void SetMaliciousPacketDetails(Packet.Color color, Packet.Size size, Packet.Shape shape) { photonView.RPC("RPC_StartingPoint_SetMaliciousPacketDetails", RpcTarget.AllBuffered, color, size, shape); }
-	public void SetMaliciousPacketDetails(Packet.Details details) { photonView.RPC("RPC_StartingPoint_SetMaliciousPacketDetails", RpcTarget.AllBuffered, details.color, details.size, details.shape); }
+	public bool SetMaliciousPacketDetails(Packet.Color color, Packet.Size size, Packet.Shape shape) {
+		// Only update the settings if we have updates remaining
+		if(updatesRemaining > 0){
+			// Take away an update if something actually changed
+			if(color != maliciousPacketDetails.color || size != maliciousPacketDetails.size || shape != maliciousPacketDetails.shape)
+				updatesRemaining--;
+			photonView.RPC("RPC_StartingPoint_SetMaliciousPacketDetails", RpcTarget.AllBuffered, color, size, shape);
+		} else return false;
+		return true;
+	}
+	public bool SetMaliciousPacketDetails(Packet.Details details) { return SetMaliciousPacketDetails(details.color, details.size, details.shape); }
 	[PunRPC] void RPC_StartingPoint_SetMaliciousPacketDetails(Packet.Color color, Packet.Size size, Packet.Shape shape){
-		_maliciousPacketDetails = new Packet.Details(color, size, shape);
+		maliciousPacketDetails = new Packet.Details(color, size, shape);
 	}
 
 
 	// Function which updates the probability of a spawned packet being malicious (Network Synced)
-	public void SetMaliciousPacketProbability(float probability) { photonView.RPC("RPC_StartingPoint_SetMaliciousPacketProbability", RpcTarget.AllBuffered, probability); }
+	public bool SetMaliciousPacketProbability(float probability) {
+		// Only update the settings if we have updates remaining
+		if(updatesRemaining > 0){
+			// Take away an update if something actually changed
+			if(maliciousPacketProbability != probability)
+				updatesRemaining--;
+			photonView.RPC("RPC_StartingPoint_SetMaliciousPacketProbability", RpcTarget.AllBuffered, probability);
+		} else return false;
+		return false;
+	}
 	[PunRPC] void RPC_StartingPoint_SetMaliciousPacketProbability(float probability){
-		_maliciousPacketProbability = probability;
+		maliciousPacketProbability = probability;
 	}
 
 	// Function which returns a weighted list of starting points,

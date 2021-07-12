@@ -6,9 +6,9 @@ using Photon.Pun;
 public class WhiteHatBaseManager : BaseSharedBetweenHats {
 	// Error codes used by the error handling system
 	new public class ErrorCodes : BaseSharedBetweenHats.ErrorCodes {
-		public static readonly int FirewallIsMoving = 3;		// Error code stating that the firewall is still moving
-		public static readonly int FirewallNotSelected = 4;	// Error code stating that no firewall has been selected
-		public static readonly int TargetNotSelected = 5;	// Error code stating that no target has been selected
+		public static readonly int FirewallIsMoving = 4;		// Error code stating that the firewall is still moving
+		public static readonly int FirewallNotSelected = 5;	// Error code stating that no firewall has been selected
+		public static readonly int TargetNotSelected = 6;	// Error code stating that no target has been selected
 
 		// Required function to get the class up to par
 		public ErrorCodes() {}
@@ -131,8 +131,21 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify firewalls you don't own!");
 			return false;
 		}
+		// Error if the firewall doesn't have any updates remaining
+		if(toModify.updatesRemaining <= 0){
+			ErrorHandler(ErrorCodes.NoUpdatesRemaining, "The Firewall doesn't have any updates remaining!");
+			return false;
+		}
 
-		toModify.SetFilterRules(filterRules);
+		if(toModify.SetFilterRules(filterRules))
+			FirewallSettingsUpdated(toModify);
 		return true;
 	}
+
+
+	// -- Derived Class Callbacks --
+
+
+	// Function called whenever a firewall's settings are meaninfully updated (updated and actually changed)
+	protected virtual void FirewallSettingsUpdated(Firewall updated){ }
 }

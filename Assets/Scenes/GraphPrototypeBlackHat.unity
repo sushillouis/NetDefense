@@ -5784,12 +5784,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leftClickAction: {fileID: 3001919216989983466, guid: a26318101696cb248921fa709202c4d2, type: 3}
-  rightClickAction: {fileID: -4090225696740746782, guid: a26318101696cb248921fa709202c4d2, type: 3}
-  cancelAction: {fileID: 7727032971491509709, guid: a26318101696cb248921fa709202c4d2, type: 3}
   errorText: {fileID: 1340508363}
   packetStartPanel: {fileID: 1646452798}
-  packetStartPanelPacketHeader: {fileID: 545616140}
-  packetStartPanelStartHeader: {fileID: 1093241309}
+  packetStartPanelPacketHeader: {fileID: 545616142}
+  packetStartPanelStartHeader: {fileID: 1093241310}
   packetStartPanelToggles:
   - {fileID: 1498720229}
   - {fileID: 987293872}
@@ -5801,8 +5799,8 @@ MonoBehaviour:
   - {fileID: 1291661958}
   - {fileID: 347097287}
   probabilityLikelihoodPanel: {fileID: 951501822}
-  probabilityLikelihoodPanelProbabilityHeader: {fileID: 68141619}
-  probabilityLikelihoodPanelLikelihoodHeader: {fileID: 710164078}
+  probabilityLikelihoodPanelProbabilityHeader: {fileID: 68141621}
+  probabilityLikelihoodPanelLikelihoodHeader: {fileID: 710164080}
   probabilityLikelihoodPanelSlider: {fileID: 24777864}
   probabilityLikelihoodPanelValueText: {fileID: 101668098}
 --- !u!4 &1117361408

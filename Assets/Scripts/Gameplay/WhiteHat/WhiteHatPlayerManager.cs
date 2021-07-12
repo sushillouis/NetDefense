@@ -22,7 +22,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Reference to the panel which displays infromation about firewalls and packets
 	public GameObject firewallPacketPanel;
 	// Reference to the firewall and packet header labels
-	public GameObject firewallPacketPanelFirewallText, firewallPacketPanelPacketText;
+	public TMPro.TextMeshProUGUI firewallPacketPanelFirewallText, firewallPacketPanelPacketText;
 	// References to all of the toggles in the firewall panel
 	public Toggle[] firewallPacketPanelToggles;
 
@@ -80,8 +80,8 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Function called when the close button of the firewall panel is pressed
 	public void OnClosePacketFirewallPanel(){
 		firewallPacketPanel.SetActive(false);
-		firewallPacketPanelFirewallText.SetActive(false);
-		firewallPacketPanelPacketText.SetActive(false);
+		firewallPacketPanelFirewallText.gameObject.SetActive(false);
+		firewallPacketPanelPacketText.gameObject.SetActive(false);
 	}
 
 	// Callback which responds to click events (ignoring cick release events and events already handled by the UI)
@@ -116,7 +116,6 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	}
 
 	// Callback which handles when the selected firewall changes
-	bool firewallJustSelected = false; // Boolean which tracks if we just selected the firewall, and if we did it prevents toggle updates from registering
 	void OnFirewallSelected(Firewall f){
 		// Error if we don't own the firewall
 		if(f.photonView.Controller != NetworkingManager.localPlayer){
@@ -124,9 +123,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 			return;
 		}
 
-		firewallJustSelected = true;
 		showFirewallPanel(f);
-		firewallJustSelected = false;
 	}
 
 	// Callback which handles when the currently hovered grid piece changes
@@ -170,7 +167,8 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 			case 8: rules.color = Packet.Color.Pink; break;
 		}
 
-		SetFirewallFilterRules(selected, rules);
+		if(!SetFirewallFilterRules(selected, rules))
+			showFirewallPanel(selected); // Reload the firewall pannel if we failed to update the settings
 	}
 
 
@@ -188,8 +186,6 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 			// Make sure the placement cursor is hidden
 			OnHoverChanged(HoverManager.instance.hovered);
-			// Show the config panel for the new firewall
-			showFirewallPanel(spawned);
 		}
 	}
 
@@ -229,7 +225,10 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 
 	// Function which shows the firewall panel
+	bool firewallJustSelected = false; // Boolean which tracks if we just selected the firewall, and if we did it prevents toggle updates from registering
 	public void showFirewallPanel(Firewall f){
+		firewallJustSelected = true; // Disable toggle callbacks
+
 		// Set all of the toggles as interactable
 		foreach(Toggle t in firewallPacketPanelToggles)
 			t.interactable = true;
@@ -245,11 +244,16 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		firewallPacketPanelToggles[7].isOn = f.filterRules.color == Packet.Color.Green;
 		firewallPacketPanelToggles[8].isOn = f.filterRules.color == Packet.Color.Pink;
 
+		// Update the text to represent the number of updates remaining
+		FirewallSettingsUpdated(f);
+
 		// Display the correct header
-		firewallPacketPanelFirewallText.SetActive(true);
-		firewallPacketPanelPacketText.SetActive(false);
+		firewallPacketPanelFirewallText.gameObject.SetActive(true);
+		firewallPacketPanelPacketText.gameObject.SetActive(false);
 		// Display the panel
 		firewallPacketPanel.SetActive(true);
+
+		firewallJustSelected = false; // Re-enable toggle callbacks
 	}
 
 
@@ -271,10 +275,19 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		firewallPacketPanelToggles[8].isOn = p.details.color == Packet.Color.Pink;
 
 		// Display the correct header
-		firewallPacketPanelFirewallText.SetActive(false);
-		firewallPacketPanelPacketText.SetActive(true);
+		firewallPacketPanelFirewallText.gameObject.SetActive(false);
+		firewallPacketPanelPacketText.gameObject.SetActive(true);
 		// Display the panel
 		firewallPacketPanel.SetActive(true);
+	}
+
+
+	// -- Callbacks --
+
+
+	// Function called whenever a firewall's settings are meaninfully updated (updated and actually changed)
+	protected override void FirewallSettingsUpdated(Firewall updated){
+		firewallPacketPanelFirewallText.text = "Firewall - " + updated.updatesRemaining;
 	}
 
 

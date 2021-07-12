@@ -6,8 +6,8 @@ using Photon.Pun;
 public class BlackHatBaseManager : BaseSharedBetweenHats {
 	// Error codes used by the error handling system
 	public new class ErrorCodes : BaseSharedBetweenHats.ErrorCodes {
-		public static readonly int StartingPointNotSelected = 3;
-		public static readonly int InvalidProbability = 4;
+		public static readonly int StartingPointNotSelected = 4;
+		public static readonly int InvalidProbability = 5;
 
 		// Required function to get the class up to par
 		public ErrorCodes() {}
@@ -46,8 +46,14 @@ public class BlackHatBaseManager : BaseSharedBetweenHats {
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify Starting Points you don't own!");
 			return false;
 		}
+		// Error if the starting point doesn't have any updates remaining
+		if(toModify.updatesRemaining <= 0){
+			ErrorHandler(ErrorCodes.NoUpdatesRemaining, "The Starting Point doesn't have any updates remaining!");
+			return false;
+		}
 
-		toModify.SetMaliciousPacketDetails(details);
+		if(toModify.SetMaliciousPacketDetails(details))
+			StartingPointSettingsUpdated(toModify);
 		return true;
 	}
 
@@ -77,8 +83,14 @@ public class BlackHatBaseManager : BaseSharedBetweenHats {
 			ErrorHandler(ErrorCodes.InvalidProbability, "The probability " + probability + " is invalid!");
 			return false;
 		}
+		// Error if the starting point doesn't have any updates remaining
+		if(toModify.updatesRemaining <= 0){
+			ErrorHandler(ErrorCodes.NoUpdatesRemaining, "The Starting Point doesn't have any updates remaining!");
+			return false;
+		}
 
-		toModify.maliciousPacketProbability = probability;
+		if(toModify.SetMaliciousPacketProbability(probability))
+			StartingPointSettingsUpdated(toModify);
 		return true;
 	}
 
@@ -94,9 +106,22 @@ public class BlackHatBaseManager : BaseSharedBetweenHats {
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify Destinations you don't own!");
 			return false;
 		}
+		// Error if the destination doesn't have any updates remaining
+		if(toModify.updatesRemaining <= 0){
+			ErrorHandler(ErrorCodes.NoUpdatesRemaining, "The Destination doesn't have any updates remaining!");
+			return false;
+		}
 
-		toModify.maliciousPacketDestinationLikelihood = likelihood;
+		if(toModify.SetMaliciousPacketDestinationLikelihood(likelihood))
+			DestinationSettingsUpdated(toModify);
 		return true;
 	}
 
+
+	// -- Derived Class Callbacks --
+
+
+	// Function called whenever a firewall's settings are meaninfully updated (updated and actually changed)
+	protected virtual void StartingPointSettingsUpdated(StartingPoint updated){ }
+	protected virtual void DestinationSettingsUpdated(Destination updated){ }
 }

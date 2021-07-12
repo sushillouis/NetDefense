@@ -15,14 +15,14 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 	// Reference to the packet panel
 	public GameObject packetStartPanel;
 	// Reference to the packet panel headers
-	public GameObject packetStartPanelPacketHeader, packetStartPanelStartHeader;
+	public TMPro.TextMeshProUGUI packetStartPanelPacketHeader, packetStartPanelStartHeader;
 	// Reference to all of the toggles in the packet panel
 	public Toggle[] packetStartPanelToggles;
 
 	// Reference to the probability/likelihood panel
 	public GameObject probabilityLikelihoodPanel;
 	// Reference to the probability/likelihood panel headers
-	public GameObject probabilityLikelihoodPanelProbabilityHeader, probabilityLikelihoodPanelLikelihoodHeader;
+	public TMPro.TextMeshProUGUI probabilityLikelihoodPanelProbabilityHeader, probabilityLikelihoodPanelLikelihoodHeader;
 	// Reference to the probability/likelihood slider
 	public Slider probabilityLikelihoodPanelSlider;
 	// Reference to the text field representing the value of the probability/likelihood slider
@@ -52,9 +52,20 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 		packetStartPanel.SetActive(false);
 	}
 
-	// Function called when when the close button of the probability/likelihood panel is pressed
+	// Function called when when the close button of the probability/likelihood panel is pressed, updates the settings to refelect the value of the slider
 	public void OnCloseProbabilityLikelihoodPanel(){
-		probabilityLikelihoodPanel.SetActive(false);
+		probabilityLikelihoodPanel.gameObject.SetActive(false);
+
+		// Get a reference to staring point and destination (one of them should be null)
+		StartingPoint startPoint = getSelected<StartingPoint>();
+		Destination destination = getSelected<Destination>();
+
+		// Attempt to change the starting point's malicious probability
+		if (startPoint != null)
+			ChangeStartPointMaliciousPacketProbability(startPoint, probabilityLikelihoodPanelSlider.value);
+		// Attempt to change the destination's malicious target probability
+		if(destination != null)
+			ChangeDestinationMaliciousPacketTargetLikelihood(destination, (int) probabilityLikelihoodPanelSlider.value);
 	}
 
 	// Callback which responds to click events (ignoring cick release events and events already handled by the UI)
@@ -74,20 +85,13 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 	}
 
 	// Callback which shows the starting point panels when a packet is selected
-	bool startingPointJustSelected = false;
 	void OnStartingPointSelected(StartingPoint p){
-		startingPointJustSelected = true;
 		showStartingPointPanel(p);
-		showProbabilityPanel(p);
-		startingPointJustSelected = false;
 	}
 
 	// Callback which shows the the destination panel when a destination is selected
-	bool destinationJustSelected = false;
 	void OnDestinationSelected(Destination d){
-		destinationJustSelected = true;
 		showLikelihoodPanel(d);
-		destinationJustSelected = false;
 
 		OnClosePacketStartPanel();
 	}
@@ -114,21 +118,13 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 			case 8: rules.color = Packet.Color.Pink; break;
 		}
 
-		ChangeStartPointMalciousPacketDetails(selected, rules);
+		if(!ChangeStartPointMalciousPacketDetails(selected, rules))
+			showStartingPointPanel(selected); // Reload the starting point panel if we failed to update the settings
 	}
 
 	public void OnProbabilityLikelihoodSliderUpdate(float value){
 		// Don't bother with this function if we just selected something
 		if(destinationJustSelected || startingPointJustSelected) return;
-
-		// Get a reference to staring point and destination (one of them should be null)
-		StartingPoint startPoint = getSelected<StartingPoint>();
-		Destination destination = getSelected<Destination>();
-
-		// Attempt to change the starting point's malicious probability
-		if (startPoint != null) ChangeStartPointMaliciousPacketProbability(startPoint, value);
-		// Attempt to change the destination's malicious target probability
-		else if(destination != null) ChangeDestinationMaliciousPacketTargetLikelihood(destination, (int) value);
 
 		updateProbabilityLikelihoodText();
 	}
@@ -155,14 +151,17 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 		packetStartPanelToggles[8].isOn = p.details.color == Packet.Color.Pink;
 
 		// Display the correct header
-		packetStartPanelPacketHeader.SetActive(true);
-		packetStartPanelStartHeader.SetActive(false);
+		packetStartPanelPacketHeader.gameObject.SetActive(true);
+		packetStartPanelStartHeader.gameObject.SetActive(false);
 		// Display the panel
 		packetStartPanel.SetActive(true);
 	}
 
 	// Function which shows the starting point panel
+	bool startingPointJustSelected = false;
 	public void showStartingPointPanel(StartingPoint p){
+		startingPointJustSelected = true; // Disable toggle callbacks
+
 		// Set all of the toggles as not interactable
 		foreach(Toggle t in packetStartPanelToggles)
 			t.interactable = true;
@@ -179,10 +178,16 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 		packetStartPanelToggles[8].isOn = p.maliciousPacketDetails.color == Packet.Color.Pink;
 
 		// Display the correct header
-		packetStartPanelPacketHeader.SetActive(false);
-		packetStartPanelStartHeader.SetActive(true);
+		packetStartPanelPacketHeader.gameObject.SetActive(false);
+		packetStartPanelStartHeader.gameObject.SetActive(true);
 		// Display the panel
 		packetStartPanel.SetActive(true);
+
+		// Display the probability pannel
+		showProbabilityPanel(p);
+		StartingPointSettingsUpdated(p);
+
+		startingPointJustSelected = false; // Re-enable toggle callbacks
 	}
 
 	// Function which shows the starting point probability panel
@@ -196,14 +201,17 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 		updateProbabilityLikelihoodText();
 
 		// Display the correct header
-		probabilityLikelihoodPanelProbabilityHeader.SetActive(true);
-		probabilityLikelihoodPanelLikelihoodHeader.SetActive(false);
+		probabilityLikelihoodPanelProbabilityHeader.gameObject.SetActive(true);
+		probabilityLikelihoodPanelLikelihoodHeader.gameObject.SetActive(false);
 		// Display the panel
 		probabilityLikelihoodPanel.SetActive(true);
 	}
 
 	// Function which shows the destination likelihood panel
+	bool destinationJustSelected = false;
 	public void showLikelihoodPanel(Destination d){
+		destinationJustSelected = true; // Disable toggle callbacks
+
 		// Update the slider's properties
 		probabilityLikelihoodPanelSlider.minValue = 0;
 		probabilityLikelihoodPanelSlider.maxValue = 20;
@@ -213,10 +221,13 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 		updateProbabilityLikelihoodText();
 
 		// Display the correct header
-		probabilityLikelihoodPanelProbabilityHeader.SetActive(false);
-		probabilityLikelihoodPanelLikelihoodHeader.SetActive(true);
+		probabilityLikelihoodPanelProbabilityHeader.gameObject.SetActive(false);
+		probabilityLikelihoodPanelLikelihoodHeader.gameObject.SetActive(true);
 		// Display the panel
 		probabilityLikelihoodPanel.SetActive(true);
+		DestinationSettingsUpdated(d);
+
+		destinationJustSelected = false; // Re-enable toggle callbacks
 	}
 
 	// Function which updates the slider label to reflec the state of the slider
@@ -226,6 +237,20 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 			probabilityLikelihoodPanelValueText.text = probabilityLikelihoodPanelSlider.value.ToString("0.##");
 		else if(getSelected<Destination>() != null)
 			probabilityLikelihoodPanelValueText.text = "" + (int) probabilityLikelihoodPanelSlider.value;
+	}
+
+
+	// -- Callbacks --
+
+
+	// Function called whenever a firewall's settings are meaninfully updated (updated and actually changed)
+	protected override void StartingPointSettingsUpdated(StartingPoint updated){
+		packetStartPanelStartHeader.text = "Start Point - " + updated.updatesRemaining;
+	}
+
+	// Function called whenever a firewall's settings are meaninfully updated (updated and actually changed)
+	protected override void DestinationSettingsUpdated(Destination updated){
+		probabilityLikelihoodPanelLikelihoodHeader.text = "Likelihood - " + updated.updatesRemaining;
 	}
 
 
