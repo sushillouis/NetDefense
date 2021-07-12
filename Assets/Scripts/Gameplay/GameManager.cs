@@ -31,6 +31,14 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		}
 	}
 
+	// Setting which determines the maximum number of waves before the game ends
+	public int maximumWaves = 3;
+	// Property determining the current wave
+	[SerializeField] int _currentWave = 0;
+	public int currentWave {
+		get => _currentWave;
+		protected set => _currentWave = value;
+	}
 
 	// Property which returns true if the wave is currently started
 	bool _waveStarted = false;
@@ -108,7 +116,15 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 
 	// When the other play leaves the game, the player who remains wins the game
 	public void OnOtherPlayerLeave(Player otherPlayer){
-		EndGame(NetworkingManager.localPlayer);
+		// Determine the index of the winning player
+		for(int i = 0; i < NetworkingManager.roomPlayers.Length; i++)
+			if(NetworkingManager.localPlayer == NetworkingManager.roomPlayers[i]){
+				EndGame(i);
+				return;
+			}
+
+		// Or just guess that player 0 is the winning player if they can't be found
+		EndGame(0); // TODO: is this assumption invalid?
 	}
 
 
@@ -134,6 +150,12 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 
 		waveEndEvent?.Invoke();
 		waveStarted = false; // mark that the wave has ended
+
+		// Increase the current wave
+		currentWave++;
+		// If the current wave is greater than the maximum number of waves... end the game
+		if(currentWave >= maximumWaves)
+			EndGame(ScoreManager.instance.whiteHatScore >= ScoreManager.instance.blackHatScore ? NetworkingManager.whiteHatPlayerIndex : NetworkingManager.blackHatPlayerIndex);
 	}
 
 	// Function which ensures that all of the players are marked as unready (Network Synced)
@@ -144,14 +166,20 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 	}
 
 	// Function which ends the game, marking which player won (Network Synced)
-	public void EndGame(Player winningPlayer) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayer.ActorNumber); }
-	public void EndGame(int winningPlayerID) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayerID); }
-	[PunRPC] void RPC_GameManager_EndGame(int winningPlayerID){
-		BaseUI.instance.endGameScreen.SetActive(true);
-		if(winningPlayerID == NetworkingManager.localPlayer.ActorNumber)
-			BaseUI.instance.winText.SetActive(true);
-		else BaseUI.instance.loseText.SetActive(true);
+	public void EndGame(int winningPlayerIndex) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayerIndex); }
+	[PunRPC] void RPC_GameManager_EndGame(int winningPlayerIndex){
+		try{
+			// Show the win text if the player won
+			if( (NetworkingManager.isSingleplayer && winningPlayerIndex == 0) // If the player in a single player game, won
+				|| NetworkingManager.roomPlayers[winningPlayerIndex].ActorNumber == NetworkingManager.localPlayer.ActorNumber // If a player in a multiplayer game, won
+			)
+				BaseUI.instance.winText.SetActive(true);
+			else BaseUI.instance.loseText.SetActive(true);
+		// If we fail to find the index then assume that we lost
+		} catch (System.IndexOutOfRangeException) { BaseUI.instance.loseText.SetActive(true); }
 
+		// Show the game over screen
+		BaseUI.instance.endGameScreen.SetActive(true);
 		gameEndEvent?.Invoke();
 	}
 

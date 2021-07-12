@@ -2569,6 +2569,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28115ad3618f2f64885ad37e99c927b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maximumWaves: 3
+  _currentWave: 0
 --- !u!114 &1858544223
 MonoBehaviour:
   m_ObjectHideFlags: 0
