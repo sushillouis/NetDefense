@@ -28,9 +28,6 @@ public class ScoreManager : Core.Utilities.SingletonPun<ScoreManager> {
 		}
 	}
 
-	// References to the score text UI elements
-	public TMPro.TextMeshProUGUI blackHatScoreText, whiteHatScoreText;
-
 	// Weights for each side (the amount of points they get per score event if they are 100% successfull)
 	public float blackHatMaxScorePerEvent = 50;
 	public float whiteHatMaxScorePerEvent = 50;
@@ -122,7 +119,7 @@ public class ScoreManager : Core.Utilities.SingletonPun<ScoreManager> {
 
 	// Function which updates the score changes to the UI
 	public void UpdateScoreUI(){
-		blackHatScoreText.text = "BlackHatScore: " + Mathf.RoundToInt(blackHatScore);
-		whiteHatScoreText.text = "WhiteHatScore: " + Mathf.RoundToInt(whiteHatScore);
+		BaseUI.instance.blackHatScoreText.text = "BlackHatScore: " + Mathf.RoundToInt(blackHatScore);
+		BaseUI.instance.whiteHatScoreText.text = "WhiteHatScore: " + Mathf.RoundToInt(whiteHatScore);
 	}
 }

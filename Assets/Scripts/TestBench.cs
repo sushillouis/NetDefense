@@ -16,7 +16,7 @@ public class TestBench : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
 		// Mute the musicPlayer
-		(AudioManager.instance as AudioManager).musicPlayer.volume = 0;
+		// AudioManager.instance.musicPlayer.volume = 0;
 
         PathNodeBase pnb = GetComponent<PathNodeBase>();
 
@@ -26,8 +26,5 @@ public class TestBench : MonoBehaviour {
 		foreach(var c in path)
 			debug += c + ", ";
 		Debug.Log(debug);
-
-
     }
-
 }

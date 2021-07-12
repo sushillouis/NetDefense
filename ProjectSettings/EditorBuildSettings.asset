@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 09422bf20de97464b833a62bc4df5f79
   - enabled: 1
-    path: Assets/Scenes/GraphPrototypeBlackHat.unity
-    guid: de8b8abd269ffaf488d05f4d86b5eae1
-  - enabled: 1
     path: Assets/Scenes/GraphPrototype.unity
     guid: 9b9cc9f6deb846a408094fd9749ec674
   m_configObjects: {}

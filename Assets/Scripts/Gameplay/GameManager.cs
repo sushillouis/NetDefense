@@ -39,13 +39,6 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		protected set => _waveStarted = value;
 	}
 
-	// Reference to the ready button's text
-	public TMPro.TextMeshProUGUI readyText;
-	// Reference to the Game Over screen
-	public GameObject endGameScreen;
-	// References to the win and lose text in the game over screen
-	public GameObject winText, loseText;
-
 	// When we are dis/enabled register ourselves as a listener to playerPropertyUpdateEvents and roomOtherLeaveEvent
 	void OnEnable(){
 		NetworkingManager.roomPlayerPropertiesUpdateEvent += OnPlayerRoomPropertiesUpdate;
@@ -96,7 +89,7 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 	// When player properties are updated, adjust the ready state and possibly start the game
 	public void OnPlayerRoomPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable propertiesThatChanged){
 		// Update the ready button text for this player
-		readyText.text = (NetworkingManager.isReady ? "Unready" : "Ready");
+		BaseUI.instance.readyText.text = (NetworkingManager.isReady ? "Unready" : "Ready");
 
 		// If all of the players are ready, then start the next wave (Network Synced, Function ignores calls from everyone but host)
 		if(NetworkingManager.instance.allPlayersReady())
@@ -154,10 +147,10 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 	public void EndGame(Player winningPlayer) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayer.ActorNumber); }
 	public void EndGame(int winningPlayerID) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayerID); }
 	[PunRPC] void RPC_GameManager_EndGame(int winningPlayerID){
-		endGameScreen.SetActive(true);
+		BaseUI.instance.endGameScreen.SetActive(true);
 		if(winningPlayerID == NetworkingManager.localPlayer.ActorNumber)
-			winText.SetActive(true);
-		else loseText.SetActive(true);
+			BaseUI.instance.winText.SetActive(true);
+		else BaseUI.instance.loseText.SetActive(true);
 
 		gameEndEvent?.Invoke();
 	}
