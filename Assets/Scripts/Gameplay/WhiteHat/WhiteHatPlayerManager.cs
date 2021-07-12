@@ -308,9 +308,15 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		// Continue all of the logic in the base handler
 		base.ErrorHandler(errorCode, error);
 
-		// Play the settings error sound if this is a no updates remaining
-		if(errorCode == ErrorCodes.NoUpdatesRemaining)
-			AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdateFailed", .5f);
+		// Play a sound to indicate that an error occured
+		AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdateFailed");
+
+		// If there are too many firewalls switch back to selecting mode
+		if(errorCode == ErrorCodes.TooManyFirewalls){
+			clickState = ClickState.Selecting;
+			// Make sure the placement cursor is hidden
+			OnHoverChanged(HoverManager.instance.hovered);
+		}
 
 		// But also present the new error to the screen
 		errorText.text = error;

@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 
 public class Firewall : MonoBehaviourPun, SelectionManager.ISelectable {
+	public static Firewall[] firewalls = null;
+
 	// Reference to the attached mesh renderer
 	new public MeshRenderer renderer;
 
@@ -21,9 +23,16 @@ public class Firewall : MonoBehaviourPun, SelectionManager.ISelectable {
 	[SerializeField]
 	public int updatesRemaining = 1; // Starts at 1 to account for initial settings
 
+
 	// De/register the start function on wave ends
-	void OnEnable(){ GameManager.waveEndEvent += Start; }
-	void OnDisable(){ GameManager.waveEndEvent -= Start; }
+	void OnEnable(){
+		firewalls = FindObjectsOfType<Firewall>(); // Update the list of firewalls
+		GameManager.waveEndEvent += Start;
+	}
+	void OnDisable(){
+		firewalls = FindObjectsOfType<Firewall>(); // Update the list of firewalls
+		GameManager.waveEndEvent -= Start;
+	}
 
 	// When the this is created or a wave starts grant its updates per wave
 	void Start(){

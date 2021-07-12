@@ -7,8 +7,9 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 	// Error codes used by the error handling system
 	new public class ErrorCodes : BaseSharedBetweenHats.ErrorCodes {
 		public static readonly int FirewallIsMoving = 4;		// Error code stating that the firewall is still moving
-		public static readonly int FirewallNotSelected = 5;	// Error code stating that no firewall has been selected
-		public static readonly int TargetNotSelected = 6;	// Error code stating that no target has been selected
+		public static readonly int FirewallNotSelected = 5;		// Error code stating that no firewall has been selected
+		public static readonly int TooManyFirewalls = 6;		// Error code stating that no firewall has been selected
+		public static readonly int TargetNotSelected = 7;		// Error code stating that no target has been selected
 
 		// Required function to get the class up to par
 		public ErrorCodes() {}
@@ -25,6 +26,8 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 
 	// A string referencing the firewall prefab path
 	public string firewallPrefabPath;
+	// The number of firewalls that can exist at any given time
+	public int maximumPlaceableFirewalls = 2;
 
 	// When we awake preform all of the code for a singleton and also ensure that the prefab path is good to be used (removes extra stuff unity's copy path feature gives us)
 	override protected void Awake(){
@@ -48,8 +51,13 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 			ErrorHandler(ErrorCodes.InvalidTarget, "Firewalls can't be placed on the selected location!");
 			return null;
 		}
+		// Error if there are already too many firewalls
+		if(Firewall.firewalls != null && Firewall.firewalls.Length >= maximumPlaceableFirewalls){
+			ErrorHandler(ErrorCodes.TooManyFirewalls, "Only " + maximumPlaceableFirewalls + " Firewalls can be placed at a time!");
+			return null;
+		}
 
-		// Spawn the new firewall in the network
+		// Spawn the new firewall over the network
 		Firewall spawned = PhotonNetwork.Instantiate(firewallPrefabPath, new Vector3(0, 100, 0), Quaternion.identity).GetComponent<Firewall>();
 		// Move it to its proper position
 		MoveFirewall(spawned, targetPathPiece, /*not animated*/ false);
