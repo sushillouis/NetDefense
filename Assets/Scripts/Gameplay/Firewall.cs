@@ -27,16 +27,21 @@ public class Firewall : MonoBehaviourPun, SelectionManager.ISelectable {
 	// De/register the start function on wave ends
 	void OnEnable(){
 		firewalls = FindObjectsOfType<Firewall>(); // Update the list of firewalls
-		GameManager.waveEndEvent += Start;
+		GameManager.waveEndEvent += OnWaveStart;
 	}
 	void OnDisable(){
 		firewalls = FindObjectsOfType<Firewall>(); // Update the list of firewalls
-		GameManager.waveEndEvent -= Start;
+		GameManager.waveEndEvent -= OnWaveStart;
+	}
+
+	// When the firewall is created make sure its filter rules are defaulted
+	void Start(){
+		SetFilterRules(Packet.Details.Default); // Make sure that the base filter rules are applied
+		OnWaveStart();
 	}
 
 	// When the this is created or a wave starts grant its updates per wave
-	void Start(){
-		SetFilterRules(Packet.Details.Default); // Make sure that the base filter rules are applied
+	void OnWaveStart(){
 		updatesRemaining += updatesGrantedPerWave[(int)GameManager.difficulty];
 	}
 
