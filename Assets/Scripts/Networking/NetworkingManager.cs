@@ -142,23 +142,26 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 
 	// When the room properties update, we need to recalculate which player is the whitehat and which player is the blackhat
 	public override void OnRoomPropertiesUpdate (ExitGames.Client.Photon.Hashtable propertiesThatChanged){
-		// Determine the index in PhotonNetwork.PlayerList of the host and the connected secondary player (if there is no connected secondary player his index will be -1)
-		int mainIndex = 0, secondaryIndex = -1;
-		for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++){
-			Player p = PhotonNetwork.PlayerList[i];
-			if(p.ActorNumber == PhotonNetwork.CurrentRoom.MasterClientId)
-				mainIndex = i;
-			else secondaryIndex = i;
-		}
+		// If the host whitehat property changed, figure out the index of the whitehat and blackhat players
+		if(propertiesThatChanged[IS_HOST_WHITE_HAT] != null){
+			// Determine the index in PhotonNetwork.PlayerList of the host and the connected secondary player (if there is no connected secondary player his index will be -1)
+			int mainIndex = 0, secondaryIndex = -1;
+			for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++){
+				Player p = PhotonNetwork.PlayerList[i];
+				if(p.ActorNumber == PhotonNetwork.CurrentRoom.MasterClientId)
+					mainIndex = i;
+				else secondaryIndex = i;
+			}
 
-		// If the host player is the whitehat, set the indices accordingly
-		if(propertiesThatChanged[IS_HOST_WHITE_HAT] != null && (bool)propertiesThatChanged[IS_HOST_WHITE_HAT]){
-			whiteHatPlayerIndex = mainIndex;
-			blackHatPlayerIndex = secondaryIndex;
-		// If the host player is the blackhat, set the indices accordingly
-		} else {
-			blackHatPlayerIndex = mainIndex;
-			whiteHatPlayerIndex = secondaryIndex;
+			// If the host player is the whitehat, set the indices accordingly
+			if((bool)propertiesThatChanged[IS_HOST_WHITE_HAT]){
+				whiteHatPlayerIndex = mainIndex;
+				blackHatPlayerIndex = secondaryIndex;
+			// If the host player is the blackhat, set the indices accordingly
+			} else {
+				blackHatPlayerIndex = mainIndex;
+				whiteHatPlayerIndex = secondaryIndex;
+			}
 		}
 
 		// Propagate the event
