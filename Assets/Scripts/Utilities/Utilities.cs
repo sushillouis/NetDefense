@@ -59,7 +59,6 @@ public class Utilities {
         resultList = new List<T>();
         foreach(MonoBehaviour mb in list){
 			if(mb is T)
-				//found one
                 resultList.Add((T)((System.Object)mb));
         }
 	}
@@ -70,5 +69,19 @@ public class Utilities {
 		foreach (Renderer r in obj.GetComponentsInChildren<Renderer>())
 		 	bounds.Encapsulate(r.bounds);
 		return bounds;
+	}
+
+	// Recursively finds a child of the transform with the given name (returns null if one can't be found)
+	public static Transform RecursiveFindChild(Transform parent, string name) {
+		foreach (Transform child in parent) {
+			if(child.name == name)
+				return child;
+			else {
+				Transform found = RecursiveFindChild(child, name);
+				if (found != null)
+					return found;
+			}
+		}
+		return null;
 	}
 }
