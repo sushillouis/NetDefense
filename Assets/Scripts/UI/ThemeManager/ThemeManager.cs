@@ -256,6 +256,16 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 			}
 		}
 
+		// Color tint of the unfilled section of the slider (calls theme update callback when changed)
+		[SerializeField] Color _backgroundColor;
+		public Color backgroundColor {
+			get => _backgroundColor;
+			set {
+				_backgroundColor = value;
+				themeUpdateEvent?.Invoke();
+			}
+		}
+
 		// Slider colors (calls theme update callback when changed)
 		[SerializeField] ColorBlock _colors;
 		public ColorBlock colors {
@@ -273,6 +283,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 			_handleSprite = null;
 			_colors = ColorBlock.defaultColorBlock;
 			_fillColor = Color.white;
+			_backgroundColor = Color.white;
 			themeUpdateEvent?.Invoke();
 		}
 	}
