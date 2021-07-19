@@ -32,12 +32,14 @@ public class ThemedSlider : Slider {
 		var style = ThemeManager.instance.getSliderStyle(themeStyleName);
 		colors = style.colors;
 
-		// Update the background sprite
+		// Update the background sprite and color
 		if(style.backgroundSprite != null)
 			if(transform.GetChild(0)){
 				Image backgroundImage = transform.GetChild(0).gameObject.GetComponent<Image>();
-				if(backgroundImage)
+				if(backgroundImage){
 					backgroundImage.sprite = style.backgroundSprite;
+					backgroundImage.color = style.backgroundColor;
+				}
 			}
 
 		// Update the fill sprite
