@@ -61,7 +61,7 @@ namespace Photon.Pun
         void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer);
 
         /// <summary>
-        /// Called when ownership of a PhotonView is transfered to another player.
+        /// Called when ownership of a PhotonView is transferred to another player.
         /// </summary>
         /// <remarks>
         /// The parameter viewAndPlayers contains:

@@ -421,7 +421,7 @@ namespace Photon.Pun
         /// <summary>
         /// Offline mode can be set to re-use your multiplayer code in singleplayer game modes.
         /// When this is on PhotonNetwork will not create any connections and there is near to
-        /// no overhead. Mostly usefull for reusing RPC's and PhotonNetwork.Instantiate
+        /// no overhead. Mostly useful for reusing RPC's and PhotonNetwork.Instantiate
         /// </summary>
         public static bool OfflineMode
         {
@@ -812,7 +812,7 @@ namespace Photon.Pun
         /// The Master Client of the current room or null (outside of rooms).
         /// </summary>
         /// <remarks>
-        /// Can be used as "authoritative" client/player to make descisions, run AI or other.
+        /// Can be used as "authoritative" client/player to make decisions, run AI or other.
         ///
         /// If the current Master Client leaves the room (leave/disconnect), the server will quickly assign someone else.
         /// If the current Master Client times out (closed app, lost connection, etc), messages sent to this client are
@@ -1345,7 +1345,7 @@ namespace Photon.Pun
 
             if (NetworkingClient == null)
             {
-                return; // Surpress error when quitting playmode in the editor
+                return; // Suppress error when quitting playmode in the editor
             }
 
             NetworkingClient.Disconnect();

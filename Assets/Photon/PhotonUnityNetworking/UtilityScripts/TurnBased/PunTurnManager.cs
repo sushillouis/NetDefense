@@ -114,17 +114,17 @@ namespace Photon.Pun.UtilityScripts
         private readonly HashSet<Player> finishedPlayers = new HashSet<Player>();
 
         /// <summary>
-        /// The turn manager event offset event message byte. Used internaly for defining data in Room Custom Properties
+        /// The turn manager event offset event message byte. Used internally for defining data in Room Custom Properties
         /// </summary>
         public const byte TurnManagerEventOffset = 0;
 
         /// <summary>
-        /// The Move event message byte. Used internaly for saving data in Room Custom Properties
+        /// The Move event message byte. Used internally for saving data in Room Custom Properties
         /// </summary>
         public const byte EvMove = 1 + TurnManagerEventOffset;
 
         /// <summary>
-        /// The Final Move event message byte. Used internaly for saving data in Room Custom Properties
+        /// The Final Move event message byte. Used internally for saving data in Room Custom Properties
         /// </summary>
         public const byte EvFinalMove = 2 + TurnManagerEventOffset;
 

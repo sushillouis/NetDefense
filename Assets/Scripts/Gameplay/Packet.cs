@@ -67,7 +67,7 @@ public class Packet : MonoBehaviourPun, SelectionManager.ISelectable {
 
 		// Equality Operator
 		public static bool operator ==(Details a, Details b){ return a.Equals(b); }
-		// Inequality Operator (Required if == is overriden)
+		// Inequality Operator (Required if == is overridden)
 		public static bool operator !=(Details a, Details b){ return !a.Equals(b); }
 
 		// To string method used for selection debugging

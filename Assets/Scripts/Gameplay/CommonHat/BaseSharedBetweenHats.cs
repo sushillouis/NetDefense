@@ -37,7 +37,7 @@ public class BaseSharedBetweenHats : Core.Utilities.Singleton<BaseSharedBetweenH
 
 		// Equality Operator
 		public static bool operator ==(ErrorCodes a, ErrorCodes b) => a.Equals(b);
-		// Inequality Operator (Required if == is overriden)
+		// Inequality Operator (Required if == is overridden)
 		public static bool operator !=(ErrorCodes a, ErrorCodes b) => !a.Equals(b);
 
 		public static implicit operator int(ErrorCodes e) => e.value;

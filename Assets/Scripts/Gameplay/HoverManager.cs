@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 
 public class HoverManager : Core.Utilities.Singleton<HoverManager> {
-	// Interace which defines that an object is hoverable
+	// Interface which defines that an object is hoverable
 	public interface IHoverable {
 		void OnHoverChanged(GameObject newHover);
 	}

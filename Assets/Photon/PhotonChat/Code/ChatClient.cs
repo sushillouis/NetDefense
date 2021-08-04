@@ -201,7 +201,7 @@ namespace Photon.Chat
         /// <summary>Defines which IPhotonSocket class to use per ConnectionProtocol.</summary>
         /// <remarks>
         /// Several platforms have special Socket implementations and slightly different APIs.
-        /// To accomodate this, switching the socket implementation for a network protocol was made available.
+        /// To accommodate this, switching the socket implementation for a network protocol was made available.
         /// By default, UDP and TCP have socket implementations assigned.
         ///
         /// You only need to set the SocketImplementationConfig once, after creating a PhotonPeer

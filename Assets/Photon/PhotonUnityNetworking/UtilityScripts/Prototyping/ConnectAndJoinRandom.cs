@@ -32,8 +32,8 @@ namespace Photon.Pun.UtilityScripts
         /// <summary>Used as PhotonNetwork.GameVersion.</summary>
         public byte Version = 1;
 
-		/// <summary>Max number of players allowed in room. Once full, a new room will be created by the next connection attemping to join.</summary>
-		[Tooltip("The max number of players allowed in room. Once full, a new room will be created by the next connection attemping to join.")]
+		/// <summary>Max number of players allowed in room. Once full, a new room will be created by the next connection attempting to join.</summary>
+		[Tooltip("The max number of players allowed in room. Once full, a new room will be created by the next connection attempting to join.")]
 		public byte MaxPlayers = 4;
 
         public int playerTTL = -1;

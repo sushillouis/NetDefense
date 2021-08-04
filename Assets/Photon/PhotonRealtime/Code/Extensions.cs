@@ -77,7 +77,7 @@ namespace Photon.Realtime
             }
         }
 
-        /// <summary>Helper method for debugging of IDictionary content, inlcuding type-information. Using this is not performant.</summary>
+        /// <summary>Helper method for debugging of IDictionary content, including type-information. Using this is not performant.</summary>
         /// <remarks>Should only be used for debugging as necessary.</remarks>
         /// <param name="origin">Some Dictionary or Hashtable.</param>
         /// <returns>String of the content of the IDictionary.</returns>

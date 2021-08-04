@@ -1101,7 +1101,7 @@ namespace Photon.Realtime
         // server - Photon low(er) level: <= 0
 
         /// <summary>
-        /// (-3) Operation can't be executed yet (e.g. OpJoin can't be called before being authenticated, RaiseEvent cant be used before getting into a room).
+        /// (-3) Operation can't be executed yet (e.g. OpJoin can't be called before being authenticated, RaiseEvent can't be used before getting into a room).
         /// </summary>
         /// <remarks>
         /// Before you call any operations on the Cloud servers, the automated client workflow must complete its authorization.
@@ -1156,13 +1156,13 @@ namespace Photon.Realtime
         /// <summary>(32761) Not in use currently.</summary>
         public const int UserBlocked = 0x7FFF - 6;
 
-        /// <summary>(32760) Random matchmaking only succeeds if a room exists thats neither closed nor full. Repeat in a few seconds or create a new room.</summary>
+        /// <summary>(32760) Random matchmaking only succeeds if a room exists that's neither closed nor full. Repeat in a few seconds or create a new room.</summary>
         public const int NoRandomMatchFound = 0x7FFF - 7;
 
         /// <summary>(32758) Join can fail if the room (name) is not existing (anymore). This can happen when players leave while you join.</summary>
         public const int GameDoesNotExist = 0x7FFF - 9;
 
-        /// <summary>(32757) Authorization on the Photon Cloud failed becaus the concurrent users (CCU) limit of the app's subscription is reached.</summary>
+        /// <summary>(32757) Authorization on the Photon Cloud failed because the concurrent users (CCU) limit of the app's subscription is reached.</summary>
         /// <remarks>
         /// Unless you have a plan with "CCU Burst", clients might fail the authentication step during connect.
         /// Affected client are unable to call operations. Please note that players who end a game and return
@@ -1230,7 +1230,7 @@ namespace Photon.Realtime
         public const int JoinFailedFoundActiveJoiner = 32746; // 0x7FFF - 21,
 
         /// <summary>
-        /// (32745)  for SetProerties and Raisevent (if flag HttpForward is true) requests. Indicates the maximum allowd http requests per minute was reached.
+        /// (32745)  for SetProerties and Raisevent (if flag HttpForward is true) requests. Indicates the maximum allowed http requests per minute was reached.
         /// </summary>
         public const int HttpLimitReached = 32745; // 0x7FFF - 22,
 
@@ -1793,7 +1793,7 @@ namespace Photon.Realtime
         /// <summary>(0x01) Flag type for game-attached properties.</summary>
         Game = 0x01,
 
-        /// <summary>(0x02) Flag type for actor related propeties.</summary>
+        /// <summary>(0x02) Flag type for actor related properties.</summary>
         Actor = 0x02,
 
         /// <summary>(0x01) Flag type for game AND actor properties. Equal to 'Game'</summary>
@@ -1811,7 +1811,7 @@ namespace Photon.Realtime
         /// An invisible room can be joined by name but is excluded from random matchmaking.
         ///
         /// Use this to "hide" a room and simulate "private rooms". Players can exchange a roomname and create it
-        /// invisble to avoid anyone else joining it.
+        /// invisible to avoid anyone else joining it.
         /// </remarks>
         public bool IsVisible { get { return this.isVisible; } set { this.isVisible = value; } }
         private bool isVisible = true;
@@ -1863,7 +1863,7 @@ namespace Photon.Realtime
 
         /// <summary>Informs the server of the expected plugin setup.</summary>
         /// <remarks>
-        /// The operation will fail in case of a plugin missmatch returning error code PluginMismatch 32757(0x7FFF - 10).
+        /// The operation will fail in case of a plugin mismatch returning error code PluginMismatch 32757(0x7FFF - 10).
         /// Setting string[]{} means the client expects no plugin to be setup.
         /// Note: for backwards compatibility null omits any check.
         /// </remarks>
@@ -2092,7 +2092,7 @@ namespace Photon.Realtime
         /// <summary>Authenticates users by their PSN Account and token (on PS5).</summary>
         Playstation5 = 12,
 
-        /// <summary>Disables custom authentification. Same as not providing any AuthenticationValues for connect (more precisely for: OpAuthenticate).</summary>
+        /// <summary>Disables custom authentication. Same as not providing any AuthenticationValues for connect (more precisely for: OpAuthenticate).</summary>
         None = byte.MaxValue
     }
 

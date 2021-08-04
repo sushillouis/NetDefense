@@ -117,7 +117,7 @@ namespace Photon.Pun
             PunSceneSettings pss = Instance;
             if (pss == null)
             {
-                Debug.LogError("pss cant be null");
+                Debug.LogError("pss can't be null");
                 return 1;
             }
 

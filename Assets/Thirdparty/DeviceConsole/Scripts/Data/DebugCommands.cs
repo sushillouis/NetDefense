@@ -73,7 +73,7 @@ public class DebugCommands : ScriptableObject
 	}
 
 	/// <summary>
-	/// Executes a command, the first string in the array is the command to run and all other strings are the arguements. Returns true if the command was successfully, false otherwise.
+	/// Executes a command, the first string in the array is the command to run and all other strings are the arguments. Returns true if the command was successfully, false otherwise.
 	/// </summary>
 	public bool ExecuteCommand(string[] args)
 	{

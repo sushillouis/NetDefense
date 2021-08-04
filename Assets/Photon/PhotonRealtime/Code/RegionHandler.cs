@@ -477,7 +477,7 @@ namespace Photon.Realtime
                 }
                 catch (Exception e)
                 {
-                    System.Diagnostics.Debug.WriteLine("RegionPinger.RegionPingThreaded() catched an exception for ping.StartPing(). Exception: " + e + " Source: " + e.Source + " Message: " + e.Message);
+                    System.Diagnostics.Debug.WriteLine("RegionPinger.RegionPingThreaded() caught an exception for ping.StartPing(). Exception: " + e + " Source: " + e.Source + " Message: " + e.Message);
                     break;
                 }
 
@@ -550,7 +550,7 @@ namespace Photon.Realtime
                 }
                 catch (Exception e)
                 {
-                    Debug.Log("catched: " + e);
+                    Debug.Log("caught: " + e);
                     break;
                 }
 
@@ -656,7 +656,7 @@ namespace Photon.Realtime
             }
             catch (System.Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("RegionPinger.ResolveHost() catched an exception for Dns.GetHostAddresses(). Exception: " + e + " Source: " + e.Source + " Message: " + e.Message);
+                System.Diagnostics.Debug.WriteLine("RegionPinger.ResolveHost() caught an exception for Dns.GetHostAddresses(). Exception: " + e + " Source: " + e.Source + " Message: " + e.Message);
             }
 
             return ipv4Address;

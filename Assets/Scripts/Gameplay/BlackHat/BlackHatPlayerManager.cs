@@ -68,7 +68,7 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 			ChangeDestinationMaliciousPacketTargetLikelihood(destination, (int) probabilityLikelihoodPanelSlider.value);
 	}
 
-	// Callback which responds to click events (ignoring cick release events and events already handled by the UI)
+	// Callback which responds to click events (ignoring click release events and events already handled by the UI)
 	void OnClickPressed(InputAction.CallbackContext ctx){
 		// Ignore click releases
 		if(!ctx.ReadValueAsButton()) return;
@@ -183,7 +183,7 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 		// Display the panel
 		packetStartPanel.SetActive(true);
 
-		// Display the probability pannel
+		// Display the probability panel
 		showProbabilityPanel(p);
 		StartingPointSettingsUpdated(p);
 

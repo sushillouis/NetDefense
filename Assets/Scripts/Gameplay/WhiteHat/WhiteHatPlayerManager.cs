@@ -19,7 +19,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Reference to the cursor displayed when placing a firewall
 	public GameObject firewallCursor;
 
-	// Reference to the panel which displays infromation about firewalls and packets
+	// Reference to the panel which displays information about firewalls and packets
 	public GameObject firewallPacketPanel;
 	// Reference to the firewall and packet header labels
 	public TMPro.TextMeshProUGUI firewallPacketPanelFirewallText, firewallPacketPanelPacketText;
@@ -84,7 +84,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		firewallPacketPanelPacketText.gameObject.SetActive(false);
 	}
 
-	// Callback which responds to click events (ignoring cick release events and events already handled by the UI)
+	// Callback which responds to click events (ignoring click release events and events already handled by the UI)
 	void OnClickPressed(InputAction.CallbackContext ctx){
 		// Ignore click releases
 		if(!ctx.ReadValueAsButton()) return;
@@ -168,7 +168,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		}
 
 		if(!SetFirewallFilterRules(selected, rules))
-			showFirewallPanel(selected); // Reload the firewall pannel if we failed to update the settings
+			showFirewallPanel(selected); // Reload the firewall panel if we failed to update the settings
 	}
 
 
@@ -179,7 +179,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	void OnClick_SpawningFirewall(){
 		// Place a firewall at the currently hovered path piece (the base class takes care of most error handling)
 		Firewall spawned = SpawnFirewall(HoverManager.instance.hovered);
-		// If we succeded, mark the new fire wall as selected and reset the click state
+		// If we succeeded, mark the new fire wall as selected and reset the click state
 		if(spawned != null){
 			SelectionManager.instance.selected = spawned.gameObject;
 			clickState = ClickState.Selecting;
@@ -308,7 +308,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		// Continue all of the logic in the base handler
 		base.ErrorHandler(errorCode, error);
 
-		// Play a sound to indicate that an error occured
+		// Play a sound to indicate that an error occurred
 		AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdateFailed");
 
 		// If there are too many firewalls switch back to selecting mode

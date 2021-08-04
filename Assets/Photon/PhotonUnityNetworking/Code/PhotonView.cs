@@ -653,7 +653,7 @@ namespace Photon.Pun
 
 
         /// <summary>
-        /// Can be used to refesh the list of MonoBehaviours on this GameObject while PhotonNetwork.UseRpcMonoBehaviourCache is true.
+        /// Can be used to refresh the list of MonoBehaviours on this GameObject while PhotonNetwork.UseRpcMonoBehaviourCache is true.
         /// </summary>
         /// <remarks>
         /// Set PhotonNetwork.UseRpcMonoBehaviourCache to true to enable the caching.

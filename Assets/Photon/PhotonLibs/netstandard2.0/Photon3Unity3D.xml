@@ -520,7 +520,7 @@
             <summary>
             Returns null or the IPAddress representing the address, doing Dns resolution if needed.
             </summary>
-            <remarks>Only returns IPv4 or IPv6 adresses, no others.</remarks>
+            <remarks>Only returns IPv4 or IPv6 addresses, no others.</remarks>
             <param name="address">The string address of a server (hostname or IP).</param>
             <returns>IPAddress for the string address or null, if the address is neither IPv4, IPv6 or some hostname that could be resolved.</returns>
         </member>
@@ -593,7 +593,7 @@
         </member>
         <member name="M:ExitGames.Client.Photon.NCommand.CreateAck(System.Byte[],System.Int32,ExitGames.Client.Photon.NCommand,System.Int32)">
             <summary>
-             ACKs should never be created as NCommand. use CreateACK to wrtie the serialized ACK right away...
+             ACKs should never be created as NCommand. use CreateACK to write the serialized ACK right away...
             </summary>
             <param name="buffer"></param>
             <param name="offset"></param>
@@ -748,7 +748,7 @@
         <member name="M:ExitGames.Client.Photon.StructWrapping.StructWrapperUtility.Wrap``1(``0)">
             <summary>
             Wrap a struct in a pooled StructWrapper. Pulls wrapper from the static pool. Wrapper is returned to pool when Unwrapped.
-            Slighty faster version of Wrap() that is hard wired to pull from the static pool. Use the persistant bool argument to make a permanent unpooled wrapper.
+            Slightly faster version of Wrap() that is hard wired to pull from the static pool. Use the persistent bool argument to make a permanent unpooled wrapper.
             </summary>
         </member>
         <member name="M:ExitGames.Client.Photon.StructWrapping.StructWrapperUtility.IsType``1(System.Object)">
@@ -1162,7 +1162,7 @@
             
              If the SocketImplementationConfig is null, the SocketNative class is assigned for UDP, TCP and WebSocket.
             
-             Alternatively the type SocketNative (or other) can be assigend in the SocketImplementationConfig.
+             Alternatively the type SocketNative (or other) can be assigned in the SocketImplementationConfig.
             
              The SocketNative class in this assembly is compiled for dynamic linking.
              A class "SocketNativeSource" can be made available for you to compile it along with your source for
@@ -1208,7 +1208,7 @@
              <summary>Optional definition of IPhotonSocket type per ConnectionProtocol.</summary>
              <remarks>
              Several platforms have special Socket implementations and slightly different APIs.
-             To accomodate this, switching the socket implementation for a network protocol was made available.
+             To accommodate this, switching the socket implementation for a network protocol was made available.
              By default, UDP and TCP have socket implementations assigned.
             
              If a native socket plugin is available (see: PhotonPeer.NativeSocketLibAvailable), the SocketNative
@@ -1441,7 +1441,7 @@
              and could lead to timeouts.
             
              Building the checksum has a low processing overhead but increases integrity of sent and received data.
-             Packages discarded due to failed CRC cecks are counted in PhotonPeer.PacketLossByCrc.
+             Packages discarded due to failed CRC checks are counted in PhotonPeer.PacketLossByCrc.
              </remarks>
         </member>
         <member name="P:ExitGames.Client.Photon.PhotonPeer.PacketLossByCrc">
@@ -1631,7 +1631,7 @@
             <summary>
             Defines the initial size of an internally used StreamBuffer for Tcp.
             The StreamBuffer is used to aggregate operation into (less) send calls,
-            which uses less resoures.
+            which uses less resources.
             </summary>
             <remarks>
             The size is not restricing the buffer and does not affect when outgoing data is actually sent.
@@ -1639,7 +1639,7 @@
         </member>
         <member name="P:ExitGames.Client.Photon.PhotonPeer.MaximumTransferUnit">
             <summary>
-            The Maximum Trasfer Unit (MTU) defines the (network-level) packet-content size that is
+            The Maximum Transfer Unit (MTU) defines the (network-level) packet-content size that is
             guaranteed to arrive at the server in one piece. The Photon Protocol uses this
             size to split larger data into packets and for receive-buffers of packets.
             </summary>
@@ -1877,7 +1877,7 @@
         </member>
         <member name="M:ExitGames.Client.Photon.PhotonPeer.Service">
              <summary>
-             This method excutes DispatchIncomingCommands and SendOutgoingCommands in your application Thread-context.
+             This method executes DispatchIncomingCommands and SendOutgoingCommands in your application Thread-context.
              </summary>
              <remarks>
              The Photon client libraries are designed to fit easily into a game or application. The application
@@ -2129,7 +2129,7 @@
             Type of deserialization methods to add custom type support.
             Use PhotonPeer.RegisterType() to register new types with serialization and deserialization methods.
             </summary>
-            <param name="serializedCustomObject">The framwork passes in the data it got by the associated SerializeMethod. The type code and length are stripped and applied before a DeserializeMethod is called.</param>
+            <param name="serializedCustomObject">The framework passes in the data it got by the associated SerializeMethod. The type code and length are stripped and applied before a DeserializeMethod is called.</param>
             <returns>Return a object of the type that was associated with this method through RegisterType().</returns>
         </member>
         <member name="T:ExitGames.Client.Photon.DeserializeStreamMethod">
@@ -2223,7 +2223,7 @@
         </member>
         <member name="F:ExitGames.Client.Photon.Protocol16.GpType.Unknown">
             <summary>
-              Unkown type.
+              Unknown type.
             </summary>
         </member>
         <member name="F:ExitGames.Client.Photon.Protocol16.GpType.Array">
@@ -2340,7 +2340,7 @@
             <summary>Constructor for the exception.</summary>
         </member>
         <member name="F:ExitGames.Client.Photon.Protocol18.GpType.Unknown">
-            <summary>Unkown. GpType: 0.</summary>
+            <summary>Unknown. GpType: 0.</summary>
         </member>
         <member name="F:ExitGames.Client.Photon.Protocol18.GpType.Boolean">
             <summary>Boolean. GpType: 2. See: BooleanFalse, BooleanTrue.</summary>
@@ -2501,7 +2501,7 @@
             <summary>Endless loop, run in Receive Thread.</summary>
         </member>
         <member name="T:ExitGames.Client.Photon.SocketTcpAsync">
-            <summary>Internal class to encapsulate the network i/o functionality for the realtime libary.</summary>
+            <summary>Internal class to encapsulate the network i/o functionality for the realtime library.</summary>
         </member>
         <member name="M:ExitGames.Client.Photon.SocketTcpAsync.Send(System.Byte[],System.Int32)">
             <summary>used by PhotonPeer*</summary>
@@ -2516,7 +2516,7 @@
             <summary>Endless loop, run in Receive Thread.</summary>
         </member>
         <member name="T:ExitGames.Client.Photon.SocketUdpAsync">
-            <summary>Internal class to encapsulate the network i/o functionality for the realtime libary.</summary>
+            <summary>Internal class to encapsulate the network i/o functionality for the realtime library.</summary>
         </member>
         <member name="M:ExitGames.Client.Photon.SocketUdpAsync.Send(System.Byte[],System.Int32)">
             <summary>used by PhotonPeer*</summary>
