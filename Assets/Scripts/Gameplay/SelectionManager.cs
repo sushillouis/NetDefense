@@ -10,17 +10,24 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 	// Interface objects must implement to be selectable
 	public interface ISelectable { }
 
+	// Interface which defines that an object is hoverable
+	public interface IHoverable {
+		void OnHoverChanged(GameObject newHover);
+	}
+
 	// Callbacks
 	public delegate void FirwallCallback(Firewall newSelect);
 	public delegate void PacketCallback(Packet newSelect);
 	public delegate void StartingPointCallback(StartingPoint newSelect);
 	public delegate void DestinationCallback(Destination newSelect);
+	public delegate void HoverEventCallback(GameObject newHover);
 	// Events
 	public static FirwallCallback firewallSelectEvent;
 	public static PacketCallback packetSelectEvent;
 	public static StartingPointCallback startingPointSelectEvent;
 	public static DestinationCallback destinationSelectEvent;
 	public static Utilities.VoidEventCallback deselectEvent;
+	public static HoverEventCallback hoverChanged;
 
 	// Reference the mouse's position
 	public InputActionReference mousePositionAction;
@@ -28,7 +35,8 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 	public GameObject selectionCylinder;
 
 	// Property tracking the currently selected item
-	GameObject _selected;
+	[Header("Debugging")]
+	[SerializeField] GameObject _selected;
 	public GameObject selected {
 		get => _selected;
 		set {
@@ -43,8 +51,48 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 		}
 	}
 
-	// Function which updates the selection to whatever is currently under the mouse
+	// Reference to the currently hovered item
+	public GameObject hovered = null;
+
+
+	//  De/Register as a mouse position listener when it is Dis/enabled.
+	void OnEnable(){
+		mousePositionAction.action.Enable(); // Make sure the mouse position action is enabled
+		mousePositionAction.action.performed += OnMouseMoved;
+	}
+	void OnDisable(){ mousePositionAction.action.performed -= OnMouseMoved; }
+
+
+	// Callback which handles mouse movements (updating the currently hovered object)
 	RaycastHit hit; // Raycast target
+	List<IHoverable> hoverables; // List of components that implement the hoverable interface
+	void OnMouseMoved(InputAction.CallbackContext ctx){
+		Debug.Log("Mouse Moved");
+
+		// Ensure that there is a current camera (not 100% sure why this is necessary, but it throws null exceptions if not present)
+		Camera currentCamera = Camera.main;
+		if(currentCamera != null)
+			// When the mouse moves raycast into the scene
+			if(Physics.Raycast( currentCamera.ScreenPointToRay(ctx.ReadValue<Vector2>()), out hit )){
+				// If we hit something different than we are currently hovering over
+				if(hit.transform && hit.transform.gameObject != hovered){
+					// If the object has hover logic, then fire the hover changed event
+					Utilities.GetInterfaceInstances(out hoverables, hit.transform.gameObject);
+					if(hoverables.Count > 0){
+						hoverChanged?.Invoke(hit.transform.gameObject);
+						hovered = hit.transform.gameObject;
+					}
+				}
+			// If the raycast failed to hit anything, then the current hover is null
+			} else {
+				Debug.Log("Failed to hit!");
+				hoverChanged?.Invoke(null);
+				hovered = null;
+			}
+	}
+
+
+	// Function which updates the selection to whatever is currently under the mouse
 	public void SelectUnderCursor(bool shouldTriggerEvents = true){
 		// If the selection cyldinder gets deleted, then spawn a new one
 		if(selectionCylinder == null)
