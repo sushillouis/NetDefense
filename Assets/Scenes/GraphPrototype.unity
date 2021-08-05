@@ -2459,7 +2459,6 @@ GameObject:
   - component: {fileID: 1858544220}
   - component: {fileID: 1858544222}
   - component: {fileID: 1858544223}
-  - component: {fileID: 1858544219}
   - component: {fileID: 1858544218}
   m_Layer: 0
   m_Name: Managers
@@ -2482,20 +2481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mousePositionAction: {fileID: -1654692200621890270, guid: a26318101696cb248921fa709202c4d2, type: 3}
   selectionCylinder: {fileID: 1362337880}
---- !u!114 &1858544219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1858544217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3c4c1231ddf02c458a1335e7041a495, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   hovered: {fileID: 0}
-  mousePositionAction: {fileID: -1654692200621890270, guid: a26318101696cb248921fa709202c4d2, type: 3}
 --- !u!114 &1858544220
 MonoBehaviour:
   m_ObjectHideFlags: 0

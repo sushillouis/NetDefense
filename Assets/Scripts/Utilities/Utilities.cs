@@ -54,7 +54,7 @@ public class Utilities {
 
 	// Gets a list of components that implement the specified interface on the provided game object
 	// Code from: https://answers.unity.com/questions/523409/strategy-pattern-with-monobehaviours.html
-	public static void GetInterfaces<T>(out List<T> resultList, GameObject objectToSearch) where T: class {
+	public static void GetInterfaceInstances<T>(out List<T> resultList, GameObject objectToSearch) where T: class {
         MonoBehaviour[] list = objectToSearch.GetComponents<MonoBehaviour>();
         resultList = new List<T>();
         foreach(MonoBehaviour mb in list){

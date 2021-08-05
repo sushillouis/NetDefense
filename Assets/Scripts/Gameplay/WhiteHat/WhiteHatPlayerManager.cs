@@ -45,7 +45,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		rightClickAction.action.performed += OnCancel;
 		cancelAction.action.Enable();
 		cancelAction.action.performed += OnCancel;
-		HoverManager.hoverChanged += OnHoverChanged;
+		SelectionManager.hoverChanged += OnHoverChanged;
 		SelectionManager.packetSelectEvent += OnPacketSelected;
 		SelectionManager.firewallSelectEvent += OnFirewallSelected;
 	}
@@ -53,7 +53,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		leftClickAction.action.performed -= OnClickPressed;
 		rightClickAction.action.performed -= OnCancel;
 		cancelAction.action.performed -= OnCancel;
-		HoverManager.hoverChanged -= OnHoverChanged;
+		SelectionManager.hoverChanged -= OnHoverChanged;
 		SelectionManager.packetSelectEvent -= OnPacketSelected;
 		SelectionManager.firewallSelectEvent -= OnFirewallSelected;
 	}
@@ -107,7 +107,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
 
 		clickState = ClickState.Selecting;
-		OnHoverChanged(HoverManager.instance.hovered);
+		OnHoverChanged(SelectionManager.instance.hovered);
 	}
 
 	// Callback which handles when the selected packet changes
@@ -178,14 +178,14 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Function which handles clicks when we should be placing firewalls
 	void OnClick_SpawningFirewall(){
 		// Place a firewall at the currently hovered path piece (the base class takes care of most error handling)
-		Firewall spawned = SpawnFirewall(HoverManager.instance.hovered);
+		Firewall spawned = SpawnFirewall(SelectionManager.instance.hovered);
 		// If we succeeded, mark the new fire wall as selected and reset the click state
 		if(spawned != null){
 			SelectionManager.instance.selected = spawned.gameObject;
 			clickState = ClickState.Selecting;
 
 			// Make sure the placement cursor is hidden
-			OnHoverChanged(HoverManager.instance.hovered);
+			OnHoverChanged(SelectionManager.instance.hovered);
 
 			// Play a sound to indicate that it has spawned
 			AudioManager.instance.soundFXPlayer.PlayTrackImmediate("FirewallSpawn", .5f);
@@ -215,11 +215,11 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 	// Function which handles clicks when we are supposed to be moving firewalls
 	void OnClick_MovingFirewall(){
-		if(MoveFirewall(getSelected<Firewall>(), HoverManager.instance.hovered)){
+		if(MoveFirewall(getSelected<Firewall>(), SelectionManager.instance.hovered)){
 			clickState = ClickState.Selecting;
 
 			// Make sure the placement cursor is hidden
-			OnHoverChanged(HoverManager.instance.hovered);
+			OnHoverChanged(SelectionManager.instance.hovered);
 
 			// Play a sound to indicate that it has moved
 			AudioManager.instance.soundFXPlayer.PlayTrackImmediate("FirewallSpawn", .5f);
@@ -315,7 +315,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		if(errorCode == ErrorCodes.TooManyFirewalls){
 			clickState = ClickState.Selecting;
 			// Make sure the placement cursor is hidden
-			OnHoverChanged(HoverManager.instance.hovered);
+			OnHoverChanged(SelectionManager.instance.hovered);
 		}
 
 		// But also present the new error to the screen
