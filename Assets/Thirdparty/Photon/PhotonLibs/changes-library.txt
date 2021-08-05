@@ -87,7 +87,7 @@ Version 4.1.4.7 (26. November 2020 - rev5893)
     Added: ExitGames.Client.Photon.Hashtable Add() and Remove() for byte keys. This makes sure ht.Add(0, obj) and ht.Remove(0) match how the access via ht[0] works.
 
 Version 4.1.4.6 (17. November 2020 - rev5865)
-    Changed: The EventData.Paramters dictionary is now readonly. It does not need to be settable and can no longer be null. So null-checks are removed.
+    Changed: The EventData.Parameters dictionary is now readonly. It does not need to be settable and can no longer be null. So null-checks are removed.
     Changed: If the ByteArrayPool is used for reading events, the sender's actorNumber will not longer be in the EventData parameter-table. Instead, only the Sender property is used.
     Note: This makes receiving EventData events non-alloc by not adding the Sender key/value to the Parameters (which would box the int value).
     Note: The EventData.Sender property was available for a while and was a better way to access the event-sender's actornumber.
@@ -137,7 +137,7 @@ Version 4.1.4.5 (04. September 2020 - rev5733)
     Fixed: Potential issues with SupportLogger.StartBackgroundCalls() when there were 255 threads running (and or stopped).
     Changed: When PhotonClientWebSocket fails to connect, this will now correctly result in a disconnect with code/reason ExceptionOnConnect.
     Changed: The socket reading-thread not call it's disconnect method, if already disconnecting/disconnected. This avoids a surplus call (and callback).
-    Internal: The thread locking object in SocketNative is no longers static.
+    Internal: The thread locking object in SocketNative is no longer static.
     Note: The next release will change the native datagram encryptor api. Most likely this is the last one compatible with the old native plugin.
 
 Version 4.1.4.4 (29. June 2020 - rev5625)
@@ -202,9 +202,9 @@ Version 4.1.3.0 (23. March 2020 - rev5399)
 Version 4.1.2.20 (12. December 2019 - rev5296)
     Changed: DiffieHellmanCryptoProviderNative is now always compiled into the assembly using dynamic linking. If the payload encryption native library is present, it will be used automatically.
     Changed: Extern methods with the DllImport attribute are now public. This allows a PrelinkAll() check if the dll is available and can be loaded.
-    Internal: EncryptorNative will no longer use native extern methods in static fields. This causes execptions in unexpected context.
+    Internal: EncryptorNative will no longer use native extern methods in static fields. This causes exceptions in unexpected context.
     Added: PhotonPeer NativePayloadEncryptionLibAvailable, NativeDatagramEncryptionLibAvailable and NativeSocketLibAvailable values.
-    Changed: SocketNative is autmatically used if the native socket lib is available, based on the checks above.
+    Changed: SocketNative is automatically used if the native socket lib is available, based on the checks above.
     Changed: The wrappers for the native libraries (sockets and datagram encryption) will now setup a debug logging callback with debug level. This requires new native libraries.
 
 Version 4.1.2.19 (13. November 2019 - rev5271)
@@ -411,7 +411,7 @@ Chat:
     Added: ChatClient can optionally run a thread to call SendOutgoingCommands in intervals. This makes sure the connection doesn't fail easily (e.g. when Unity is loading scenes, etc.). You still have to call Service to dispatch received messages.
     Added: ChatClient.UseBackgroundWorkerForSending. Set this to true, to use the new background thread. Note: Do not use this in WebGL exports from Unity cause Threads are unavailable in them.
 WebSocket:
-    Changed: Updated enabled protocols for WebSocket.cs. Now it is posible to connect to a server which supports only either TLS 1.1 or TLS 1.2 or TLS 1.0 or any combination of them.
+    Changed: Updated enabled protocols for WebSocket.cs. Now it is possible to connect to a server which supports only either TLS 1.1 or TLS 1.2 or TLS 1.0 or any combination of them.
 
 *** Version 4.1.1.13 (2. June 2017 - rev4112)
     Internal: Fixed StreamBuffer.Seek() which was throwing an exception when seeking position 0 in an empty stream.
@@ -528,8 +528,8 @@ Internal:
     Removed: Our upcoming protocol implementation until it's fully compatible with all supported platforms. Despite not being used, it also caused some issues on some Unity exports.
     Changed: Usage of MemoryStream is being replaced with a StreamBuffer. This is our own implementation and always grants access to the underlying byte[] (which is not possible in Windows Phone / Store API in some cases). For your Custom Type serialization, replace MemoryStream with StreamBuffer. That's all.
     Internal: Commands are now split into header and payload byte-arrays, instead of copying them into yet another buffer before sending them.
-    Added: Support for IPv6 adresses in Photon Ping classes. This supports "Best Region" usage in PUN.
-    Fixed: After DNS resolution, IPv6 adresses are preferred over IPv4 ones.
+    Added: Support for IPv6 addresses in Photon Ping classes. This supports "Best Region" usage in PUN.
+    Fixed: After DNS resolution, IPv6 addresses are preferred over IPv4 ones.
 LoadBalancing:
     Fixed: LoadBalancingPeer.OpRaiseEvent(...) to send operations (and events) unencrypted again.
 
@@ -582,7 +582,7 @@ Unity SDK:
 *** Version 4.0.5.0 (3. December 2015 - rev3144)
     Changed: Signature of SetCustomProperties methods. All overloads now include a final, optional "webForward" parameter. This enables you to update a WebHook when properties change. This is intended for turnbased games, not for high-frequency updates - use with care.
     Internal: Added more debug output to error messages from the socket usage. This should now always include the ServerAddress to make things easier to debug server-side, if needed.
-    Added: Serveral new ErrorCode values, which will be used by v4RC5 and newer servers. See ErrorCode.JoinFailed***, HttpLimitReached and ExternalHttpCallFailed.
+    Added: Several new ErrorCode values, which will be used by v4RC5 and newer servers. See ErrorCode.JoinFailed***, HttpLimitReached and ExternalHttpCallFailed.
     Fixed: LoadBalancing API now reads the correct "NickName" key from the server's authentication response. So far, it was reading a key that is never used. Note: This means you can set a user's NickName server-side to override the client's nickname.
 Chat
     Added: A MessageLimit field for ChatClient and ChatChannel to limit the number of messages the client keeps locally. It might be useful to limit memory usage in long running chats. Set ChatClient.MessageLimit to apply the limit to any channel subscribed afterwards or apply a limit individually.
@@ -595,7 +595,7 @@ Chat
     Added: Support for PS4 in Unity LoadBalancing SDK. Note: The demos are not all updated with controller support, as we use the old UI, still. To test export, use the Particle Demo.
 
 *** Version 4.0.0.11 (28. October 2015 - rev3093)
-    Changed: Sending a generic Dictionary (with specific types) will now throw an Exception, if any key or value is null. This limitation does not include Dictionaries which use object as type. Those Exceptions are one of the few, which are not catched and turned into a debug message. Catch them by wrapping Operation calls, where needed (OpRaiseEvent()).
+    Changed: Sending a generic Dictionary (with specific types) will now throw an Exception, if any key or value is null. This limitation does not include Dictionaries which use object as type. Those Exceptions are one of the few, which are not caught and turned into a debug message. Catch them by wrapping Operation calls, where needed (OpRaiseEvent()).
     Changed: TrafficStatsGameLevel public properties are now settable. This enables you to reset individual values to (e.g.) show "LongestDeltaBetweenSending of the past second".
     Added: CommandLog debugging option. This can be used to get a list of sent reliable commands and their ACKs (from the server). Default is 0 size ("off").
     Added: CommandLogSize and CommandLogToString() to PhotonPeer. This is part of a LoadBalancingClient.loadBalancingPeer.
@@ -729,7 +729,7 @@ LoadBalancing:
 Chat:
     Changed: How the server responds to Subscribe and Unsubscribe. Events will now contain success/failure of those. This allows us to send the answer after calling a WebHook if needed and we can even send it to multiple clients (which authenticated with the same userID).
     Changed: Handling of subscription responsed. This is done to allow web services to subscribe a client remotely and to be able to prevent joining some channel that a user should not join (the channel of some guild or another team, e.g.).
-    Changed: Debug loggging. In Unity we can't use Debug.Assert, etc. So we have to log more cleanly. This works in Editor and several platforms (but not all).
+    Changed: Debug logging. In Unity we can't use Debug.Assert, etc. So we have to log more cleanly. This works in Editor and several platforms (but not all).
     Changed: Folder for Chat API. It now begins with "Photon" which provides some context no matter where you copy the files. Easier to find in Unity projects.
     Changed: Operation FriendList and method SendFriendList renamed to AddFriends
     Added: Operation RemoveFriends and corresponding method in ChatClient.cs
@@ -875,7 +875,7 @@ LoadBalancing API
 *** Version 3.2.1.0 (24.05.2013 - rev2112)
     Added: Feature "Custom Authentication" which lets you authorize players/users in the Photon Cloud with an external account/user service. More on that online: http://doc.photonengine.com/photon-cloud/CustomAuthentication
     Added: LoadBalancing API Feature "Friend Finding" which enables a client to find friends in rooms by userId. If an external service provides a userID per player and a friend list, this can be used to find a friend's room (game) and join it (unless closed or full).
-    Added: CustomAuthenticationType enum to enable differnt types of custom auth later on (only one actually useful value so far).
+    Added: CustomAuthenticationType enum to enable different types of custom auth later on (only one actually useful value so far).
     Added: Class AuthenticationValues as container for authentication values.
     Added: LoadBalancingClient.Connect overload which takes a AuthenticationValues parameter.
     Added: LoadBalancingPeer.AuthValues property to set the custom authentication values.
@@ -1117,7 +1117,7 @@ Internal:
 - Added: default appId for Loadblanacing demos: "<insert your appid here>"
 
 *** Version 3.0.0.10
-- Added: When UDP StartConnection (internal method) fails, callbacks to OnStatusChanged(StatusCode.Disconnect) are now done additionally to the SecurityExceptionOnConnect and ExceptionOnConnect calls. This happens direcly inside PhotonPeer.Connect()!
+- Added: When UDP StartConnection (internal method) fails, callbacks to OnStatusChanged(StatusCode.Disconnect) are now done additionally to the SecurityExceptionOnConnect and ExceptionOnConnect calls. This happens directly inside PhotonPeer.Connect()!
 - Changed: When Unity UDP implementation fails to connect due to missing DNS resolution, it now also calls OnStatusChanged(StatusCode.ExceptionOnConnect)
 - Removed: StatusCode.Exception_Connect value (obsolete, replaced by ExceptionOnConnect, same value)
 - Fixed: Http connections (DotNet & Unity) now skip results while in disconnected state
@@ -1132,7 +1132,7 @@ Internal:
 - Fixed: init byte[] length (internal. did not have consequences)
 - Fixed: LitePeer OpRaiseEvent() was sending encrypted
 - Internal: ContainsUnreliableSequenceNumber() check if reliable list needed sorting
-- Fixed: Unity/Silverlight bug with encryption. Their implementation of BigInteger.GetBytes() failed when the 2nd, 3rd or 4th of the first 4 bytes was 0 but the previous wasnt. This led to incompatible secrets.
+- Fixed: Unity/Silverlight bug with encryption. Their implementation of BigInteger.GetBytes() failed when the 2nd, 3rd or 4th of the first 4 bytes was 0 but the previous wasn't. This led to incompatible secrets.
 - Changed: TCP socket sending debug output now checks debuglevel (when send is skipped, cause the sender is obsolete already)
 - Added: caching option RemoveFromRoomCacheForActorsLeft = 7
 - Internal: Added another http-based communication protocol. Please note: The fitting server's are not yet publicly released. This does not affect UDP or TCP protocols.
@@ -1213,7 +1213,7 @@ Internal:
 - Added: Traffic statistic set: PhotonPeer.TrafficStatsGameLevel as "high level" game-related traffic statistic. Counts bytes used by operations, their results and events. This includes overhead for these types of messages, but excludes connection-related overhead
 - Added: Traffic statistic set: PhotonPeer.TrafficStatsIncoming and PhotonPeer.TrafficStatsOutgoing as low level statistics of the traffic
 - Added: PhotonPeer.TrafficStatsEnabled which enables two sets of traffic statistics. By default, statistics are turned off.
-- Added: Classes TrafficStats and TrafficStatsGameLevel for the two statistic cases metioned above
+- Added: Classes TrafficStats and TrafficStatsGameLevel for the two statistic cases mentioned above
 - Changed: NetworkSimulation now starts a Thread when it becomes enabled and the thread ends on simulation disable. Disable the NetworkSimulation to stop the thread, as Disconnect does not change the simulation settings!
 - Internal: Cleanup and renaming of several properties
 - Internal: Each new peer increases the PeerCount but it is no longer reduced on disconnect (it is existing still, after all)
@@ -1300,7 +1300,7 @@ Siverlight:
 - Removed: PhotonDemoServerUrlPort and PhotonDemoServerIpPort of PhotonPeer. All demos now use "localhost:5055" and you should run your own server.
 - Added: enum ConnectionProtocol to get rid of the "useTcp" parameter in the PhotonPeer constructor (which was less clear than the explicit enum now in use)
 - Added: overload of PhotonPeer constructor, which is still compatible with the "useTcp" bool parameter (to avoid a breaking change for the time being)
-- Added: PhotonPeer.UsedProtocol property to find out this peer's protcol
+- Added: PhotonPeer.UsedProtocol property to find out this peer's protocol
 - Added: LitePeer.OpLeave() overload without the gameName parameter. That name is not checked in the Lite application (on the server), so it's not really needed
 
 *** Version 6.1.0
@@ -1379,7 +1379,7 @@ Siverlight:
 - Changed: dispatch of action-queue as added to DispatchIncomingCommands (in EnetPeer and TPeer)
 - Changed: internally, there is no locking for outgoing reliable and unreliable command lists anymore
 - Changed: Realtime Demo timer usage to avoid nullref on form-close
-- Changed: Realtime Demo propety isReliable is now in the Player class
+- Changed: Realtime Demo property isReliable is now in the Player class
 - Changed: Game.cs and Player.cs for all realtime demos. There is now something like a gameloop (Update()) which must be called regularly and makes (pretty) sure just one thread accesses the peer
 - Changed: all realtime demos to use the new Update() method and use more similar Game and Player classes (cleanup for less differences)
 - Fixed: RoundtripTimeVariance is now also reset on connect / init, so the resend-timing of reliable udp does not suffer when a peer connects after a disconnect
@@ -1498,7 +1498,7 @@ Siverlight:
 
 *** Version 5.3.9
 - Fixed: result-queue, timeouts and customOps work also fine for Unity build again (were broken due to Neutron Unity webplayer compatibility changes in 5.3.8 for Unity)
-- Fixed: if the browser is closed and the unity webplayer immediatly can't use http anymore, Neutron now informs the application via NetworkStatusReturn()
+- Fixed: if the browser is closed and the unity webplayer immediately can't use http anymore, Neutron now informs the application via NetworkStatusReturn()
 
 *** Version 5.3.8
 - Fixed: Neutron Unity now also works fine in webplayer -> Neutron and Photon now both support all platforms of Unity und Unity iPhone
@@ -1598,7 +1598,7 @@ Siverlight:
 - New: parameter "textMessage" for NeutronGame.invite() adds personal message to invited players (in EV_INV and gameListInvitations())
 - New: key EV_KEY_INFO will be added to EV_INV if "textMessage" was used in NeutronGame.invite() (it's not there otherwise)
 - New: gameListInvitations() has new value parameter {t} to get "textMessage" from NeutronGame.invite()
-- New: RC_APPINSTANCE_NOT_OPEN is now used for "singleton namebased pools" where a game is full (not able to join / instanciate)
+- New: RC_APPINSTANCE_NOT_OPEN is now used for "singleton namebased pools" where a game is full (not able to join / instantiate)
 - New: gameCreate() with invitations will fail if the chosen game-name is already taken in a "singleton namebased pool"
 - New: RC_APPINSTANCE_ALREADY_EXISTS for the case above
 
@@ -1760,7 +1760,7 @@ Siverlight:
 - Change: removed GpOperation.roundtripTime, now using public Neutron.roundtripTime
   to be sent in operation headers (GpOperation.serializeParameters(), internal)
 - Change: channelRaiseEvent() is now raiseEventInChannel() and gets the eventCode
-  as seperate parameter value - analog to raiseEventForActor()
+  as separate parameter value - analog to raiseEventForActor()
 - Fix: renamed EV_KEY_M_MIPLAYERS to EV_KEY_M_MINPLAYERS (number of min players of game, before start)
 - Fix: values for EV_KEY_M_MINPLAYERS and EV_KEY_M_MAXPLAYERS corrected (wrong case so far)
 - Changed: Neutron.millisecondsToWait (current value of polling-interval) is now

@@ -66,7 +66,7 @@ public class AudioManagerBase : Core.Utilities.PersistentSingleton<AudioManagerB
 		public AudioPlayer(AudioManagerBase _owner){
 			owner = _owner;
 
-			// Create the inital audio source for this player
+			// Create the initial audio source for this player
 			GameObject sourceObject = new GameObject();
 			sourceObject.transform.parent = owner.transform;
 			source = sourceObject.AddComponent<AudioSource>();
@@ -171,7 +171,7 @@ public class AudioManagerBase : Core.Utilities.PersistentSingleton<AudioManagerB
 			return tmpSource;
 		}
 
-		// Coroutine which delets a source once it is done playing (and keeps its volume relative to the player volume)
+		// Coroutine which deletes a source once it is done playing (and keeps its volume relative to the player volume)
 		IEnumerator destroySourceWhenDonePlaying(AudioSource toDestroy, float relativeVolume){
 			// Skip frames whil the source is playing
 			while(toDestroy.isPlaying) {
@@ -262,7 +262,7 @@ public class AudioManagerBase : Core.Utilities.PersistentSingleton<AudioManagerB
 
 		// Function which cleans up once the track fade is done
 		void fadeBetweenTracksEnd(){
-			fadeBetweenTracks_SecondarySource.name = source.name; // Petty debugging infromation that keeps the inspector clean
+			fadeBetweenTracks_SecondarySource.name = source.name; // Petty debugging information that keeps the inspector clean
 			// Destroy the old source
 			Destroy(source.gameObject);
 
@@ -278,7 +278,7 @@ public class AudioManagerBase : Core.Utilities.PersistentSingleton<AudioManagerB
 
 
 		// Function which starts cycling between the tracks in this player
-		// Allows running through the cycle <once> or indefinately, as well as setting the <fadeDuration> between tracks
+		// Allows running through the cycle <once> or indefinitely, as well as setting the <fadeDuration> between tracks
 		Coroutine trackCycle = null; // Coroutine representing the track cycling
 		public void CycleTracks(bool once = false, float fadeDuration = 0){
 			// Cancel the ongoing track cycle
@@ -316,7 +316,7 @@ public class AudioManagerBase : Core.Utilities.PersistentSingleton<AudioManagerB
 			// Restore the saved loop state
 			source.loop = trackCycler_SavedLoop;
 
-			// If we should run indefinately restart the coroutine
+			// If we should run indefinitely restart the coroutine
 			if(!once)
 				CycleTracks(once, fadeDuration);
 		}

@@ -54,7 +54,7 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 		selectionCylinder.transform.parent = transform;
 		selectionCylinder.SetActive(false);
 
-		// Preform the raycast
+		// Perform the raycast
 		if(Physics.Raycast( Camera.main.ScreenPointToRay(mousePositionAction.action.ReadValue<Vector2>()), out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide )){
 			// If we hit a firewall...
 			if(hit.transform.tag == "Firewall"){

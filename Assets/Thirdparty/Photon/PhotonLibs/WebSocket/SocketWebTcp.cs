@@ -45,7 +45,7 @@ namespace ExitGames.Client.Photon
 
 
     /// <summary>
-    /// Internal class to encapsulate the network i/o functionality for the realtime libary.
+    /// Internal class to encapsulate the network i/o functionality for the realtime library.
     /// </summary>
     public class SocketWebTcp : IPhotonSocket, IDisposable
     {

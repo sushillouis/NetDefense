@@ -28,7 +28,7 @@ public class ScoreManager : Core.Utilities.SingletonPun<ScoreManager> {
 		}
 	}
 
-	// Weights for each side (the amount of points they get per score event if they are 100% successfull)
+	// Weights for each side (the amount of points they get per score event if they are 100% successful)
 	public float blackHatMaxScorePerEvent = 50;
 	public float whiteHatMaxScorePerEvent = 50;
 	// The penalty when a whitehat filters out a good packet
@@ -110,7 +110,7 @@ public class ScoreManager : Core.Utilities.SingletonPun<ScoreManager> {
 		blackHatScore += blackHatDerivative;
 		whiteHatScore += whiteHatDerivative;
 
-		// Propigate score update events
+		// Propagate score update events
 		scoreEvent?.Invoke(whiteHatDerivative, whiteHatScore, blackHatDerivative, blackHatScore);
 		UpdateScoreUI();
 

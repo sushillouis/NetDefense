@@ -20,10 +20,10 @@ public class DebugLogs : ScriptableObject
 
 	private static DebugLogs instance;
 
-	// Called everytime a log is added
+	// Called every time a log is added
 	public System.Action<Log>	OnLogAdded;
 
-	// Called everytime all the logs are cleared
+	// Called every time all the logs are cleared
 	public System.Action		OnLogsCleared;
 
 	private List<Log> logs = new List<Log>();

@@ -337,7 +337,7 @@ namespace Photon.Pun
                 }
             }
 
-            PhotonSetupStates oldGuiState = this.photonSetupState; // used to fix an annoying Editor input field issue: wont refresh until focus is changed.
+            PhotonSetupStates oldGuiState = this.photonSetupState; // used to fix an annoying Editor input field issue: won't refresh until focus is changed.
 
             GUI.SetNextControlName(string.Empty);
             this.scrollPos = GUILayout.BeginScrollView(this.scrollPos);

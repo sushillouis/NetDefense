@@ -29,7 +29,7 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 	// The number of firewalls that can exist at any given time
 	public int maximumPlaceableFirewalls = 2;
 
-	// When we awake preform all of the code for a singleton and also ensure that the prefab path is good to be used (removes extra stuff unity's copy path feature gives us)
+	// When we awake perform all of the code for a singleton and also ensure that the prefab path is good to be used (removes extra stuff unity's copy path feature gives us)
 	override protected void Awake(){
 		base.Awake();
 		Utilities.PreparePrefabPath(ref firewallPrefabPath);

@@ -82,7 +82,7 @@ public class NetworkingManager : Core.Utilities.PersistentSingletonPunCallbacks<
 
 	// When we disconnect from the network make sure to reset the player indices
 	public override void OnDisconnected (DisconnectCause cause){
-		Debug.Log("Disconnected from Photon beacuse " + cause + " with state " + disconnectState);
+		Debug.Log("Disconnected from Photon because " + cause + " with state " + disconnectState);
 
 		whiteHatPlayerIndex = -1;
 		blackHatPlayerIndex = -1;

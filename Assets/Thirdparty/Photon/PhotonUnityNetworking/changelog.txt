@@ -80,7 +80,7 @@ Updated: Realtime API in a few ways. See respective changelog.
 
 v2.24 (25. November 2020)
 Added: PhotonTransformView.UseLocal. It defaults to true for any new PhotonTransformView but allows to get the "old" behaviour with world position and rotation data being synced.
-Fixed: Inspector UI for PhotonTransformView and PhotonAnimatorView. Warning box for using triggers broke horizonal bounds, causing horizontal scrollbars on inspector. Switched to standard helpbox.
+Fixed: Inspector UI for PhotonTransformView and PhotonAnimatorView. Warning box for using triggers broke horizontal bounds, causing horizontal scrollbars on inspector. Switched to standard helpbox.
 Changed: Drastically lowered the MaxDatagrams value, to not send too much in one frame.
 Changed: Default sendFrequency to 33ms. PUN will send in more frames but less datagrams in each.
 Changed: SendRate does not affect the SerializationRate value anymore. Also, SerializationRate can be set independent from the SendRate.
@@ -121,7 +121,7 @@ Updated: The Realtime API and Photon3Unity3d.dll (v4.1.4.5) with lots of improve
 v2.21 (19. August 2020)
 Fixed: Handling of case "blocked by Windows firewall". WebSocket-sharp does not call OnError in this case. This affects WebSocket.cs.
 Updated: AuthenticationValues.Token setter to be protected internal. Only needs to be set by Photon LoadBalancing API. Updated reference docs, too.
-Fixed: Supress a minor unused warning in SlotRacer.
+Fixed: Suppress a minor unused warning in SlotRacer.
 Fixed: When Player disconnects - only change the owner of that players created objects if AutoCleanup is false. Otherwise, do nothing as they are all about to get destroyed, and an OwnerChange to Master could break things for some users.
 Fixed: Duplicate call to StaticReset(). This also created the LoadBalancingClient two times and caused a callback registration to get lost. This fixes the reported problem with scene synchronization in 2019.4 and up.
 Changed: PhotonNetwork.LoadLevel() methods will skip loading, if PhotonHandler.AppQuits is true. This avoids a minor issue in the Editor when a script loads a scene in OnLeftRoom() while ending playmode.
@@ -199,7 +199,7 @@ Fixed: String serialization issue in the Photon3Unity3d.dll (v4.1.4.0). Updated 
 v2.18 (28. April 2020)
 Fixed: Support for Unity 2019.3. As Unity 2020 is still beta, there may be more import / build issues. Please report via mail.
 Note: We noticed upgrading projects may create more than one PhotonServerSettings file. If your AppId seems gone, look up these files and keep the one with settings.
-Fixed: Asteroid Demo bullet instantation uses the position sent via the rpc, instead of the current local position.
+Fixed: Asteroid Demo bullet instantiation uses the position sent via the rpc, instead of the current local position.
 Updated: Nicer format for the countdown utility script to avoid floating points.
 Fixed: NullReferenceExceptions in PhotonTeamsManager.OnPlayerEnteredRoom and PhotonTeamsManager.OnPlayerLeftRoom.
 Added: PhotonTeamsManager.GetTeamMembersCount which is a helper method to get size of teams directly.
@@ -217,7 +217,7 @@ Updated: The Realtime API and Photon3Unity3d.dll (v4.1.4.0) with lots of improve
 
 v2.17 (26. March 2020)
 Added: New "Dev Region" feature. With this setting, all development builds will use the same region, avoiding initial matchmaking problems with best region selection. Development builds are turned on automatically, when the PhotonServerSettings get created initially and the "Dev Region" is set on first run in Editor.
-Changed: PhotonServerSettings inspector to accomodate the new values and reorganize existing ones.
+Changed: PhotonServerSettings inspector to accommodate the new values and reorganize existing ones.
 Changed: Instantiate and InstantiateSceneObject to not create a new object while not (yet) in a room. This avoids issues where an invalid showed up. There is a new debug log for this case, as it causes null-reference exceptions (in case it's used incorrectly).
 Added: New animations for the Basics Tutorial. The previous ones were causing warnings on import / reload.
 Added: New callback OnErrorInfo when the client receives an ErrorInfo event from the server. Implemented in MonoBehaviourPunCallbacks and SupportLogger.
@@ -252,7 +252,7 @@ Changed: Calling an RPC method with a null or empty method name will not be exec
 Fixed: Callbacks deregistration and PlayersPerTeam clearing in PunTeams which caused KeyNotFoundException in some cases.
 Fixed: NullReferenceException in SupportLogger.TrackValues in Unity Editor after compilation by making sure only one instance of SupportLogger is in the scene and SupportLogger.TrackValues is properly stopped when the application stops or client disconnects.
 Changed: TypedLobby refactored to reflect the proper definition of the default lobby: a lobby that has a null or empty name, the provided type is ignored in this case and will be considered default type.
-Changed: RPC methods not found error logs explictily state that RPC methods search does not include static methods which are not supported as RPC methods.
+Changed: RPC methods not found error logs explicitly state that RPC methods search does not include static methods which are not supported as RPC methods.
 Updated: SceneSettings Inspector improved and SceneAsset field added to make reference to scenes easier.
 Updated: Code comments for documentation.
 
@@ -312,9 +312,9 @@ Updated: To new library version 4.1.2.14 (6. May 2019 - rev5088).
 v2.11 (3. May 2019)
 Fixed: EventData usage. PUN v2.10 had a bug in Ownership Transfer calls and some events.
 Fixed: ClientState.ConnectedToMasterserver did not have the same value as ConnectedToMasterServer (and no longer got used at all). This affects only rare cases where the enum is directly used (PUN was updated).
-Changed: Account registration scripts to use Unity's built-in JSON parsing. Now, PUN no longer incldues the NewtonSoft Json dll (which should avoid the occasional clash of dlls).
+Changed: Account registration scripts to use Unity's built-in JSON parsing. Now, PUN no longer includes the NewtonSoft Json dll (which should avoid the occasional clash of dlls).
 Updated: To new library version 4.1.2.13 (3. May 2019 - rev5086).
-    Changed: EventData was changed in the Photon3Unity3d.dll again. Now it does not have a Sender or CustomData property anymore as those were not workign for Chat (and misleading). Instead, those are fetched from the Parameters of an event (each API provides accessor extensions).
+    Changed: EventData was changed in the Photon3Unity3d.dll again. Now it does not have a Sender or CustomData property anymore as those were not working for Chat (and misleading). Instead, those are fetched from the Parameters of an event (each API provides accessor extensions).
     Added: PhotonPeer.ReuseEventInstance as option to use a single EventData instance for all incoming events. This reduces memory garbage. The drawback is: An event provided via OnEvent(EventData photonEvent) is invalidated right after the callback finished. That event's content will get modified. Typically this is not a problem as events are rarely cached.
 Chat
     Fixed: Properly add local client's UserId to public channels' Subscribers list when applicable.

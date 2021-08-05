@@ -216,7 +216,7 @@ namespace Photon.Chat
         /// <summary>Authenticates users by their PSN Account and token (on PS5).</summary>
         Playstation5 = 12,
 
-        /// <summary>Disables custom authentification. Same as not providing any AuthenticationValues for connect (more precisely for: OpAuthenticate).</summary>
+        /// <summary>Disables custom authentication. Same as not providing any AuthenticationValues for connect (more precisely for: OpAuthenticate).</summary>
         None = byte.MaxValue
     }
 
@@ -378,7 +378,7 @@ namespace Photon.Chat
         // server - Photon low(er) level: <= 0
 
         /// <summary>
-        /// (-3) Operation can't be executed yet (e.g. OpJoin can't be called before being authenticated, RaiseEvent cant be used before getting into a room).
+        /// (-3) Operation can't be executed yet (e.g. OpJoin can't be called before being authenticated, RaiseEvent can't be used before getting into a room).
         /// </summary>
         /// <remarks>
         /// Before you call any operations on the Cloud servers, the automated client workflow must complete its authorization.

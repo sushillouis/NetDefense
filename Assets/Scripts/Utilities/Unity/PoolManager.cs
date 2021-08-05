@@ -48,7 +48,7 @@ namespace Core.Utilities
 		}
 
 		/// <summary>
-		/// Initializes the dicionary of pools
+		/// Initializes the dictionary of pools
 		/// </summary>
 		protected void Start()
 		{

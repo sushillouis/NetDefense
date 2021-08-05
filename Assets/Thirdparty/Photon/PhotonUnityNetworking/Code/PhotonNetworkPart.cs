@@ -655,7 +655,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
-        /// Check if all types match with parameters. We can have more paramters then types (allow last RPC type to be different).
+        /// Check if all types match with parameters. We can have more parameters then types (allow last RPC type to be different).
         /// </summary>
         /// <param name="methodParameters"></param>
         /// <param name="callParameterTypes"></param>
@@ -1068,7 +1068,7 @@ namespace Photon.Pun
         {
             if (view.OwnerActorNr != NetworkingClient.LocalPlayer.ActorNumber && !NetworkingClient.LocalPlayer.IsMasterClient)
             {
-                Debug.LogError("Cannot remove cached RPCs on a PhotonView thats not ours! " + view.Owner + " scene: " + view.IsRoomView);
+                Debug.LogError("Cannot remove cached RPCs on a PhotonView that's not ours! " + view.Owner + " scene: " + view.IsRoomView);
                 return;
             }
 
@@ -1844,7 +1844,7 @@ namespace Photon.Pun
 
             //// This is when joining late to assign ownership to the sender
             //// this has nothing to do with reading the actual synchronization update.
-            //// We don't do anything if OwnerShip Was Touched, which means we got the infos already. We only possibly act if ownership was never transfered.
+            //// We don't do anything if OwnerShip Was Touched, which means we got the infos already. We only possibly act if ownership was never transferred.
             //// We do override OwnershipWasTransfered if owner is the masterClient.
             //if (sender.ID != view.OwnerActorNr && (!view.OwnershipWasTransfered || view.OwnerActorNr == 0) && view.currentMasterID == -1)
             //{

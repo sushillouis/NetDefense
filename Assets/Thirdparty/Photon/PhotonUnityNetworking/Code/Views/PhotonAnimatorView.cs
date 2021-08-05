@@ -155,7 +155,7 @@ namespace Photon.Pun
         #region Setup Synchronizing Methods
 
         /// <summary>
-        /// Caches the discrete triggers values for keeping track of raised triggers, and will be reseted after the sync routine got performed
+        /// Caches the discrete triggers values for keeping track of raised triggers, and will be reset after the sync routine got performed
         /// </summary>
         public void CacheDiscreteTriggers()
         {

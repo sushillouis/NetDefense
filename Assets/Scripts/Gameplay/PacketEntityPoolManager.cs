@@ -27,7 +27,7 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 		private set => _packetsCurrentlySpawned = value;
 	}
 
-	// Ensure that the packet path is valid if it was coppied from unity
+	// Ensure that the packet path is valid if it was copied from unity
 	protected override void Awake(){
 		base.Awake();
 		Utilities.PreparePrefabPath(ref packetPrefabPath);
@@ -52,7 +52,7 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 		StartingPoint[] startingPoints = StartingPoint.getWeightedList();
 		Destination[] destinations = Destination.getWeightedList();
 
-		// Packet spawning can only be preformed by the host
+		// Packet spawning can only be performed by the host
 		if(NetworkingManager.isHost){
 			// Mark that we are spawning
 			isSpawning = true;

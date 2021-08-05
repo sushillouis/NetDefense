@@ -101,7 +101,7 @@ Version 4.1.4.3 (24. June 2020)
     Changed: Error handling in PingMono. SocketExceptions were not handled entirely.
     Changed: PhotonPingClasses is no longer used. It's empty and can be removed.
     Changed: Handling of event LobbyStats in case of LoadBalancingPeer.UseByteArraySlicePoolForEvents. This relates to a new option in the PhotonPeer to use pooled memory (wrapped byte[] basically) when incoming events only contain a byte[]. See changes-library.txt and API reference.
-    Added: Initial puzzle pieces for WSS Proxy support. This is not yet funtional. To actually use the proxy settings, a special WebSocket implementation is needed.
+    Added: Initial puzzle pieces for WSS Proxy support. This is not yet functional. To actually use the proxy settings, a special WebSocket implementation is needed.
     Changed: The AppSettings.Port value is now also usable when connecting to a Name Server initially. This allows custom ports on a (custom) Name Server.
     Added: Various details to the SupportLogger output.
     Changed: Callback OnCreatedRoom() is now also triggered by the event Join. This is the same trigger as for JoinOrCreateRoom (if that created a new room).
@@ -158,7 +158,7 @@ Version 4.1.2.19 (12. November 2019 - rev5266)
     Updated: Cluster support. The LoadBalancingClient.CurrentCluster gives access to the current cluster. Region.SetCodeAndCluster() now separates the cluster string properly. See ConnectToRegionMaster, too.
     Fixed: Changing the SupportLogger.Client now skips registering for callbacks, if the new value is null.
     Changed: Logging of SupportLogger.
-    Added: LoadBalancingClient.OpJoinRandomOrCreateRoom. This can be used to create a room, should random matchmaking fail. This helps avoid race conditons where players can't find one another.
+    Added: LoadBalancingClient.OpJoinRandomOrCreateRoom. This can be used to create a room, should random matchmaking fail. This helps avoid race conditions where players can't find one another.
     Added: Extra null-check in handling of event leave.
 
 Version 4.1.2.17 (9. August 2019 - rev5188)

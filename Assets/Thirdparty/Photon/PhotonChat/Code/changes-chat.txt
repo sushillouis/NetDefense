@@ -105,7 +105,7 @@ Version 4.0.0.7 (12. January 2015 - rev2763)
 Version 4.0.0.1 (17. June 2014 - rev2663)
     Changed: How the server responds to Subscribe and Unsubscribe. Events will now contain success/failure of those. This allows us to send the answer after calling a WebHook if needed and we can even send it to multiple clients (which authenticated with the same userID).
     Changed: Handling of subscription responsed. This is done to allow web services to subscribe a client remotely and to be able to prevent joining some channel that a user should not join (the channel of some guild or another team, e.g.).
-    Changed: Debug loggging. In Unity we can't use Debug.Assert, etc. So we have to log more cleanly. This works in Editor and several platforms (but not all).
+    Changed: Debug logging. In Unity we can't use Debug.Assert, etc. So we have to log more cleanly. This works in Editor and several platforms (but not all).
     Changed: Folder for Chat API. It now begins with "Photon" which provides some context no matter where you copy the files. Easier to find in Unity projects.
     Changed: Operation FriendList and method SendFriendList renamed to AddFriends
     Added: Operation RemoveFriends and corresponding method in ChatClient.cs

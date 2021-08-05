@@ -387,7 +387,7 @@ namespace Photon.Realtime
         ///
         /// The benefit of using expectedProperties can be only one client successfully sets a key from
         /// one known value to another.
-        /// As example: Store who owns an item in a Custom Property "ownedBy". It's 0 initally.
+        /// As example: Store who owns an item in a Custom Property "ownedBy". It's 0 initially.
         /// When multiple players reach the item, they all attempt to change "ownedBy" from 0 to their
         /// actorNumber. If you use expectedProperties {"ownedBy", 0} as condition, the first player to
         /// take the item will have it (and the others fail to set the ownership).

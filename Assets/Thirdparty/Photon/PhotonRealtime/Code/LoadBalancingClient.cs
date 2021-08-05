@@ -143,7 +143,7 @@ namespace Photon.Realtime
         /// <summary>OnStatusChanged: The server is not available or the address is wrong. Make sure the port is provided and the server is up.</summary>
         ExceptionOnConnect,
 
-        /// <summary>OnStatusChanged: Dns resolution for a hostname failed. The exception for this is being catched and logged with error level.</summary>
+        /// <summary>OnStatusChanged: Dns resolution for a hostname failed. The exception for this is being caught and logged with error level.</summary>
         DnsExceptionOnConnect,
 
         /// <summary>OnStatusChanged: The server address was parsed as IPv4 illegally. An illegal address would be e.g. 192.168.1.300. IPAddress.TryParse() will let this pass but our check won't.</summary>
@@ -933,7 +933,7 @@ namespace Photon.Realtime
         /// <remarks>
         /// To connect to the Photon Cloud, use ConnectUsingSettings() or ConnectToRegionMaster().
         ///
-        /// The process to connect includes several steps: the actual connecting, establishing encryption, authentification
+        /// The process to connect includes several steps: the actual connecting, establishing encryption, authentication
         /// (of app and optionally the user) and connecting to the MasterServer
         ///
         /// Users can connect either anonymously or use "Custom Authentication" to verify each individual player's login.
@@ -1980,7 +1980,7 @@ namespace Photon.Realtime
         ///
         ///  The benefit of using expectedProperties can be only one client successfully sets a key from
         ///  one known value to another.
-        ///  As example: Store who owns an item in a Custom Property "ownedBy". It's 0 initally.
+        ///  As example: Store who owns an item in a Custom Property "ownedBy". It's 0 initially.
         ///  When multiple players reach the item, they all attempt to change "ownedBy" from 0 to their
         ///  actorNumber. If you use expectedProperties {"ownedBy", 0} as condition, the first player to
         ///  take the item will have it (and the others fail to set the ownership).
@@ -2088,7 +2088,7 @@ namespace Photon.Realtime
         ///
         ///  The benefit of using expectedProperties can be only one client successfully sets a key from
         ///  one known value to another.
-        ///  As example: Store who owns an item in a Custom Property "ownedBy". It's 0 initally.
+        ///  As example: Store who owns an item in a Custom Property "ownedBy". It's 0 initially.
         ///  When multiple players reach the item, they all attempt to change "ownedBy" from 0 to their
         ///  actorNumber. If you use expectedProperties {"ownedBy", 0} as condition, the first player to
         ///  take the item will have it (and the others fail to set the ownership).
@@ -3497,7 +3497,7 @@ namespace Photon.Realtime
 
 
         /// <summary>
-        /// Applies queued callback cahnges from a queue to the actual containers. Will cause exceptions if used while callbacks execute.
+        /// Applies queued callback changes from a queue to the actual containers. Will cause exceptions if used while callbacks execute.
         /// </summary>
         /// <remarks>
         /// There is no explicit check that this is not called during callbacks, however the implemented, private logic takes care of this.

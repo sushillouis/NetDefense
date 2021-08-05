@@ -19,7 +19,7 @@ public class AudioManager : AudioManagerBase {
 	}
 
 	void Start(){
-		// Create a music player and set it off cycling through the music tracks indefinately
+		// Create a music player and set it off cycling through the music tracks indefinitely
 		musicPlayer = CreateAudioPlayer("music", musicClips);
 		musicPlayer.volume = .8f;
 		musicPlayer.CycleTracks(/*once*/ false, 10);

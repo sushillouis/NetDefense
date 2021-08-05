@@ -45,7 +45,7 @@ namespace Photon.Pun.UtilityScripts
         /// </summary>
         public delegate void PlayerNumberingChanged();
         /// <summary>
-        /// Called everytime the room Indexing was updated. Use this for discrete updates. Always better than brute force calls every frame.
+        /// Called every time the room Indexing was updated. Use this for discrete updates. Always better than brute force calls every frame.
         /// </summary>
         public static event PlayerNumberingChanged OnPlayerNumberingChanged;
 
@@ -230,7 +230,7 @@ namespace Photon.Pun.UtilityScripts
 
 		/// <summary>
 		/// Sets the player number.
-		/// It's not recommanded to manually interfere with the playerNumbering, but possible.
+		/// It's not recommended to manually interfere with the playerNumbering, but possible.
 		/// </summary>
 		/// <param name="player">Player.</param>
 		/// <param name="playerNumber">Player number.</param>
