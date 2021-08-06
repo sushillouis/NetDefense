@@ -35,22 +35,29 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
+  - RPC_Destination_PlayParticleSimulation
+  - RPC_Destination_SetMaliciousPacketDestinationLikelihood
   - RPC_Firewall_SetFilterRules
   - RPC_Firewall_SetGateColor
   - RPC_GameManager_EndGame
   - RPC_GameManager_EndWave
+  - RPC_GameManager_SetDifficulty
   - RPC_GameManager_StartNextWave
   - RPC_GameManager_UnreadyAllPlayers
+  - RPC_NetworkingManager_BecomeAdvisor
+  - RPC_NetworkingManager_BecomeBlackHat
+  - RPC_NetworkingManager_BecomePrimaryPlayer
+  - RPC_NetworkingManager_BecomeSpectator
+  - RPC_NetworkingManager_BecomeWhiteHat
+  - RPC_NetworkingManager_RequestRoomStateSynchronization
+  - RPC_NetworkingManager_RoomStateSynchronization
   - RPC_Packet_Destroy
   - RPC_Packet_InitPath
   - RPC_Packet_SetDestination
   - RPC_Packet_SetProperties
   - RPC_Packet_SetStartPoint
   - RPC_ScoreManager_ProcessScoreEvent
-  - RPC_GameManager_SetDifficulty
   - RPC_StartingPoint_SetMaliciousPacketDetails
-  - RPC_StartingPoint_SetPacketDestinationLikelihood
-  - RPC_Destination_SetMaliciousPacketDestinationLikelihood
   - RPC_StartingPoint_SetMaliciousPacketProbability
   - RPC_Destination_PlayParticleSimulation
   - RPC_Destination_SetIsHoneypot

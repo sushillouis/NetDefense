@@ -68,9 +68,9 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		// Transfer control of the starting points and destinations to the BlackHatPlayer
 		if(NetworkingManager.isHost){
 			foreach(StartingPoint p in StartingPoint.startingPoints)
-				p.photonView.TransferOwnership(NetworkingManager.blackHatPlayer);
+				p.photonView.TransferOwnership(NetworkingManager.blackHatPrimaryPlayer);
 			foreach(Destination d in Destination.destinations)
-				d.photonView.TransferOwnership(NetworkingManager.blackHatPlayer);
+				d.photonView.TransferOwnership(NetworkingManager.blackHatPrimaryPlayer);
 		}
 	}
 
@@ -116,15 +116,12 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 
 	// When the other play leaves the game, the player who remains wins the game
 	public void OnOtherPlayerLeave(Player otherPlayer){
-		// Determine the index of the winning player
-		for(int i = 0; i < NetworkingManager.roomPlayers.Length; i++)
-			if(NetworkingManager.localPlayer == NetworkingManager.roomPlayers[i]){
-				EndGame(i);
-				return;
-			}
-
-		// Or just guess that player 0 is the winning player if they can't be found
-		EndGame(0); // TODO: is this assumption invalid?
+		// If the white hat side no longer has its primary player then the blackhats win
+		if(NetworkingManager.whiteHatPrimaryPlayer is null)
+			EndGame(Networking.Player.Side.BlackHat);
+		// If the black hat side no longer has its primary player then the whitehats win
+		else if(NetworkingManager.blackHatPrimaryPlayer is null)
+			EndGame(Networking.Player.Side.WhiteHat);
 	}
 
 
@@ -155,7 +152,7 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		currentWave++;
 		// If the current wave is greater than the maximum number of waves... end the game
 		if(currentWave >= maximumWaves)
-			EndGame(ScoreManager.instance.whiteHatScore >= ScoreManager.instance.blackHatScore ? NetworkingManager.whiteHatPlayerIndex : NetworkingManager.blackHatPlayerIndex);
+			EndGame(ScoreManager.instance.whiteHatScore >= ScoreManager.instance.blackHatScore ? Networking.Player.Side.WhiteHat : Networking.Player.Side.BlackHat);
 	}
 
 	// Function which ensures that all of the players are marked as unready (Network Synced)
@@ -166,13 +163,12 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 	}
 
 	// Function which ends the game, marking which player won (Network Synced)
-	public void EndGame(int winningPlayerIndex) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningPlayerIndex); }
-	[PunRPC] void RPC_GameManager_EndGame(int winningPlayerIndex){
+	public void EndGame(Networking.Player.Side winningSide) { if(NetworkingManager.isHost) photonView.RPC("RPC_GameManager_EndGame", RpcTarget.AllBuffered, winningSide); }
+	[PunRPC] void RPC_GameManager_EndGame(Networking.Player.Side winningSide){
 		try{
-			// Show the win text if the player won
-			if( (NetworkingManager.isSingleplayer && winningPlayerIndex == 0) // If the player in a single player game, won
-				|| NetworkingManager.roomPlayers[winningPlayerIndex].ActorNumber == NetworkingManager.localPlayer.ActorNumber // If a player in a multiplayer game, won
-			)
+			// TODO: Need to take spectators into account (right now they always lose)
+			// Show the win text if the player's side won
+			if(winningSide == NetworkingManager.localPlayer.side)
 				BaseUI.instance.winText.SetActive(true);
 			else BaseUI.instance.loseText.SetActive(true);
 		// If we fail to find the index then assume that we lost
