@@ -20,11 +20,11 @@ public class ScoreManager : Core.Utilities.SingletonPun<ScoreManager> {
 
 	// Class representing the metrics used throughout a wave
 	public class WaveMetrics {
-		public int successfullMaliciousPackets = 0, totalMaliciousPackets = 0;
-		public int successfullGoodPackets = 0, totalGoodPackets = 0;
+		public int successfulMaliciousPackets = 0, totalMaliciousPackets = 0;
+		public int successfulGoodPackets = 0, totalGoodPackets = 0;
 
 		public override string ToString(){
-			return "Malicious: " + successfullMaliciousPackets + "/" + totalMaliciousPackets + ", Good: " + successfullGoodPackets + "/" + totalGoodPackets;
+			return "Malicious: " + successfulMaliciousPackets + "/" + totalMaliciousPackets + ", Good: " + successfulGoodPackets + "/" + totalGoodPackets;
 		}
 	}
 
@@ -55,9 +55,9 @@ public class ScoreManager : Core.Utilities.SingletonPun<ScoreManager> {
 		WaveMetrics ret = new WaveMetrics();
 
 		foreach(WaveMetrics m in waveMetrics){
-			ret.successfullMaliciousPackets += m.successfullMaliciousPackets;
+			ret.successfulMaliciousPackets += m.successfulMaliciousPackets;
 			ret.totalMaliciousPackets += m.totalMaliciousPackets;
-			ret.successfullGoodPackets += m.successfullGoodPackets;
+			ret.successfulGoodPackets += m.successfulGoodPackets;
 			ret.totalGoodPackets += m.totalGoodPackets;
 		}
 
@@ -84,14 +84,14 @@ public class ScoreManager : Core.Utilities.SingletonPun<ScoreManager> {
 				metrics.totalMaliciousPackets++;
 				break;
 			case ScoreEvent.MaliciousSuccess:
-				metrics.successfullMaliciousPackets++;
+				metrics.successfulMaliciousPackets++;
 				metrics.totalMaliciousPackets++;
 				break;
 			case ScoreEvent.GoodDestroyed:
 				metrics.totalGoodPackets++;
 				break;
 			case ScoreEvent.GoodSuccess:
-				metrics.successfullGoodPackets++;
+				metrics.successfulGoodPackets++;
 				metrics.totalGoodPackets++;
 				break;
 		}
@@ -100,7 +100,7 @@ public class ScoreManager : Core.Utilities.SingletonPun<ScoreManager> {
 		if(_event == ScoreEvent.GoodSuccess) return;
 
 		// Calculate the ratio of the maximum score the black hat should get
-		float scoreRatio = (float)metrics.successfullMaliciousPackets / metrics.totalMaliciousPackets;
+		float scoreRatio = (float)metrics.successfulMaliciousPackets / metrics.totalMaliciousPackets;
 		// Calculate how the black hat's score should change
 		float blackHatDerivative = scoreRatio * blackHatMaxScorePerEvent;
 		// Calculate how the white hat's socre should change (taking into account destroy penalties)

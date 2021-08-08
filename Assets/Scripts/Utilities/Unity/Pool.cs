@@ -367,7 +367,7 @@ namespace Core.Utilities
 		protected readonly GameObject m_Prefab;
 
 		/// <summary>
-		/// Initialisation method for objects
+		/// Initialization method for objects
 		/// </summary>
 		protected readonly Action<GameObject> m_Initialize;
 
@@ -384,7 +384,7 @@ namespace Core.Utilities
 		/// Create a new pool for the given Unity prefab
 		/// </summary>
 		/// <param name="prefab">The prefab we're cloning</param>
-		/// <param name="initialize">An initialisation function to call after creating prefabs</param>
+		/// <param name="initialize">An initialization function to call after creating prefabs</param>
 		public AutoGameObjectPrefabPool(GameObject prefab, Action<GameObject> initialize)
 			: this(prefab, initialize, null, 0)
 		{
@@ -394,7 +394,7 @@ namespace Core.Utilities
 		/// Create a new pool for the given Unity prefab
 		/// </summary>
 		/// <param name="prefab">The prefab we're cloning</param>
-		/// <param name="initialize">An initialisation function to call after creating prefabs</param>
+		/// <param name="initialize">An initialization function to call after creating prefabs</param>
 		/// <param name="reset">Function to use to reset items when retrieving from the pool</param>
 		public AutoGameObjectPrefabPool(GameObject prefab, Action<GameObject> initialize, Action<GameObject> reset)
 			: this(prefab, initialize, reset, 0)
@@ -415,7 +415,7 @@ namespace Core.Utilities
 		/// Create a new pool for the given Unity prefab
 		/// </summary>
 		/// <param name="prefab">The prefab we're cloning</param>
-		/// <param name="initialize">An initialisation function to call after creating prefabs</param>
+		/// <param name="initialize">An initialization function to call after creating prefabs</param>
 		/// <param name="reset">Function to use to reset items when retrieving from the pool</param>
 		/// <param name="initialCapacity">The number of elements to seed the pool with</param>
 		public AutoGameObjectPrefabPool(GameObject prefab, Action<GameObject> initialize, Action<GameObject> reset,
@@ -460,7 +460,7 @@ namespace Core.Utilities
 		protected readonly T m_Prefab;
 
 		/// <summary>
-		/// Initialisation method for objects
+		/// Initialization method for objects
 		/// </summary>
 		protected readonly Action<T> m_Initialize;
 
@@ -477,7 +477,7 @@ namespace Core.Utilities
 		/// Create a new pool for the given Unity prefab
 		/// </summary>
 		/// <param name="prefab">The prefab we're cloning</param>
-		/// <param name="initialize">An initialisation function to call after creating prefabs</param>
+		/// <param name="initialize">An initialization function to call after creating prefabs</param>
 		public AutoComponentPrefabPool(T prefab, Action<T> initialize)
 			: this(prefab, initialize, null, 0)
 		{
@@ -487,7 +487,7 @@ namespace Core.Utilities
 		/// Create a new pool for the given Unity prefab
 		/// </summary>
 		/// <param name="prefab">The prefab we're cloning</param>
-		/// <param name="initialize">An initialisation function to call after creating prefabs</param>
+		/// <param name="initialize">An initialization function to call after creating prefabs</param>
 		/// <param name="reset">Function to use to reset items when retrieving from the pool</param>
 		public AutoComponentPrefabPool(T prefab, Action<T> initialize, Action<T> reset)
 			: this(prefab, initialize, reset, 0)
@@ -508,7 +508,7 @@ namespace Core.Utilities
 		/// Create a new pool for the given Unity prefab
 		/// </summary>
 		/// <param name="prefab">The prefab we're cloning</param>
-		/// <param name="initialize">An initialisation function to call after creating prefabs</param>
+		/// <param name="initialize">An initialization function to call after creating prefabs</param>
 		/// <param name="reset">Function to use to reset items when retrieving from the pool</param>
 		/// <param name="initialCapacity">The number of elements to seed the pool with</param>
 		public AutoComponentPrefabPool(T prefab, Action<T> initialize, Action<T> reset, int initialCapacity)
