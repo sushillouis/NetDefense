@@ -22,7 +22,7 @@ public class ThemedText : TextMeshProUGUI {
 		base.OnDisable();
 		ThemeManager.themeUpdateEvent -= OnThemeUpdate;
 	}
-	// On startup preform a theme update
+	// On startup perform a theme update
 	protected override void Start(){ base.Start(); OnThemeUpdate(); }
 
 	// Function which updates the theme
@@ -184,7 +184,7 @@ public class ThemedText : TextMeshProUGUI {
         return FontStyles.Normal;
     }
 
-	// Function which converts UGUI text alignment infromation to TMPro text alignment information
+	// Function which converts UGUI text alignment information to TMPro text alignment information
     static TextAlignmentOptions TextAnchorToTextAlignmentOptions(TextAnchor textAnchor) {
         switch (textAnchor) {
             case TextAnchor.UpperLeft: return TextAlignmentOptions.TopLeft;

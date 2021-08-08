@@ -39,7 +39,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 	// Class representing a Panel's style
 	[System.Serializable]
 	public struct PanelStyle {
-		// Name of the the syle, referenced in components which use it (calls theme update callback when changed)
+		// Name of the the style, referenced in components which use it (calls theme update callback when changed)
 		[SerializeField] string _name;
 		public string name {
 			get => _name;
@@ -91,7 +91,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 	// Class representing a Button's style
 	[System.Serializable]
 	public struct ButtonStyle {
-		// Name of the the syle, referenced in components which use it (calls theme update callback when changed)
+		// Name of the the style, referenced in components which use it (calls theme update callback when changed)
 		[SerializeField] string _name;
 		public string name {
 			get => _name;
@@ -305,7 +305,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 		// Make sure that the instance is correctly marked before we dispatch (having two of these components in the editor will cause problems)
 		instance = this;
 
-		// NOTE: if this ever becomes to heavy to run, then disable this line and rely on the context menu options to propigate changes to the theme
+		// NOTE: if this ever becomes to heavy to run, then disable this line and rely on the context menu options to propagate changes to the theme
 		themeUpdateEvent?.Invoke();
 	}
 

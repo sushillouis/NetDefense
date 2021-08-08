@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Helper class which provides additional infromation about the the UI element
+// Helper class which provides additional information about the the UI element
 public class EnhancedUIBehavior : MonoBehaviour {
 	// The rectTransform of this element
 	[HideInInspector] public RectTransform rectTransform;
@@ -21,17 +21,17 @@ public class EnhancedUIBehavior : MonoBehaviour {
 		parentCanvasTransform = parentCanvas.GetComponent<RectTransform>();
 	}
 
-	// Function which determines if any ammount of the element can be viewed from the provided rect
+	// Function which determines if any amount of the element can be viewed from the provided rect
 	protected bool IsVisibleInRect(Rect pixelRect){
 		return GetVisibleCornersInRect(pixelRect) > 0;
 	}
 
-	// Function which determiens if any ammount of the element can be viewed from the provided camera
+	// Function which determiens if any amount of the element can be viewed from the provided camera
 	public bool IsVisibleFrom(Camera viewCamera){
 		return IsVisibleInRect(viewCamera.pixelRect);
 	}
 
-	// Function which determines if any ammount of the element can be viewed from the provided canvas (if no canvas is provided the parent canvas is used)
+	// Function which determines if any amount of the element can be viewed from the provided canvas (if no canvas is provided the parent canvas is used)
 	public bool IsVisibleFrom(Canvas canvas = null){
 		if(canvas == null) return IsVisibleInRect(parentCanvas.pixelRect);
 		return IsVisibleInRect(canvas.pixelRect);
