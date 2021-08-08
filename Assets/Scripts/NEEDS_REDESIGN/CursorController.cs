@@ -45,7 +45,7 @@ public class CursorController : MonoBehaviour {
 		buildButtonText.text = (building ? "close" : "get");
     }
 
-	public void CloseRouterPannel() {
+	public void CloseRouterPanel() {
 		ToggleBuilding(); // This is such a silly solution, but it also works 100% of the time and has 0 code reuse ;(
 		if(building) ToggleBuilding();
 	}

@@ -159,7 +159,7 @@ public class Shared : MonoBehaviour {
 
     public bool blackhatHatChosenTargetRatios() {
 
-        // search targetting ratios for a non zero value.
+        // search targeting ratios for a non zero value.
         foreach (string target_key in inst.gameMetrics.target_probabilities.Keys) {
             if (inst.gameMetrics.target_probabilities[target_key] != 0)
                 return true;

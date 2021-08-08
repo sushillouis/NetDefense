@@ -156,7 +156,7 @@ public class ScoreManager : MonoBehaviour {
             return;
 
         if ((Time.time - timer) > update_score_rate) {
-			// There is no point in calculating this stuff if enouph time hasn't elapsed
+			// There is no point in calculating this stuff if enough time hasn't elapsed
 			fraction_black_hat_score = (badPacketSuccesses / (float)totalbadPackets);
 	        fraction_white_hat_score = (1f - fraction_black_hat_score);
 
@@ -187,7 +187,7 @@ public class ScoreManager : MonoBehaviour {
         RouterManager.inst.settings.SetActive(false);
     }
 
-    public void OnFriendlyPacketTransfered(int instanceID) {
+    public void OnFriendlyPacketTransferred(int instanceID) {
         friendlyPacketSuccesses++;
         PacketCompletedMetric m = getMetricById(instanceID);
         if (m != null)
@@ -196,7 +196,7 @@ public class ScoreManager : MonoBehaviour {
 		OnMetricsUpdated();
     }
 
-    public void OnBadPacketTransfered(int instanceID) {
+    public void OnBadPacketTransferred(int instanceID) {
         badPacketSuccesses++;
         PacketCompletedMetric m = getMetricById(instanceID);
         if (m != null)
@@ -247,7 +247,7 @@ public class ScoreManager : MonoBehaviour {
 
         if (EntityManager.inst.isMultiplayer && EntityManager.inst.isServer) {
             Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SCORES, (int)black_score + "," + (int)white_score));
-            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SCORE_DERRIVATIVES, (int)black_score_derivative + "," + (int)white_score_derivative));
+            Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SCORE_DERIVATIVES, (int)black_score_derivative + "," + (int)white_score_derivative));
         }
 
 		// update ui here

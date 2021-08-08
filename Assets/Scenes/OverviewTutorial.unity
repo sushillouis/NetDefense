@@ -1147,7 +1147,7 @@ PrefabInstance:
     - target: {fileID: 3837353942167120302, guid: faf56a038a9e60440b77a842867bc61c,
         type: 3}
       propertyPath: inst_id
-      value: CENTRE
+      value: CENTER
       objectReference: {fileID: 0}
     - target: {fileID: 4135552877210382402, guid: faf56a038a9e60440b77a842867bc61c,
         type: 3}

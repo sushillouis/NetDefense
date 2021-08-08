@@ -2965,7 +2965,7 @@ GameObject:
   - component: {fileID: 1166003940}
   - component: {fileID: 1166003938}
   m_Layer: 5
-  m_Name: VerticleLayoutGroup
+  m_Name: VerticalLayoutGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

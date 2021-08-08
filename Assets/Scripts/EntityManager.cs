@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class EntityManager : NetworkBehaviour {
 
-    public string[] options = { "LEFT", "RIGHT", "CENTRE" };
+    public string[] options = { "LEFT", "RIGHT", "CENTER" };
 
     public static EntityManager inst;
     //   private List<SimpleEnemyController> packets;

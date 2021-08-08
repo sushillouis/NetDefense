@@ -65,7 +65,7 @@ public class WhiteHatNPC : MonoBehaviour {
         }
     }
 
-    public void OnOptimzeRouters() {
+    public void OnOptimizeRouters() {
         UpdateRouters();
         SpawnRouters();
     }
@@ -129,7 +129,7 @@ public class WhiteHatNPC : MonoBehaviour {
         float elapsed = Time.time - startTime;
 
         if (elapsed > optimizeRouterFilterRate) {
-            OnOptimzeRouters();
+            OnOptimizeRouters();
             canSpend = true;
             startTime = Time.time;
         }

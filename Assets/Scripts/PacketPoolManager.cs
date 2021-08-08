@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -9,7 +9,7 @@ public enum POPULATE_POOL_ERROR_CODES {
     WAITING_ON_BLACKHAT_DEFINITION,
     WAITING_ON_BLACKHAT_TARGET_SELECTION,
     WAITING_ON_PLAYER_TO_READY,
-    MIX_MATCH_EXCEPTION // @targetting_probabilites should match @packet_destinations array length
+    MIX_MATCH_EXCEPTION // @targeting_probabilities should match @packet_destinations array length
 
 }
 

@@ -180,11 +180,11 @@ public class SimpleEnemyController : NetworkBehaviour {
                     lastDistance = Mathf.Infinity;
                 } else {
                     if (!malicious) {
-                        // ScoreManager.inst.OnFriendlyPacketTransfered(id);
+                        // ScoreManager.inst.OnFriendlyPacketTransferred(id);
                         isReadyForRemoval = true;
                     } else {
                         if (!path.IsHoneypot) {
-                            //ScoreManager.inst.OnBadPacketTransfered(id);
+                            //ScoreManager.inst.OnBadPacketTransferred(id);
 
                             isReadyForRemoval = true;
                         }
@@ -209,9 +209,9 @@ public class SimpleEnemyController : NetworkBehaviour {
 			} else if (malicious) {
                 other.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
                 Camera.main.transform.GetChild(0).GetComponent<AudioSource>().Play();
-                ScoreManager.inst.OnBadPacketTransfered(id);
+                ScoreManager.inst.OnBadPacketTransferred(id);
             } else
-                ScoreManager.inst.OnFriendlyPacketTransfered(id);
+                ScoreManager.inst.OnFriendlyPacketTransferred(id);
         }
 
         if (other.gameObject.tag == "Router") {

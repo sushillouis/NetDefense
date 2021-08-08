@@ -14279,7 +14279,7 @@ GameObject:
   - component: {fileID: 792722324}
   - component: {fileID: 792722323}
   m_Layer: 5
-  m_Name: AxisLablesPanel
+  m_Name: AxisLabelsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17144,7 +17144,7 @@ MonoBehaviour:
   options:
   - LEFT
   - RIGHT
-  - CENTRE
+  - CENTER
   packetPrefab: {fileID: 5976014468393907128, guid: 80f87c8ad241016409f779d31e4ba027,
     type: 3}
   isMultiplayer: 1
@@ -19289,9 +19289,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target_panel: {fileID: 165941554}
-  targettingCoolDownButton: {fileID: 882587960}
-  targettingCoolDownButton_text: {fileID: 1464466688}
-  targettingMaxCoolDown: 3
+  targetingCoolDownButton: {fileID: 882587960}
+  targetingCoolDownButton_text: {fileID: 1464466688}
+  targetingMaxCoolDown: 3
   packetCoolDownButton: {fileID: 1492789005}
   packetCoolDownButton_text: {fileID: 1402355343}
   packetMaxCoolDown: 3
@@ -19301,8 +19301,8 @@ MonoBehaviour:
   malic_packet_panel: {fileID: 843325701}
   nav_menu: {fileID: 1818915136}
   init_pos_of_nav_menu: {x: 0, y: 0, z: 0}
-  targettingStartTime: 0
-  targetting_elapsed: 0
+  targetingStartTime: 0
+  targeting_elapsed: 0
   packetStartTime: 0
   packet_elapsed: 0
   pink: {fileID: 1578598445}
@@ -21339,7 +21339,7 @@ MonoBehaviour:
   - {fileID: 1555013570}
   tutorialUI: {fileID: 1438975731}
   activeIndex: 0
-  targettingButton: {fileID: 1352874275}
+  targetingButton: {fileID: 1352874275}
 --- !u!4 &1248027359
 Transform:
   m_ObjectHideFlags: 0
@@ -25489,7 +25489,7 @@ GameObject:
   - component: {fileID: 1422954542}
   - component: {fileID: 1422954543}
   m_Layer: 5
-  m_Name: Targetting Content
+  m_Name: Targeting Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32813,13 +32813,13 @@ MonoBehaviour:
   hostButton: {fileID: 320143354}
   nameText: {fileID: 244155669}
   originalJoinButtonColor: {r: 0, g: 0, b: 0, a: 0}
-  orginialHostButtonColor: {r: 0, g: 0, b: 0, a: 0}
+  originalHostButtonColor: {r: 0, g: 0, b: 0, a: 0}
   joinByIpDoneButton: {fileID: 2121267485}
   originalJoinByIpDoneButton: {r: 0, g: 0, b: 0, a: 0}
   lobbyListDoneButton: {fileID: 1885075587}
   orginiallobbyListDoneButtonColor: {r: 0, g: 0, b: 0, a: 0}
   readyUpDoneButton: {fileID: 22859556}
-  orginialReadyButtonColor: {r: 0, g: 0, b: 0, a: 0}
+  originalReadyButtonColor: {r: 0, g: 0, b: 0, a: 0}
   blackhatButton: {fileID: 1262271112}
   whitehatButton: {fileID: 1457689924}
   originaBlkButtonColor: {r: 0, g: 0, b: 0, a: 0}
@@ -35623,7 +35623,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.5
   m_Text: Press on the Target Button to select where you want to send your bad packets.
-    Use the sliders to adust how much each server will recieve of your bad packet.
+    Use the sliders to adust how much each server will receive of your bad packet.
 --- !u!222 &2005917012
 CanvasRenderer:
   m_ObjectHideFlags: 0

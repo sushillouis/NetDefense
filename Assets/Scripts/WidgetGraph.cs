@@ -108,10 +108,10 @@ public class WidgetGraph : MonoBehaviour {
             float y = (dataset[i] / max_y) * graph_height;
 
             GameObject datapoint = AddDataPoint(new Vector2(x, y), i);
-            //toDestory.Add(datapoint);
+            //toDestroy.Add(datapoint);
 
             if (last_datapoint != null) {
-                //toDestory.Add(AddLine(last_datapoint.GetComponent<RectTransform>().anchoredPosition, datapoint.GetComponent<RectTransform>().anchoredPosition, i));
+                //toDestroy.Add(AddLine(last_datapoint.GetComponent<RectTransform>().anchoredPosition, datapoint.GetComponent<RectTransform>().anchoredPosition, i));
                 AddLine(last_datapoint.GetComponent<RectTransform>().anchoredPosition, datapoint.GetComponent<RectTransform>().anchoredPosition, i);
             }
 

@@ -52,7 +52,7 @@ public class LobbyMenuManager : MonoBehaviour {
     [SerializeField]
     private Color originalJoinButtonColor;
     [SerializeField]
-    private Color orginialHostButtonColor;
+    private Color originalHostButtonColor;
 
     public Button joinByIpDoneButton;
     [SerializeField]
@@ -64,7 +64,7 @@ public class LobbyMenuManager : MonoBehaviour {
 
     public Button readyUpDoneButton;
     [SerializeField]
-    private Color orginialReadyButtonColor;
+    private Color originalReadyButtonColor;
 
     public Button blackhatButton;
     public Button whitehatButton;
@@ -101,11 +101,11 @@ public class LobbyMenuManager : MonoBehaviour {
 
     private void Start() {
         CurrentState = LobbyStates.JOIN_OR_HOST;
-        orginialReadyButtonColor = readyUpDoneButton.image.color;
+        originalReadyButtonColor = readyUpDoneButton.image.color;
         orginiallobbyListDoneButtonColor = lobbyListDoneButton.image.color;
         originalJoinByIpDoneButton = joinByIpDoneButton.image.color;
         originalJoinButtonColor = joinButton.image.color;
-        orginialHostButtonColor = hostButton.image.color;
+        originalHostButtonColor = hostButton.image.color;
         originalColorhostOrjoinDoneButton = hostOrjoinDoneButton.image.color;
 
         originaBlkButtonColor = blackhatButton.image.color;
@@ -125,9 +125,9 @@ public class LobbyMenuManager : MonoBehaviour {
         if (CurrentState == LobbyStates.READY_UP_STATE) {
             readyUpDoneButton.enabled = (usernameText.text.Length != 0 && roleValue != 0);
             if (readyUpDoneButton.enabled) {
-                readyUpDoneButton.image.color = orginialReadyButtonColor;
+                readyUpDoneButton.image.color = originalReadyButtonColor;
             } else {
-                readyUpDoneButton.image.color = new Color(orginialReadyButtonColor.r, orginialReadyButtonColor.g, orginialReadyButtonColor.b, .25f);
+                readyUpDoneButton.image.color = new Color(originalReadyButtonColor.r, originalReadyButtonColor.g, originalReadyButtonColor.b, .25f);
 
             }
         }
@@ -173,13 +173,13 @@ public class LobbyMenuManager : MonoBehaviour {
 
     public void OnHostButtonSelected() {
         HostOrJoinState = LobbyStates.READY_UP_STATE;
-        hostButton.image.color = new Color(orginialHostButtonColor.r * 1.25f, orginialHostButtonColor.g * 1.25f, orginialHostButtonColor.b * 1.25f, 1);
+        hostButton.image.color = new Color(originalHostButtonColor.r * 1.25f, originalHostButtonColor.g * 1.25f, originalHostButtonColor.b * 1.25f, 1);
         joinButton.image.color = originalJoinButtonColor;
     }
 
     public void OnJoinButtonSelected() {
         HostOrJoinState = LobbyStates.JOIN_BY_IP_STATE;
-        hostButton.image.color = orginialHostButtonColor;
+        hostButton.image.color = originalHostButtonColor;
         joinButton.image.color = new Color(originalJoinButtonColor.r * 1.25f, originalJoinButtonColor.g * 1.25f, originalJoinButtonColor.b * 1.25f, 1);
     }
 
@@ -229,7 +229,7 @@ public class LobbyMenuManager : MonoBehaviour {
     public void OnJoinOrHostDoneButtonSelected() {
         CurrentState = HostOrJoinState;
         if (HostOrJoinState == LobbyStates.READY_UP_STATE) {
-            network.LauchHost(true);
+            network.LaunchHost(true);
         }
     }
 
@@ -245,7 +245,7 @@ public class LobbyMenuManager : MonoBehaviour {
 
     public void OnJoinByIpDoneSelected() {
         network.networkValues.ip = IpInputField.text;
-        network.LauchClient();
+        network.LaunchClient();
         CurrentState = LobbyStates.READY_UP_STATE;
     }
 

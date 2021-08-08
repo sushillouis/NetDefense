@@ -25,14 +25,14 @@ public class NetworkManagerHLAPI : NetworkManager {
         net_id = 0;
     }
 
-    public void LauchHost(bool mIsMultplayer) {
+    public void LaunchHost(bool mIsMultplayer) {
         singleton.networkPort = networkValues.port;
         isMultiplayer = mIsMultplayer;
         singleton.StartHost();
         NetworkDiscoveryManager.inst.StartAsServer();
     }
 
-    public void LauchClient() {
+    public void LaunchClient() {
         singleton.networkAddress = networkValues.ip;
         singleton.networkPort = networkValues.port;
 

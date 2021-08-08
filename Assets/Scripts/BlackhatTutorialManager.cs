@@ -9,7 +9,7 @@ public class BlackhatTutorialManager : MonoBehaviour
     public GameObject tutorialUI;
     public int activeIndex;
 
-    public GameObject targettingButton;
+    public GameObject targetingButton;
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +58,7 @@ public class BlackhatTutorialManager : MonoBehaviour
     }
 
     public void OnAdvancedToNextPartOfTutorial() {
-        // guide user to targetting button
-        targettingButton.GetComponent<ButtonSelectionEffect>().isOn = activeIndex == 1;
+        // guide user to targeting button
+        targetingButton.GetComponent<ButtonSelectionEffect>().isOn = activeIndex == 1;
     }
 }

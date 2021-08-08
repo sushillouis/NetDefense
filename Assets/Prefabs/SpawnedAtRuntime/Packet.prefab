@@ -218,7 +218,7 @@ MonoBehaviour:
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
-  m_MovementTheshold: 0
+  m_MovementThreshold: 0
   m_VelocityThreshold: 1
   m_SnapThreshold: 0
   m_InterpolateRotation: 10

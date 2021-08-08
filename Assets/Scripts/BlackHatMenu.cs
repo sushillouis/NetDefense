@@ -16,9 +16,9 @@ public class BlackHatMenu : MonoBehaviour
 
     public GameObject target_panel;
 
-    public Button targettingCoolDownButton;
-    public Text targettingCoolDownButton_text;
-    public float targettingMaxCoolDown;
+    public Button targetingCoolDownButton;
+    public Text targetingCoolDownButton_text;
+    public float targetingMaxCoolDown;
 
     public Button packetCoolDownButton;
     public Text packetCoolDownButton_text;
@@ -39,8 +39,8 @@ public class BlackHatMenu : MonoBehaviour
     public RectTransform nav_menu;
     public Vector3 init_pos_of_nav_menu;
 
-    public float targettingStartTime;
-    public float targetting_elapsed;
+    public float targetingStartTime;
+    public float targeting_elapsed;
 
 
     public float packetStartTime;
@@ -68,13 +68,13 @@ public class BlackHatMenu : MonoBehaviour
     }
 
     void Start() {
-		targettingStartTime = Time.time;
+		targetingStartTime = Time.time;
         packetStartTime = Time.time;
 
         currentMenu = -1;
         init_pos_of_nav_menu = new Vector3(nav_menu.localPosition.x, nav_menu.localPosition.y, nav_menu.localPosition.z); ;
 
-        targettingCoolDownButton_text.text = "Confirm Strategy";
+        targetingCoolDownButton_text.text = "Confirm Strategy";
 
         updates_remaining = max_updates_remaining;
     }
@@ -106,28 +106,28 @@ public class BlackHatMenu : MonoBehaviour
 
     public void updateMalicPacketValues() {
         if (updates_remaining > 0) {
-			bool updateOccured = false;
+			bool updateOccurred = false;
 			while(Camera.main.transform.GetChild(3).GetComponent<AudioSource>().isPlaying); // Wait for the confirm sound to stop playing
 
             int color = 0;
             if (green.isOn) color = 1;
             else if (blue.isOn) color = 2;
-			updateOccured |= Shared.inst.maliciousPacketProperties.color != color;
+			updateOccurred |= Shared.inst.maliciousPacketProperties.color != color;
             Shared.inst.maliciousPacketProperties.color = color;
 
             int size = 0;
             if (med.isOn) size = 1;
             else if (large.isOn) size = 2;
-			updateOccured |= Shared.inst.maliciousPacketProperties.size != size;
+			updateOccurred |= Shared.inst.maliciousPacketProperties.size != size;
             Shared.inst.maliciousPacketProperties.size = size;
 
             int shape = 0;
             if (cone.isOn) shape = 1;
             else if (sphere.isOn) shape = 2;
-			updateOccured |= Shared.inst.maliciousPacketProperties.shape != shape;
+			updateOccurred |= Shared.inst.maliciousPacketProperties.shape != shape;
             Shared.inst.maliciousPacketProperties.shape = shape;
 
-			if(updateOccured){
+			if(updateOccurred){
 				packetStartTime = Time.time;
 				packetCoolDownButton.enabled = false;
 
@@ -167,23 +167,23 @@ public class BlackHatMenu : MonoBehaviour
             t2 = s2.value / percentage;
             t3 = s3.value / percentage;
 
-			bool updateOccured = Shared.inst.gameMetrics.target_probabilities["LEFT"] != t1 || Shared.inst.gameMetrics.target_probabilities["RIGHT"] != t2 || Shared.inst.gameMetrics.target_probabilities["CENTRE"] != t3;
+			bool updateOccurred = Shared.inst.gameMetrics.target_probabilities["LEFT"] != t1 || Shared.inst.gameMetrics.target_probabilities["RIGHT"] != t2 || Shared.inst.gameMetrics.target_probabilities["CENTER"] != t3;
 
             if (MainMenu.isMultiplayerSelectedFromMenu) {
-                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "LEFT" + "," + t1));
-                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "RIGHT" + "," + t2));
-                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "CENTRE" + "," + t3));
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "LEFT" + "," + t1));
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "RIGHT" + "," + t2));
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "CENTER" + "," + t3));
             } else {
                 Shared.inst.gameMetrics.target_probabilities["LEFT"] = t1;
                 Shared.inst.gameMetrics.target_probabilities["RIGHT"] = t2;
-                Shared.inst.gameMetrics.target_probabilities["CENTRE"] = t3;
+                Shared.inst.gameMetrics.target_probabilities["CENTER"] = t3;
                 PacketPoolManager.inst.OnBlackhatUpdateStrategy();
 
             }
 
-			if(updateOccured){
-				targettingStartTime = Time.time;
-				targettingCoolDownButton.enabled = false;
+			if(updateOccurred){
+				targetingStartTime = Time.time;
+				targetingCoolDownButton.enabled = false;
 	            AutoHelpScreenBlackhatManager.inst.OnConfirmedTarget();
 
 				// Play settings update sound
@@ -213,11 +213,11 @@ public class BlackHatMenu : MonoBehaviour
             t1 = s1.value / percentage;
             t2 = s2.value / percentage;
 
-			bool updateOccured = Shared.inst.gameMetrics.target_probabilities["TOP"] != t1 || Shared.inst.gameMetrics.target_probabilities["BOTTOM"] != t2;
+			bool updateOccurred = Shared.inst.gameMetrics.target_probabilities["TOP"] != t1 || Shared.inst.gameMetrics.target_probabilities["BOTTOM"] != t2;
 
             if (MainMenu.isMultiplayerSelectedFromMenu) {
-                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "TOP" + "," + t1));
-                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETTING_PROBABILITY, "BOTTOM" + "," + t2));
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "TOP" + "," + t1));
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "BOTTOM" + "," + t2));
             } else {
                 Shared.inst.gameMetrics.target_probabilities["TOP"] = t1;
                 Shared.inst.gameMetrics.target_probabilities["BOTTOM"] = t2;
@@ -225,9 +225,9 @@ public class BlackHatMenu : MonoBehaviour
 
             }
 
-			if(updateOccured){
-				targettingStartTime = Time.time;
-				targettingCoolDownButton.enabled = false;
+			if(updateOccurred){
+				targetingStartTime = Time.time;
+				targetingCoolDownButton.enabled = false;
 	            AutoHelpScreenBlackhatManager.inst.OnConfirmedTarget();
 
 				// Play settings update sound
@@ -250,13 +250,13 @@ public class BlackHatMenu : MonoBehaviour
 
 
 
-        targetting_elapsed = Time.time - targettingStartTime;
+        targeting_elapsed = Time.time - targetingStartTime;
 
-        if (targetting_elapsed > targettingMaxCoolDown) {
-            targettingCoolDownButton.enabled = true;
-            targettingCoolDownButton_text.text = "Confirm Strategy";
+        if (targeting_elapsed > targetingMaxCoolDown) {
+            targetingCoolDownButton.enabled = true;
+            targetingCoolDownButton_text.text = "Confirm Strategy";
         } else {
-            targettingCoolDownButton_text.text = "Cooling Down... ";
+            targetingCoolDownButton_text.text = "Cooling Down... ";
         }
 
 

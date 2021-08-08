@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        // add keys to dictonary for targgeting
+        // add keys to dictionary for targgeting
         foreach (Destination d in destinations) {
             Shared.inst.gameMetrics.target_probabilities.Add(d.inst_id, 0);
         }
@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour {
             /* Shared.inst.getDevicePlayer().username = "Player 1";
              Shared.inst.getDevicePlayer().role = SharedPlayer.WHITEHAT;
              Debug.Log("Tried making device player...");*/
-            network.LauchHost(false);
+            network.LaunchHost(false);
             Shared.inst.getDevicePlayer().role = MainMenu.hat == -1 ? 2 : MainMenu.hat;
             Shared.inst.getDevicePlayer().username = "You";
         }
@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour {
         if (pool_status == POPULATE_POOL_ERROR_CODES.SUCCESS) {
             PacketPoolManager.inst.deployNextPacket();
             poolHasSpawned = true;
-			// If we were between waves before this occurance... then the wave just started!
+			// If we were between waves before this occurrence... then the wave just started!
 			if(isBetweenWaves) OnWaveStart();
             isBetweenWaves = false;
 

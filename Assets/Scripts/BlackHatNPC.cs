@@ -31,16 +31,16 @@ public class BlackHatNPC : MonoBehaviour {
             Shared.inst.maliciousPacketProperties.shape = Random.Range(0, GameManager.SHAPE_COUNT);
 
             attackCount = Random.Range(1, targets.Length + 1);
-            List<int> targettingIndcies = new List<int>();
+            List<int> targetingIndcies = new List<int>();
             for (int i = 0; i < targets.Length; i++) {
-                targettingIndcies.Add(i);
+                targetingIndcies.Add(i);
             }
 
             for (int i = 0; i < attackCount; i++) {
-                int randomSample = Random.Range(0, targettingIndcies.Count);
-                int randomIndex = targettingIndcies[randomSample];
+                int randomSample = Random.Range(0, targetingIndcies.Count);
+                int randomIndex = targetingIndcies[randomSample];
                 values[randomIndex] = 1f / attackCount;
-                targettingIndcies.RemoveAt(randomSample);
+                targetingIndcies.RemoveAt(randomSample);
             }
 
             Dictionary<string, float> tp = Shared.inst.gameMetrics.target_probabilities;

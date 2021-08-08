@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -24,12 +24,12 @@ public static class MessageTypes {
     public const int UPDATE_MALIC_PACKETS = 2;              // host to client
     public const int UPDATE_WHITE_HAT_MONEY = 3;            // host to client
     public const int SET_HONEY_POT_ACTIVATION = 5;          // host to client and vica versa
-    public const int SET_SERVER_TARGETTING_PROBABILITY = 6; // host to client and vica versa
+    public const int SET_SERVER_TARGETING_PROBABILITY = 6; // host to client and vica versa
     public const int SET_SCORES = 7;                        // host to client
     public const int SET_NETWORK_STATE = 8;                 // host to client
     public const int ADD_NEW_PLAYER = 9;                    // host to client
     public const int SET_LOBBY_PLAYER_SETTINGS = 10;        // host to client and vica versa
-    public const int SET_SCORE_DERRIVATIVES = 11;           // host to client
+    public const int SET_SCORE_DERIVATIVES = 11;           // host to client
     public const int CHANGE_PACKET_LIFECYCLE_STATUS = 12;   // only clients may send
     public const int SET_METRICS = 13;   // sync metrics for end game
     public const int FORCE_GAME_SHUTDOWN = 14;   // closes all networking resources
@@ -130,8 +130,8 @@ public class MessageSender : NetworkBehaviour {
         }
 
         // set server spawning probabilities
-        if (type == MessageTypes.SET_SERVER_TARGETTING_PROBABILITY) {
-            setTargettingProbabilities(data);
+        if (type == MessageTypes.SET_SERVER_TARGETING_PROBABILITY) {
+            setTargetingProbabilities(data);
         }
 
         // change packet lifecycle status
@@ -153,7 +153,7 @@ public class MessageSender : NetworkBehaviour {
                 ScoreManager.inst.UpdateUIClient();
         }
 
-        if (type == MessageTypes.SET_SCORE_DERRIVATIVES) {
+        if (type == MessageTypes.SET_SCORE_DERIVATIVES) {
             string[] info = data.Split(',');
             float a = float.Parse(info[0]);
             float b = float.Parse(info[1]);
@@ -181,7 +181,7 @@ public class MessageSender : NetworkBehaviour {
 
         }
 
-        // if we are a client recieving a message from the server
+        // if we are a client receiving a message from the server
         if (!isLocalPlayer && !isServer) {
 
             // update and sync ui
@@ -199,7 +199,7 @@ public class MessageSender : NetworkBehaviour {
         }
     }
 
-    public void setTargettingProbabilities(string data) {
+    public void setTargetingProbabilities(string data) {
 
         Dictionary<string, float> tp = Shared.inst.gameMetrics.target_probabilities;
 
@@ -239,7 +239,7 @@ public class MessageSender : NetworkBehaviour {
     }
 
     public void setNetworkState(string data) {
-        Debug.Log("Changed State Recieved");
+        Debug.Log("Changed State Received");
         Shared.inst.gameState.currentState = (SharedGameStates)Convert.ToInt32(data);
 
     }
