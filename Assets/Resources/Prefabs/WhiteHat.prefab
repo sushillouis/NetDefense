@@ -4753,7 +4753,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firewallPrefabPath: Assets/Resources/Prefabs/SpawnedAtRuntime/Firewall.prefab
+  suggestedFirewallPrefabPath: Assets/Resources/Prefabs/SpawnedAtRuntime/SuggestedFirewall.prefab
   maximumPlaceableFirewalls: 2
+  suggestedFirewall: {fileID: 0}
   leftClickAction: {fileID: 3001919216989983466, guid: a26318101696cb248921fa709202c4d2, type: 3}
   rightClickAction: {fileID: -4090225696740746782, guid: a26318101696cb248921fa709202c4d2, type: 3}
   cancelAction: {fileID: 7727032971491509709, guid: a26318101696cb248921fa709202c4d2, type: 3}
@@ -4772,6 +4774,9 @@ MonoBehaviour:
   - {fileID: 6189335886503927001}
   - {fileID: 6189335886572684793}
   - {fileID: 6189335885905100728}
+  moveFirewallButton: {fileID: 6189335885783578157}
+  removeFirewallButton: {fileID: 6189335887070925433}
+  makeHoneypotButton: {fileID: 147147570014329875}
 --- !u!1 &6189335886744270036
 GameObject:
   m_ObjectHideFlags: 0

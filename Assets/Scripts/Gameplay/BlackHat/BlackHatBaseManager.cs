@@ -43,7 +43,7 @@ public class BlackHatBaseManager : BaseSharedBetweenHats {
 			return false;
 		}
 		// Error if we don't own the starting point
-		if(toModify.photonView.Controller != NetworkingManager.localPlayer){
+		if(NetworkingManager.isPrimary && toModify.photonView.Controller != NetworkingManager.localPlayer){
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify Starting Points you don't own!");
 			return false;
 		}
@@ -75,7 +75,7 @@ public class BlackHatBaseManager : BaseSharedBetweenHats {
 			return false;
 		}
 		// Error if we don't own the starting point
-		if(toModify.photonView.Controller != NetworkingManager.localPlayer){
+		if(NetworkingManager.isPrimary && toModify.photonView.Controller != NetworkingManager.localPlayer){
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify Starting Points you don't own!");
 			return false;
 		}
@@ -103,7 +103,7 @@ public class BlackHatBaseManager : BaseSharedBetweenHats {
 			return false;
 		}
 		// Error if we don't own the destination
-		if(toModify.photonView.Controller != NetworkingManager.localPlayer){
+		if(NetworkingManager.isPrimary && toModify.photonView.Controller != NetworkingManager.localPlayer){
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify Destinations you don't own!");
 			return false;
 		}

@@ -602,7 +602,7 @@ public class NetworkingManager : Core.Utilities.SingletonPunCallbacks<Networking
 	// Returns true if we are the primary whitehat player
 	public static bool isWhiteHatPrimary {
 		get {
-			if(Networking.Player.localPlayer is null) return false;
+			if(Networking.Player.localPlayer is null || whiteHatPrimaryPlayer is null) return false;
 			return Networking.Player.localPlayer == whiteHatPrimaryPlayer;
 		}
 	}
@@ -618,7 +618,7 @@ public class NetworkingManager : Core.Utilities.SingletonPunCallbacks<Networking
 	// Returns true if we are the primary blackhat player
 	public static bool isBlackHatPrimary {
 		get {
-			if(Networking.Player.localPlayer is null) return false;
+			if(Networking.Player.localPlayer is null || blackHatPrimaryPlayer is null) return false;
 			return Networking.Player.localPlayer == blackHatPrimaryPlayer;
 		}
 	}
@@ -644,6 +644,17 @@ public class NetworkingManager : Core.Utilities.SingletonPunCallbacks<Networking
 	// Alias to Networking.Player.localPlayer
 	public static Networking.Player localPlayer {
 		get => Networking.Player.localPlayer;
+	}
+
+	// Returns true if we are the primary player on our side
+	public static bool isPrimary {
+		get {
+			if(localPlayer is null) return false;
+			
+			if(localPlayer.side == Networking.Player.Side.WhiteHat) return isWhiteHatPrimary;
+			else if(localPlayer.side == Networking.Player.Side.BlackHat) return isBlackHatPrimary;
+			else return false;
+		}
 	}
 
 	// Returns true if the local player is marked as ready

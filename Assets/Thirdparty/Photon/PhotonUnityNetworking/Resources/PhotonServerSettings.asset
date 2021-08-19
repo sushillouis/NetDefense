@@ -36,6 +36,7 @@ MonoBehaviour:
   - ClickRpc
   - DestroyRpc
   - RPC_Destination_PlayParticleSimulation
+  - RPC_Destination_SetIsHoneypot
   - RPC_Destination_SetMaliciousPacketDestinationLikelihood
   - RPC_Firewall_SetFilterRules
   - RPC_Firewall_SetGateColor
@@ -59,8 +60,6 @@ MonoBehaviour:
   - RPC_ScoreManager_ProcessScoreEvent
   - RPC_StartingPoint_SetMaliciousPacketDetails
   - RPC_StartingPoint_SetMaliciousPacketProbability
-  - RPC_Destination_PlayParticleSimulation
-  - RPC_Destination_SetIsHoneypot
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

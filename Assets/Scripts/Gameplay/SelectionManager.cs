@@ -29,6 +29,7 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 	public static Utilities.VoidEventCallback deselectEvent;
 	public static HoverEventCallback hoverChanged;
 
+
 	// Reference the mouse's position
 	public InputActionReference mousePositionAction;
 	// Reference to the selectionCylinder showing the currently selected item
@@ -67,8 +68,6 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 	RaycastHit hit; // Raycast target
 	List<IHoverable> hoverables; // List of components that implement the hoverable interface
 	void OnMouseMoved(InputAction.CallbackContext ctx){
-		Debug.Log("Mouse Moved");
-
 		// Ensure that there is a current camera (not 100% sure why this is necessary, but it throws null exceptions if not present)
 		Camera currentCamera = Camera.main;
 		if(currentCamera != null)
@@ -85,7 +84,6 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 				}
 			// If the raycast failed to hit anything, then the current hover is null
 			} else {
-				Debug.Log("Failed to hit!");
 				hoverChanged?.Invoke(null);
 				hovered = null;
 			}
@@ -152,6 +150,10 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 			if(shouldTriggerEvents) deselectEvent?.Invoke();
 		}
 	}
+
+
+	// -- Helpers --
+	
 
 	// Function which attaches the selection cylinder to the provided game object, takes a scale which determines how much larger than the object the selection cylinder should be
 	void AttachSelectionCylinderToObject(GameObject selection, float scaleMultiplier = 2){
