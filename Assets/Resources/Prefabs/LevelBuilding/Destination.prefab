@@ -87,11 +87,15 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  mesh: {fileID: 1710113496868173697}
+  destinationMaterial: {fileID: 2100000, guid: b9001e840f9b03744ab4cb36178e364e, type: 2}
+  honeypotMaterial: {fileID: 2100000, guid: 5390a60897d37f4408c03d5a81d421d9, type: 2}
   particleSystemPrefab: {fileID: 3405987651233412754, guid: 245f009905325fc469c20b3339a7a386, type: 3}
   updatesGrantedPerWave: 020000000200000002000000
   updatesRemaining: 0
   packetDestinationLikelihood: 1
   _maliciousPacketDestinationLikelihood: 1
+  _isHoneypot: 0
 --- !u!1 &6676117428811601370
 GameObject:
   m_ObjectHideFlags: 0

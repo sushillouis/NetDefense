@@ -32,6 +32,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		SpawningFirewall,
 		SelectingFirewallToMove,
 		MovingFirewall,
+		SelectingDestinationToMakeHoneypot,
 	}
 	// Variable defining what should happen when we click
 	ClickState clickState = ClickState.Selecting;
@@ -82,21 +83,6 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		firewallPacketPanel.SetActive(false);
 		firewallPacketPanelFirewallText.gameObject.SetActive(false);
 		firewallPacketPanelPacketText.gameObject.SetActive(false);
-	}
-
-	// Callback which responds to click events (ignoring click release events and events already handled by the UI)
-	void OnClickPressed(InputAction.CallbackContext ctx){
-		// Ignore click releases
-		if(!ctx.ReadValueAsButton()) return;
-		// Ignore UI clicks
-		if(EventSystem.current.IsPointerOverGameObject()) return;
-
-		switch(clickState){
-			case ClickState.Selecting: SelectionManager.instance.SelectUnderCursor(); break; // If we are selecting, simply tell the selection manager to select whatever is under the mouse
-			case ClickState.SpawningFirewall: OnClick_SpawningFirewall(); break;
-			case ClickState.SelectingFirewallToMove: OnClick_SelectingFirewallToMove(); break;
-			case ClickState.MovingFirewall: OnClick_MovingFirewall(); break;
-		}
 	}
 
 	// Callback which responds to cancel (escape and right click) events
@@ -171,6 +157,39 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 			showFirewallPanel(selected); // Reload the firewall panel if we failed to update the settings
 	}
 
+	// Callback which makes the selected destination a honeypot (or sets the relevant click state so that the next click will make a destination a honeypot)
+	public void MakeHoneypot(){
+		// If we need to select a destination...
+		if(getSelected<Destination>() == null){
+			clickState = ClickState.SelectingDestinationToMakeHoneypot;
+			return;
+		}
+
+		// If the selection is a destination, make it a honeypot
+		if(MakeDestinationHoneypot(getSelected<Destination>()))
+			// Play a sound to indicate that settings were updated
+			AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdated", .5f);
+
+		// Reset the click state
+		clickState = ClickState.Selecting;
+	}
+
+	// Callback which responds to click events (ignoring click release events and events already handled by the UI)
+	void OnClickPressed(InputAction.CallbackContext ctx){
+		// Ignore click releases
+		if(!ctx.ReadValueAsButton()) return;
+		// Ignore UI clicks
+		if(EventSystem.current.IsPointerOverGameObject()) return;
+
+		switch(clickState){
+			case ClickState.Selecting: SelectionManager.instance.SelectUnderCursor(); break; // If we are selecting, simply tell the selection manager to select whatever is under the mouse
+			case ClickState.SpawningFirewall: OnClick_SpawningFirewall(); break;
+			case ClickState.SelectingFirewallToMove: OnClick_SelectingFirewallToMove(); break;
+			case ClickState.MovingFirewall: OnClick_MovingFirewall(); break;
+			case ClickState.SelectingDestinationToMakeHoneypot: OnClick_SelectingDestinationToMakeHoneypot(); break;
+		}
+	}
+
 
 	// -- Click Events --
 
@@ -224,6 +243,24 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 			// Play a sound to indicate that it has moved
 			AudioManager.instance.soundFXPlayer.PlayTrackImmediate("FirewallSpawn", .5f);
 		}
+	}
+
+	// function which handles clicks when we are supposed to be making destinations into honeypots
+	public void OnClick_SelectingDestinationToMakeHoneypot(){
+		// If we need to select a destination...
+		if(getSelected<Destination>() == null){
+			// Tell the selection manager to select whatever is under it
+			SelectionManager.instance.SelectUnderCursor(/*No events*/ false);
+
+			// If its selection isn't a destination, give the user an error message
+			if(SelectionManager.instance.selected == null || SelectionManager.instance.selected.GetComponent<Destination>() == null){
+				SelectionManager.instance.selected = null;
+				ErrorHandler(ErrorCodes.FirewallNotSelected, "A Destination to make into a Honeypot must be selected!");
+				return;
+			}
+		}
+
+		MakeHoneypot();
 	}
 
 
