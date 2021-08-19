@@ -303,6 +303,8 @@ public class LobbyScreenManager : MonoBehaviour {
 			return;
 		}
 
+		// Close the current room so that more players can't join
+		 PhotonNetwork.CurrentRoom.IsOpen = false;
 		// Load the gameplay scene
 		SceneManager.LoadScene(1);
 	}
