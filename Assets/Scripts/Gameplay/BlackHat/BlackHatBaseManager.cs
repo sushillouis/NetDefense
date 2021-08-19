@@ -6,8 +6,9 @@ using Photon.Pun;
 public class BlackHatBaseManager : BaseSharedBetweenHats {
 	// Error codes used by the error handling system
 	public new class ErrorCodes : BaseSharedBetweenHats.ErrorCodes {
-		public static readonly int StartingPointNotSelected = 4;
-		public static readonly int InvalidProbability = 5;
+		public static readonly int StartingPointNotSelected = 4;	// Error code indicating that a starting point was not selected
+		public static readonly int DestinationNotSelected = 5;		// Error code indicating that a destination was not selected
+		public static readonly int InvalidProbability = 6;			// Error code indicating that the provided probability is invalid
 
 		// Required function to get the class up to par
 		public ErrorCodes() {}
@@ -98,7 +99,7 @@ public class BlackHatBaseManager : BaseSharedBetweenHats {
 	public bool ChangeDestinationMaliciousPacketTargetLikelihood(Destination toModify, int likelihood){
 		// Error if the destination to modify is null
 		if(toModify == null){
-			ErrorHandler(ErrorCodes.StartingPointNotSelected, "A Destination to modify must be selected!");
+			ErrorHandler(ErrorCodes.DestinationNotSelected, "A Destination to modify must be selected!");
 			return false;
 		}
 		// Error if we don't own the destination
@@ -107,7 +108,7 @@ public class BlackHatBaseManager : BaseSharedBetweenHats {
 			return false;
 		}
 		// Error if the destination doesn't have any updates remaining
-		if(toModify.updatesRemaining <= 0){
+		if(toModify.updatesRemainingBlack <= 0){
 			ErrorHandler(ErrorCodes.NoUpdatesRemaining, "The Destination doesn't have any updates remaining!");
 			return false;
 		}

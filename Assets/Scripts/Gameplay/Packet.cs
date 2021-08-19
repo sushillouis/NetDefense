@@ -259,6 +259,14 @@ public class Packet : MonoBehaviourPun, SelectionManager.ISelectable {
 	public void SetDestination(Destination Destination){ photonView.RPC("RPC_Packet_SetDestination", RpcTarget.AllBuffered, Destination.name); }
 	[PunRPC] void RPC_Packet_SetDestination(string DestinationName){
 		destination = GameObject.Find(DestinationName).GetComponent<Destination>();
+
+		// While the current destination is a honeypot and the packet is malicious, set the destination to the next index in the destinations array
+		if(!isMalicious && NetworkingManager.isHost)
+			while(destination.isHoneypot){
+				int index = System.Array.FindIndex(Destination.destinations, d => d.isHoneypot);
+				index = (index + 1) % Destination.destinations.Length; // Modulus ensures that we remain in the bounds of the array
+				SetDestination(Destination.destinations[index]);
+			}
 	}
 
 	// Generates a path from the start point to the destination (network synced)

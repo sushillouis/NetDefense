@@ -53,6 +53,7 @@ MonoBehaviour:
   - RPC_Destination_SetMaliciousPacketDestinationLikelihood
   - RPC_StartingPoint_SetMaliciousPacketProbability
   - RPC_Destination_PlayParticleSimulation
+  - RPC_Destination_SetIsHoneypot
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

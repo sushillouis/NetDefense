@@ -8,8 +8,9 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 	new public class ErrorCodes : BaseSharedBetweenHats.ErrorCodes {
 		public static readonly int FirewallIsMoving = 4;		// Error code stating that the firewall is still moving
 		public static readonly int FirewallNotSelected = 5;		// Error code stating that no firewall has been selected
-		public static readonly int TooManyFirewalls = 6;		// Error code stating that no firewall has been selected
-		public static readonly int TargetNotSelected = 7;		// Error code stating that no target has been selected
+		public static readonly int DestinationNotSelected = 6;	// Error code stating that no destination has been selected
+		public static readonly int TooManyFirewalls = 7;		// Error code stating there are too many firewalls to place another
+		public static readonly int TargetNotSelected = 8;		// Error code stating that no target has been selected
 
 		// Required function to get the class up to par
 		public ErrorCodes() {}
@@ -150,10 +151,34 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 		return true;
 	}
 
+	// Function which marks the specified destination as a honeypot
+	public bool MakeDestinationHoneypot(Destination toModify){
+		// Error if the destination to modify is null
+		if(toModify == null){
+			ErrorHandler(ErrorCodes.DestinationNotSelected, "A Destination to modify must be selected!");
+			return false;
+		}
+		// Error if we don't own the destination
+		if(toModify.photonView.Controller != NetworkingManager.localPlayer){
+			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify Destinations you don't own!");
+			return false;
+		}
+		// Error if the destination doesn't have any updates remaining
+		if(toModify.updatesRemainingWhite <= 0){
+			ErrorHandler(ErrorCodes.NoUpdatesRemaining, "The Destination doesn't have any updates remaining!");
+			return false;
+		}
+
+		if(toModify.SetIsHoneypot(true))
+			DestinationSettingsUpdated(toModify);
+		return true;
+	}
+
 
 	// -- Derived Class Callbacks --
 
 
 	// Function called whenever a firewall's settings are meaninfully updated (updated and actually changed)
 	protected virtual void FirewallSettingsUpdated(Firewall updated){ }
+	protected virtual void DestinationSettingsUpdated(Destination updated){ }
 }

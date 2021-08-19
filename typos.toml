@@ -1,9 +1,15 @@
-#Command to run: typos --hidden -w --locale en-us
+#Command to run: typos -w --locale en-us
 
 [default.extend-identifiers]
-# *sigh* this just isn't worth the cost of fixing
-MonoBehaviour = "MonoBehaviour"
+Behaviour = "Behaviour"
+Behaviours = "Behaviours"
+ret = "ret"
 
 [default.extend-words]
-# Don't correct monobehavior
-MonoBehaviour = "MonoBehaviour"
+Behaviour = "Behaviour"
+Behaviours = "Behaviours"
+ret = "ret"
+
+[files]
+# Ignore meta files
+extend-exclude = ["*.meta"]
