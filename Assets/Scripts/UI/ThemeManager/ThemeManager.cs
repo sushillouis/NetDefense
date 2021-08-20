@@ -12,6 +12,15 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 	// Event called whenever a theme property changes
 	public static Utilities.VoidEventCallback themeUpdateEvent;
 
+	// Function which applies the current theme
+	public void ApplyTheme(){
+		instance = this;
+		themeUpdateEvent?.Invoke();
+	}
+
+
+
+	[Header("Detailed Theme Settings")]
 	// Text stylesheet used in the theme (calls theme update callback when changed)
 	[SerializeField] TMPro.TMP_StyleSheet _textStyleSheet;
 	public TMPro.TMP_StyleSheet textStyleSheet {
@@ -49,6 +58,9 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 			}
 		}
 
+		[Tooltip("If this is true, then this style will be ignored by global color manipulations.")]
+		public bool locked;
+
 		// Sprite for the button (calls theme update callback when changed)
 		[SerializeField] Sprite _backgroundSprite;
 		public Sprite backgroundSprite {
@@ -71,6 +83,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 
 		public PanelStyle(string name) {
 			_name = name;
+			locked = false;
 			_backgroundSprite = null;
 			_color = Color.white;
 			themeUpdateEvent?.Invoke();
@@ -101,6 +114,9 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 			}
 		}
 
+		[Tooltip("If this is true, then this style will be ignored by global color manipulations.")]
+		public bool locked;
+
 		// Sprite for the button (calls theme update callback when changed)
 		[SerializeField] Sprite _backgroundSprite;
 		public Sprite backgroundSprite {
@@ -123,6 +139,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 
 		public ButtonStyle(string name) {
 			_name = name;
+			locked = false;
 			_backgroundSprite = null;
 			_colors = ColorBlock.defaultColorBlock;
 			themeUpdateEvent?.Invoke();
@@ -152,6 +169,9 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 				themeUpdateEvent?.Invoke();
 			}
 		}
+
+		[Tooltip("If this is true, then this style will be ignored by global color manipulations.")]
+		public bool locked;
 
 		// Sprite used for the background of the toggle (calls theme update callback when changed)
 		[SerializeField] Sprite _backgroundSprite;
@@ -185,6 +205,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 
 		public ToggleStyle(string name) {
 			_name = name;
+			locked = false;
 			_backgroundSprite = null;
 			_checkmarkSprite = null;
 			_colors = ColorBlock.defaultColorBlock;
@@ -215,6 +236,9 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 				themeUpdateEvent?.Invoke();
 			}
 		}
+
+		[Tooltip("If this is true, then this style will be ignored by global color manipulations.")]
+		public bool locked;
 
 		// Background sprite of the unfilled section of the slider (calls theme update callback when changed)
 		[SerializeField] Sprite _backgroundSprite;
@@ -278,6 +302,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 
 		public SliderStyle(string name) {
 			_name = name;
+			locked = false;
 			_backgroundSprite = null;
 			_fillSprite = null;
 			_handleSprite = null;
@@ -312,6 +337,9 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 			}
 		}
 
+		[Tooltip("If this is true, then this style will be ignored by global color manipulations.")]
+		public bool locked;
+
 		// Slider colors (calls theme update callback when changed)
 		[SerializeField] ColorBlock _colors;
 		public ColorBlock colors {
@@ -324,6 +352,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 
 		public DropdownStyle(string name) {
 			_name = name;
+			locked = false;
 			_colors = ColorBlock.defaultColorBlock;
 			themeUpdateEvent?.Invoke();
 		}
@@ -342,17 +371,142 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 	void Update (){
 		if (EditorApplication.isPlaying) return; // Skip this function in play mode
 
-		// Make sure that the instance is correctly marked before we dispatch (having two of these components in the editor will cause problems)
-		instance = this;
-
-		// NOTE: if this ever becomes to heavy to run, then disable this line and rely on the context menu options to propagate changes to the theme
-		themeUpdateEvent?.Invoke();
+		ApplyTheme();
 	}
 
 	// Menu item which propagates changes to the theme through the rest of the UI
 	[MenuItem("CONTEXT/ThemeManager/Propagate Theme Changes")]
 	public static void PropagateTheme(MenuCommand command){
-		themeUpdateEvent?.Invoke();
+		ThemeManager mgr = command.context as ThemeManager;
+		mgr.ApplyTheme();
 	}
 #endif
 }
+
+#if UNITY_EDITOR
+// Class which provides the custom ThemeManager inspector UI
+[CustomEditor(typeof(ThemeManager))]
+public class ThemeManagerEditor : Editor {
+	// Color representing the theme's primary dark color
+	Color globalDarkThemeColor = new Color(0.2745098f, 0, 0.4117647f);
+	// Reset color for the primary dark color
+	Color globalDarkResetColor = new Color(0.2745098f, 0, 0.4117647f);
+
+	// Color representing the theme's primary bright color
+	Color globalBrightThemeColor = new Color(0.9254903f, 0.5490196f, 0.9215687f);
+	// Reset color for the primary bright color
+	Color globalBrightResetColor = new Color(0.9254903f, 0.5490196f, 0.9215687f);
+
+	// Boolean tracking weather or not the global settings should be shown
+	bool showGlobal = true;
+
+	public override void OnInspectorGUI() {
+		// Global settings foldout (display content if we are currently flodded out)
+		if((showGlobal = EditorGUILayout.BeginFoldoutHeaderGroup(showGlobal, "Global Theme Management")) == true) {
+			// Color fields for the theme's primary colors
+			globalBrightThemeColor = EditorGUILayout.ColorField("Global Bright Color", globalBrightThemeColor);
+			globalDarkThemeColor = EditorGUILayout.ColorField("Global Dark Color", globalDarkThemeColor);
+
+			// Aligned buttons
+			EditorGUILayout.BeginHorizontal();
+				// Apply Hue button... applies the color hue to the theme
+				if (GUILayout.Button("Apply Global Hue!")){
+	            	ApplyGlobalHue();
+					// Update the reset colors to the new primary theme color
+					globalDarkResetColor = globalDarkThemeColor;
+					globalBrightResetColor = globalBrightThemeColor;
+				}
+
+				// Reset button... resets the primary colors to the saved reset colors
+				if (GUILayout.Button("Reset")){
+					globalDarkThemeColor = globalDarkResetColor;
+					globalBrightThemeColor = globalBrightResetColor;
+				}
+			EditorGUILayout.EndHorizontal();
+		} EditorGUILayout.EndFoldoutHeaderGroup();
+
+		// Show the script GUI
+		DrawDefaultInspector();
+	}
+
+	// Function which applies the theme colors to all of the specific theme components
+   	void ApplyGlobalHue(){
+		// Get a reference to the manged theme manager
+		ThemeManager mgr = target as ThemeManager;
+		// Save the current state so we can undo this action
+		Undo.RecordObject (mgr, "Applying Global Color");
+
+		// Get the hues for the bright and dark colors
+		float darkHue, brightHue, s, v;
+		Color.RGBToHSV(globalDarkThemeColor, out darkHue, out s, out v);
+		Color.RGBToHSV(globalBrightThemeColor, out brightHue, out s, out v);
+
+		// Apply the hue to the (unlocked) panel styles
+		for(int i = 0; i < mgr.panelStyles.Count; i++)
+			if(!mgr.panelStyles[i].locked){
+				var tmp = mgr.panelStyles[i];
+				tmp.color = ChangeColorHue(tmp.color, darkHue);
+				mgr.panelStyles[i] = tmp;
+			}
+
+		// Apply the hue to the (unlocked) button styles
+		for(int i = 0; i < mgr.buttonStyles.Count; i++)
+			if(!mgr.buttonStyles[i].locked){
+				var tmp = mgr.buttonStyles[i];
+				tmp.colors = ChangeColorBlockHue(tmp.colors, darkHue, brightHue);
+				mgr.buttonStyles[i] = tmp;
+			}
+
+		// Apply the hue to the (unlocked) toggle styles
+		for(int i = 0; i < mgr.toggleStyles.Count; i++)
+			if(!mgr.toggleStyles[i].locked){
+				var tmp = mgr.toggleStyles[i];
+				tmp.colors = ChangeColorBlockHue(tmp.colors, darkHue, brightHue);
+				mgr.toggleStyles[i] = tmp;
+			}
+
+		// Apply the hue to the (unlocked) slider styles
+		for(int i = 0; i < mgr.sliderStyles.Count; i++)
+			if(!mgr.sliderStyles[i].locked){
+				var tmp = mgr.sliderStyles[i];
+				tmp.colors = ChangeColorBlockHue(tmp.colors, darkHue, brightHue);
+				tmp.fillColor = ChangeColorHue(tmp.fillColor, brightHue);
+				tmp.backgroundColor = ChangeColorHue(tmp.backgroundColor, darkHue);
+				mgr.sliderStyles[i] = tmp;
+			}
+
+		// Apply the hue to the (unlocked) dropdown styles
+		for(int i = 0; i < mgr.dropdownStyles.Count; i++)
+			if(!mgr.dropdownStyles[i].locked){
+				var tmp = mgr.dropdownStyles[i];
+				tmp.colors = ChangeColorBlockHue(tmp.colors, darkHue, brightHue);
+				mgr.dropdownStyles[i] = tmp;
+			}
+	}
+
+	// Function which changes the hue of a color
+	Color ChangeColorHue(Color c, float hue){
+		// Extract the color's saturation and value
+		float h, s, v;
+		Color.RGBToHSV(c, out h, out s, out v);
+		// Apply the new hue to the old saturation and value
+		Color _out = Color.HSVToRGB(hue, s, v);
+		// Make sure alpha is saved
+		_out.a = c.a;
+		return _out;
+	}
+
+	// Function which changes the hue of a color block
+	ColorBlock ChangeColorBlockHue(ColorBlock b, float darkHue, float brightHue){
+		// Bright Colors
+		b.normalColor = ChangeColorHue(b.normalColor, brightHue);
+		b.highlightedColor = ChangeColorHue(b.highlightedColor, brightHue);
+		// Dark colors
+		b.pressedColor = ChangeColorHue(b.pressedColor, brightHue);
+		b.selectedColor = ChangeColorHue(b.selectedColor, brightHue);
+		b.disabledColor = ChangeColorHue(b.disabledColor, brightHue);
+
+		return b;
+	}
+}
+#endif

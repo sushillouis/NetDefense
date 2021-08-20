@@ -348,11 +348,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1632318401279752283, guid: 453fef61be40dff439e8869ab9aed649, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -992.19
+      value: -741
       objectReference: {fileID: 0}
     - target: {fileID: 1632318401279752283, guid: 453fef61be40dff439e8869ab9aed649, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 406.53
+      value: 377
       objectReference: {fileID: 0}
     - target: {fileID: 1632318401279752283, guid: 453fef61be40dff439e8869ab9aed649, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1138,25 +1138,32 @@ MonoBehaviour:
   _font: {fileID: 11400000, guid: 81b01df663c397e468c141aa197c6f86, type: 2}
   panelStyles:
   - _name: default
+    locked: 1
     _backgroundSprite: {fileID: 21300000, guid: dd8f4f312bcc44104aa61b63d76cd163, type: 3}
     _color: {r: 1, g: 1, b: 1, a: 0.3882353}
   - _name: Window Background Dark
+    locked: 0
     _backgroundSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
     _color: {r: 0.16470589, g: 0, b: 0.24705884, a: 1}
   - _name: Window Background
+    locked: 0
     _backgroundSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
     _color: {r: 0.33333334, g: 0, b: 0.49411768, a: 1}
   - _name: UI Section Dark
+    locked: 0
     _backgroundSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
     _color: {r: 0.13333334, g: 0, b: 0.20392159, a: 1}
   - _name: UI Section
+    locked: 0
     _backgroundSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
     _color: {r: 0.27450982, g: 0, b: 0.41176474, a: 1}
   - _name: Dropdown Background
+    locked: 0
     _backgroundSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
     _color: {r: 0.9607843, g: 0.57254905, b: 0.95686275, a: 1}
   buttonStyles:
   - _name: default
+    locked: 1
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _colors:
       m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -1167,6 +1174,7 @@ MonoBehaviour:
       m_ColorMultiplier: 1
       m_FadeDuration: 0.1
   - _name: Close Button
+    locked: 0
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _colors:
       m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
@@ -1177,6 +1185,7 @@ MonoBehaviour:
       m_ColorMultiplier: 1
       m_FadeDuration: 0.05
   - _name: Button
+    locked: 0
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _colors:
       m_NormalColor: {r: 0.9607844, g: 0.57254905, b: 0.9568628, a: 1}
@@ -1188,6 +1197,7 @@ MonoBehaviour:
       m_FadeDuration: 0.05
   toggleStyles:
   - _name: default
+    locked: 1
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _checkmarkSprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
     _colors:
@@ -1199,6 +1209,7 @@ MonoBehaviour:
       m_ColorMultiplier: 1
       m_FadeDuration: 0.1
   - _name: Properties Default
+    locked: 0
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _checkmarkSprite: {fileID: 21300000, guid: c458986bfbf2cfa49a01acba28ed6c22, type: 3}
     _colors:
@@ -1210,6 +1221,7 @@ MonoBehaviour:
       m_ColorMultiplier: 1
       m_FadeDuration: 0.1
   - _name: Properties Color - Pink
+    locked: 1
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _checkmarkSprite: {fileID: 21300000, guid: c458986bfbf2cfa49a01acba28ed6c22, type: 3}
     _colors:
@@ -1221,6 +1233,7 @@ MonoBehaviour:
       m_ColorMultiplier: 1
       m_FadeDuration: 0.1
   - _name: Properties Color - Green
+    locked: 1
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _checkmarkSprite: {fileID: 21300000, guid: c458986bfbf2cfa49a01acba28ed6c22, type: 3}
     _colors:
@@ -1232,6 +1245,7 @@ MonoBehaviour:
       m_ColorMultiplier: 1
       m_FadeDuration: 0.1
   - _name: Properties Color - Blue
+    locked: 1
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _checkmarkSprite: {fileID: 21300000, guid: c458986bfbf2cfa49a01acba28ed6c22, type: 3}
     _colors:
@@ -1243,6 +1257,7 @@ MonoBehaviour:
       m_ColorMultiplier: 1
       m_FadeDuration: 0.1
   - _name: Dropdown
+    locked: 0
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _checkmarkSprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
     _colors:
@@ -1255,6 +1270,7 @@ MonoBehaviour:
       m_FadeDuration: 0.1
   sliderStyles:
   - _name: default
+    locked: 1
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _fillSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _handleSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -1269,6 +1285,7 @@ MonoBehaviour:
       m_ColorMultiplier: 1
       m_FadeDuration: 0.1
   - _name: Slider
+    locked: 0
     _backgroundSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _fillSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     _handleSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -1284,6 +1301,7 @@ MonoBehaviour:
       m_FadeDuration: 0.05
   dropdownStyles:
   - _name: default
+    locked: 1
     _colors:
       m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
       m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1293,6 +1311,7 @@ MonoBehaviour:
       m_ColorMultiplier: 1
       m_FadeDuration: 0.1
   - _name: Dropdown
+    locked: 0
     _colors:
       m_NormalColor: {r: 0.9607843, g: 0.57254905, b: 0.95686275, a: 1}
       m_HighlightedColor: {r: 0.77254903, g: 0.30588236, b: 1, a: 1}
@@ -1749,11 +1768,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 570267651722775962, guid: 0b50db193d3228c4ea13106ea0b10da8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -878.45
+      value: -50.546
       objectReference: {fileID: 0}
     - target: {fileID: 570267651722775962, guid: 0b50db193d3228c4ea13106ea0b10da8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 383.12
+      value: -369
       objectReference: {fileID: 0}
     - target: {fileID: 570267651722775962, guid: 0b50db193d3228c4ea13106ea0b10da8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2503,11 +2522,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7743961797209538520, guid: 75d2e49ea55baf24b8b6f16e76575493, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -876.60004
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 7743961797209538520, guid: 75d2e49ea55baf24b8b6f16e76575493, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 421.41
+      value: 406.53
       objectReference: {fileID: 0}
     - target: {fileID: 7743961797209538520, guid: 75d2e49ea55baf24b8b6f16e76575493, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3686,6 +3705,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 716388536483466836, guid: 7a9a31a7a986fe044b113f303dde33d0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 716388537258938083, guid: 7a9a31a7a986fe044b113f303dde33d0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3713,6 +3736,10 @@ PrefabInstance:
     - target: {fileID: 716388537643932897, guid: 7a9a31a7a986fe044b113f303dde33d0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 716388537643932897, guid: 7a9a31a7a986fe044b113f303dde33d0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 716388537788938503, guid: 7a9a31a7a986fe044b113f303dde33d0, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3824,11 +3851,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2088645999333399201, guid: 7a9a31a7a986fe044b113f303dde33d0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -883
+      value: -46
       objectReference: {fileID: 0}
     - target: {fileID: 2088645999333399201, guid: 7a9a31a7a986fe044b113f303dde33d0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 329
+      value: 23.554
       objectReference: {fileID: 0}
     - target: {fileID: 2088645999333399201, guid: 7a9a31a7a986fe044b113f303dde33d0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
