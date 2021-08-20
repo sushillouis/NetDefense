@@ -1,0 +1,13 @@
+#Command to run: typos --hidden -w --locale en-us
+
+[default.extend-identifiers]
+# *sigh* this just isn't worth the cost of fixing
+MonoBehaviour = "MonoBehaviour"
+
+[default.extend-words]
+# Don't correct monobehavior
+MonoBehaviour = "MonoBehaviour"
+
+[files]
+# Ignore meta files
+extend-exclude = ["*.meta", "Assets/Thirdparty/*"]
