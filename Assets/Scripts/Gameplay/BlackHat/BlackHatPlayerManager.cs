@@ -162,9 +162,10 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 	public void showStartingPointPanel(StartingPoint p){
 		startingPointJustSelected = true; // Disable toggle callbacks
 
-		// Set all of the toggles as not interactable
+		// Set all of the toggles as interactable (only for the blackhat's primary player)
 		foreach(Toggle t in packetStartPanelToggles)
-			t.interactable = true;
+			if(NetworkingManager.isPrimary) t.interactable = true;
+			else t.interactable = false;
 
 		// Set the correct toggle states
 		packetStartPanelToggles[0].isOn = p.maliciousPacketDetails.size == Packet.Size.Small;
@@ -192,6 +193,10 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 
 	// Function which shows the starting point probability panel
 	public void showProbabilityPanel(StartingPoint p){
+		// Set the slider as interactable (only for the blackhat's primary player)
+		if(NetworkingManager.isPrimary) probabilityLikelihoodPanelSlider.interactable = true;
+		else probabilityLikelihoodPanelSlider.interactable = false;
+
 		// Update the slider's properties
 		probabilityLikelihoodPanelSlider.minValue = 0;
 		probabilityLikelihoodPanelSlider.maxValue = 1;
@@ -212,6 +217,10 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 	public void showLikelihoodPanel(Destination d){
 		destinationJustSelected = true; // Disable toggle callbacks
 
+		// Set the slider as interactable (only for the blackhat's primary player)
+		if(NetworkingManager.isPrimary) probabilityLikelihoodPanelSlider.interactable = true;
+		else probabilityLikelihoodPanelSlider.interactable = false;
+
 		// Update the slider's properties
 		probabilityLikelihoodPanelSlider.minValue = 0;
 		probabilityLikelihoodPanelSlider.maxValue = 20;
@@ -228,15 +237,6 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 		DestinationSettingsUpdated(d);
 
 		destinationJustSelected = false; // Re-enable toggle callbacks
-	}
-
-	// Function which updates the slider label to reflec the state of the slider
-	void updateProbabilityLikelihoodText(){
-		// Format the text appropriately to the starting point (2 decimal place probability) and destination (integer likelihood)
-		if(getSelected<StartingPoint>() != null)
-			probabilityLikelihoodPanelValueText.text = probabilityLikelihoodPanelSlider.value.ToString("0.##");
-		else if(getSelected<Destination>() != null)
-			probabilityLikelihoodPanelValueText.text = "" + (int) probabilityLikelihoodPanelSlider.value;
 	}
 
 
@@ -257,6 +257,19 @@ public class BlackHatPlayerManager : BlackHatBaseManager {
 
 		// Play the success sound
 		if(updated.updatesRemainingBlack > 0) AudioManager.instance.uiSoundFXPlayer.PlayTrackImmediate("SettingsUpdated");
+	}
+
+
+	// -- Helpers --
+
+
+	// Function which updates the slider label to reflect the state of the slider
+	void updateProbabilityLikelihoodText(){
+		// Format the text appropriately to the starting point (2 decimal place probability) and destination (integer likelihood)
+		if(getSelected<StartingPoint>() != null)
+			probabilityLikelihoodPanelValueText.text = probabilityLikelihoodPanelSlider.value.ToString("0.##");
+		else if(getSelected<Destination>() != null)
+			probabilityLikelihoodPanelValueText.text = "" + (int) probabilityLikelihoodPanelSlider.value;
 	}
 
 

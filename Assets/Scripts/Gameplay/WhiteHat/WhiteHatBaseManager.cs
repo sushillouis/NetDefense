@@ -27,13 +27,18 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 
 	// A string referencing the firewall prefab path
 	public string firewallPrefabPath;
+	// A string referencing the firewall cursor prefab path
+	public string suggestedFirewallPrefabPath;
 	// The number of firewalls that can exist at any given time
 	public int maximumPlaceableFirewalls = 2;
 
-	// When we awake perform all of the code for a singleton and also ensure that the prefab path is good to be used (removes extra stuff unity's copy path feature gives us)
+	public SuggestedFirewall suggestedFirewall = null;
+
+	// When we awake perform all of the code for a singleton and also ensure that the prefab paths are good to be used (removes extra stuff unity's copy path feature gives us)
 	override protected void Awake(){
 		base.Awake();
 		Utilities.PreparePrefabPath(ref firewallPrefabPath);
+		Utilities.PreparePrefabPath(ref suggestedFirewallPrefabPath);
 	}
 
 
@@ -76,7 +81,7 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 			return false;
 		}
 		// Error if we don't own the firewall
-		if(toMove.photonView.Controller != NetworkingManager.localPlayer){
+		if(NetworkingManager.isPrimary && toMove.photonView.Controller != NetworkingManager.localPlayer){
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't move firewalls you don't own!");
 			return false;
 		}
@@ -116,7 +121,7 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 			return false;
 		}
 		// Error if we don't own the firewall
-		if(toDestroy.photonView.Controller != NetworkingManager.localPlayer){
+		if(NetworkingManager.isPrimary && toDestroy.photonView.Controller != NetworkingManager.localPlayer){
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't destroy firewalls you don't own!");
 			return false;
 		}
@@ -136,7 +141,7 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 			return false;
 		}
 		// Error if we don't own the firewall
-		if(toModify.photonView.Controller != NetworkingManager.localPlayer){
+		if(NetworkingManager.isPrimary && toModify.photonView.Controller != NetworkingManager.localPlayer){
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify firewalls you don't own!");
 			return false;
 		}
@@ -158,11 +163,6 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 			ErrorHandler(ErrorCodes.DestinationNotSelected, "A Destination to modify must be selected!");
 			return false;
 		}
-		// Error if we don't own the destination
-		if(toModify.photonView.Controller != NetworkingManager.localPlayer){
-			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify Destinations you don't own!");
-			return false;
-		}
 		// Error if the destination doesn't have any updates remaining
 		if(toModify.updatesRemainingWhite <= 0){
 			ErrorHandler(ErrorCodes.NoUpdatesRemaining, "The Destination doesn't have any updates remaining!");
@@ -174,6 +174,34 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 		return true;
 	}
 
+
+	// -- Suggested Firewall --
+
+
+	// Function which spawns or moves the suggested firewall to the selected path piece
+	protected bool SpawnSuggestedFirewall(GameObject targetPathPiece){
+		// Error on invalid path piece
+		if(targetPathPiece is null){
+			ErrorHandler(ErrorCodes.TargetNotSelected, "A location to place the suggested firewall at must be selected!");
+			return false;
+		}
+		// Error if the path piece can't have firewalls on it
+		if(targetPathPiece.tag != "FirewallTarget"){
+			ErrorHandler(ErrorCodes.InvalidTarget, "Suggested firewalls can't be placed on the selected location!");
+			return false;
+		}
+
+		// If the suggested firewall doesn't exist spawn it (and start a timer which will delete it after 5 seconds)
+		if(suggestedFirewall is null){
+			suggestedFirewall = PhotonNetwork.Instantiate(suggestedFirewallPrefabPath, new Vector3(0, 100, 0), Quaternion.identity).GetComponent<SuggestedFirewall>();
+			suggestedFirewall.transform.position = targetPathPiece.transform.position;
+			suggestedFirewall.transform.rotation = targetPathPiece.transform.rotation;
+		}
+
+		// Reset the deletion timer of the selected firewall and gradually move it to its new location
+		suggestedFirewall.ResetDeleteTimer();
+		return suggestedFirewall.StartGradualMove(targetPathPiece.transform.position, targetPathPiece.transform.rotation);
+	}
 
 	// -- Derived Class Callbacks --
 

@@ -26,6 +26,9 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// References to all of the toggles in the firewall panel
 	public Toggle[] firewallPacketPanelToggles;
 
+	// References to buttons which are disabled for advisors
+	public Button moveFirewallButton, removeFirewallButton, makeHoneypotButton;
+
 	// Enum what a click currently means
 	enum ClickState {
 		Selecting,
@@ -49,6 +52,13 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		SelectionManager.hoverChanged += OnHoverChanged;
 		SelectionManager.packetSelectEvent += OnPacketSelected;
 		SelectionManager.firewallSelectEvent += OnFirewallSelected;
+
+		// If we aren't the primary player, then we can't interact with the move, remove, or make-firewall buttons
+		if(!NetworkingManager.isPrimary){
+			moveFirewallButton.interactable = false;
+			removeFirewallButton.interactable = false;
+			makeHoneypotButton.interactable = false;
+		}
 	}
 	void OnDisable(){
 		leftClickAction.action.performed -= OnClickPressed;
@@ -104,7 +114,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Callback which handles when the selected firewall changes
 	void OnFirewallSelected(Firewall f){
 		// Error if we don't own the firewall
-		if(f.photonView.Controller != NetworkingManager.localPlayer){
+		if(NetworkingManager.isPrimary && f.photonView.Controller != NetworkingManager.localPlayer){
 			ErrorHandler(ErrorCodes.WrongPlayer, "You can't modify the settings of a Firewall you don't own.");
 			return;
 		}
@@ -196,19 +206,24 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 	// Function which handles clicks when we should be placing firewalls
 	void OnClick_SpawningFirewall(){
-		// Place a firewall at the currently hovered path piece (the base class takes care of most error handling)
-		Firewall spawned = SpawnFirewall(SelectionManager.instance.hovered);
-		// If we succeeded, mark the new fire wall as selected and reset the click state
-		if(spawned != null){
-			SelectionManager.instance.selected = spawned.gameObject;
-			clickState = ClickState.Selecting;
+		// If we are the primary player...
+		if(NetworkingManager.isPrimary){
+			// Place a firewall at the currently hovered path piece (the base class takes care of most error handling)
+			Firewall spawned = SpawnFirewall(SelectionManager.instance.hovered);
+			// If we succeeded, mark the new fire wall as selected and reset the click state
+			if(spawned != null){
+				SelectionManager.instance.selected = spawned.gameObject;
+				clickState = ClickState.Selecting;
 
-			// Make sure the placement cursor is hidden
-			OnHoverChanged(SelectionManager.instance.hovered);
+				// Make sure the placement cursor is hidden
+				OnHoverChanged(SelectionManager.instance.hovered);
 
-			// Play a sound to indicate that it has spawned
-			AudioManager.instance.soundFXPlayer.PlayTrackImmediate("FirewallSpawn", .5f);
-		}
+				// Play a sound to indicate that it has spawned
+				AudioManager.instance.soundFXPlayer.PlayTrackImmediate("FirewallSpawn", .5f);
+			}
+		// If we are an advisor... simply suggest where a firewall should be placed
+		} else if(SpawnSuggestedFirewall(SelectionManager.instance.hovered))
+ 			clickState = ClickState.Selecting;
 	}
 
 	// Function which handles clicks when we should be selecting a firewall to move
@@ -272,9 +287,10 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	public void showFirewallPanel(Firewall f){
 		firewallJustSelected = true; // Disable toggle callbacks
 
-		// Set all of the toggles as interactable
+		// Set all of the toggles as interactable (only for the white hat's primary player)
 		foreach(Toggle t in firewallPacketPanelToggles)
-			t.interactable = true;
+			if(NetworkingManager.isPrimary) t.interactable = true;
+			else t.interactable = false;
 
 		// Set the correct toggle states
 		firewallPacketPanelToggles[0].isOn = f.filterRules.size == Packet.Size.Small;

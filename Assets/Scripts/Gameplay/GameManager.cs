@@ -47,6 +47,21 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		protected set => _waveStarted = value;
 	}
 
+	// Prefabs to spawn containing the managers specific to each side
+	public GameObject whiteHatPrefab, blackHatPrefab;
+
+
+	// When the scene starts spawn the correct side
+	new void Awake(){
+		base.Awake();
+
+		if(NetworkingManager.isSpectator){
+			 Instantiate(blackHatPrefab).name = "BlackHat Managers";
+			 Instantiate(whiteHatPrefab).name = "WhiteHat Managers";
+		} else if(NetworkingManager.isBlackHat) Instantiate(blackHatPrefab).name = "BlackHat Managers";
+		else Instantiate(whiteHatPrefab).name = "WhiteHat Managers";
+	}
+
 	// When we are dis/enabled register ourselves as a listener to playerPropertyUpdateEvents and roomOtherLeaveEvent
 	void OnEnable(){
 		NetworkingManager.roomPlayerPropertiesUpdateEvent += OnPlayerRoomPropertiesUpdate;
@@ -68,9 +83,11 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		// Transfer control of the starting points and destinations to the BlackHatPlayer
 		if(NetworkingManager.isHost){
 			foreach(StartingPoint p in StartingPoint.startingPoints)
-				p.photonView.TransferOwnership(NetworkingManager.blackHatPrimaryPlayer);
+				if(NetworkingManager.blackHatPrimaryPlayer is object)
+					p.photonView.TransferOwnership(NetworkingManager.blackHatPrimaryPlayer);
 			foreach(Destination d in Destination.destinations)
-				d.photonView.TransferOwnership(NetworkingManager.blackHatPrimaryPlayer);
+				if(NetworkingManager.blackHatPrimaryPlayer is object)
+					d.photonView.TransferOwnership(NetworkingManager.blackHatPrimaryPlayer);
 		}
 	}
 
