@@ -42,7 +42,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 
 	// De/register the click listener as well as Selection Manager event listeners
-	void OnEnable(){
+	public void OnEnable(){
 		leftClickAction.action.Enable();
 		leftClickAction.action.performed += OnClickPressed;
 		rightClickAction.action.Enable();
@@ -58,6 +58,10 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 			moveFirewallButton.interactable = false;
 			removeFirewallButton.interactable = false;
 			makeHoneypotButton.interactable = false;
+		} else {
+			moveFirewallButton.interactable = true;
+			removeFirewallButton.interactable = true;
+			makeHoneypotButton.interactable = true;
 		}
 	}
 	void OnDisable(){

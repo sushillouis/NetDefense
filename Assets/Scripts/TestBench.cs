@@ -4,8 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 
 public class TestBench : MonoBehaviour {
-	public PathNodeBase target;
-
 	void Awake(){
 		if(!PhotonNetwork.IsConnected){
 			PhotonNetwork.OfflineMode = true;
@@ -13,18 +11,20 @@ public class TestBench : MonoBehaviour {
 		}
 	}
 
-    // Start is called before the first frame update
-    void Start() {
-		// Mute the musicPlayer
-		// AudioManager.instance.musicPlayer.volume = 0;
+	void Start() {
+		// Create a new list to hold the room's players
+		NetworkingManager.instance.debuggingPlayers = NetworkingManager.players = new List<Networking.Player>();
+		// Create a Networking.Player representing ourselves
+		Networking.Player me = new Networking.Player();
+		me.photonPlayer = PhotonNetwork.LocalPlayer;
+		me.debugPhotonPlayer = me.photonPlayer.ActorNumber; // TODO: Remove
+		// Add it to the list
+		NetworkingManager.players.Add(me);
+		Networking.Player.localPlayer = me;
 
-        PathNodeBase pnb = GetComponent<PathNodeBase>();
+		(WhiteHatPlayerManager.instance as WhiteHatPlayerManager).OnEnable();
 
-		var path = pnb.findPathTo(target);
+		Debug.Log(NetworkingManager.isWhiteHatPrimary);
+	}
 
-		string debug = "";
-		foreach(var c in path)
-			debug += c + ", ";
-		Debug.Log(debug);
-    }
 }

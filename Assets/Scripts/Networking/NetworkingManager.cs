@@ -492,7 +492,7 @@ public class NetworkingManager : Core.Utilities.SingletonPunCallbacks<Networking
 		return true;
 	}
 
-	// Marks the local player as being ready or not based on what is pased in
+	// Marks the local player as being ready or not based on what is passed in
 	public void setReady(bool isReady){
 		localPlayer.photonPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable(){
 			{IS_PLAYER_READY, isReady}
@@ -650,7 +650,7 @@ public class NetworkingManager : Core.Utilities.SingletonPunCallbacks<Networking
 	public static bool isPrimary {
 		get {
 			if(localPlayer is null) return false;
-			
+
 			if(localPlayer.side == Networking.Player.Side.WhiteHat) return isWhiteHatPrimary;
 			else if(localPlayer.side == Networking.Player.Side.BlackHat) return isBlackHatPrimary;
 			else return false;
