@@ -22,6 +22,8 @@ public class TestBench : MonoBehaviour {
 		NetworkingManager.players.Add(me);
 		Networking.Player.localPlayer = me;
 
+		me.role = Networking.Player.Role.Advisor;
+
 		(WhiteHatPlayerManager.instance as WhiteHatPlayerManager).OnEnable();
 
 		Debug.Log(NetworkingManager.isWhiteHatPrimary);

@@ -92,12 +92,13 @@ GameObject:
   m_Component:
   - component: {fileID: 8555208836303907518}
   - component: {fileID: 8799077870086908630}
+  - component: {fileID: 7120537891368647923}
   - component: {fileID: 2695963309095449265}
   - component: {fileID: 9165152087525591954}
   - component: {fileID: 8774547210561823095}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: SuggestedFirewall
-  m_TagString: Untagged
+  m_TagString: SuggestedFirewall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,6 +131,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allowedSide: 0
+--- !u!65 &7120537891368647923
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4675137473443764397}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.48, y: 0.98, z: 0.29}
+  m_Center: {x: 0, y: 0.44, z: 0}
 --- !u!114 &2695963309095449265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,5 +195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f433994d88405ee4b89d3e81a6359d57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickAction: {fileID: 3001919216989983466, guid: a26318101696cb248921fa709202c4d2, type: 3}
   gradualMoveSuggestedFirewallTimeTaken: 0.33333334
   gradualMoveSuggestedFirewallIsMoving: 0

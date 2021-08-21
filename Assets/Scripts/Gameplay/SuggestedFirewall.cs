@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class SuggestedFirewall : MonoBehaviour {
+public class SuggestedFirewall : DraggableSnappedToPath, SelectionManager.ISelectable {
+	// When the firewall is created... delete it in 5 seconds
 	void Start(){ StartCoroutine(DeleteSuggestedFirewallAfterSeconds(5)); }
 
+	// When the firewall is dragged reset the deletion timer
+	protected override void OnDrag(){
+		base.OnDrag();
+
+		ResetDeleteTimer();
+	}
+
+	// Function which resets the deletion timer
 	public void ResetDeleteTimer(){
 		deleteSuggestedFirewallAfterSeconds_StartTime = Time.time;
 	}

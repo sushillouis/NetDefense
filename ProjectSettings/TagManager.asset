@@ -11,6 +11,8 @@ TagManager:
   - SwitchTarget
   - Firewall
   - StartingPoint
+  - Grid
+  - SuggestedFirewall
   layers:
   - Default
   - TransparentFX

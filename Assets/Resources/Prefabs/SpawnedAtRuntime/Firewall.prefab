@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf829f3eebb713c488242eaa6e26da5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickAction: {fileID: 3001919216989983466, guid: a26318101696cb248921fa709202c4d2, type: 3}
   renderer: {fileID: 8525423662930362161}
   gateMaterial: {fileID: 2100000, guid: ce415d45ae8ddd04f8d8d648dcf6d397, type: 2}
   colors:

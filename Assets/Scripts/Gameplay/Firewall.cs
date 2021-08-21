@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Firewall : MonoBehaviourPun, SelectionManager.ISelectable {
+public class Firewall : DraggableSnappedToPath, SelectionManager.ISelectable{
 	public static Firewall[] firewalls = null;
 
 	// Reference to the attached mesh renderer
@@ -32,6 +32,16 @@ public class Firewall : MonoBehaviourPun, SelectionManager.ISelectable {
 	void OnDisable(){
 		firewalls = FindObjectsOfType<Firewall>(); // Update the list of firewalls
 		GameManager.waveEndEvent -= OnWaveStart;
+	}
+
+	// When we stop dragging forward the move to the player manager and reset our position if the move was invalid
+	protected override void OnEndDrag(){
+		base.OnEndDrag();
+
+		if(!WhiteHatPlayerManager.instance.MoveFirewall(this, SelectionManager.instance.hovered)){
+			transform.position = savedDraggingPosition;
+			transform.rotation = savedDraggingRotation;
+		}
 	}
 
 	// When the firewall is created make sure its filter rules are defaulted

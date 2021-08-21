@@ -74,7 +74,7 @@ public class WhiteHatBaseManager : BaseSharedBetweenHats {
 	// Function which moves a firewall to the targetedPathPiece
 	// This function returns true if the move was successful, and false if any errors occurred
 	// The function by default causes the firewall to be smoothly moved to its new location over the course of half a second (this behavior can be disabled by passing false to animated)
-	protected virtual bool MoveFirewall(Firewall toMove, GameObject targetPathPiece, bool animated = true){
+	public virtual bool MoveFirewall(Firewall toMove, GameObject targetPathPiece, bool animated = true){
 		// Error if the firewall to move is null
 		if(toMove == null){
 			ErrorHandler(ErrorCodes.FirewallNotSelected, "A Firewall to move must be selected!");

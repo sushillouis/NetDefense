@@ -17,12 +17,14 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 
 	// Callbacks
 	public delegate void FirwallCallback(Firewall newSelect);
+	public delegate void SuggestedFirwallCallback(SuggestedFirewall newSelect);
 	public delegate void PacketCallback(Packet newSelect);
 	public delegate void StartingPointCallback(StartingPoint newSelect);
 	public delegate void DestinationCallback(Destination newSelect);
 	public delegate void HoverEventCallback(GameObject newHover);
 	// Events
 	public static FirwallCallback firewallSelectEvent;
+	public static SuggestedFirwallCallback suggestedFirewallSelectEvent;
 	public static PacketCallback packetSelectEvent;
 	public static StartingPointCallback startingPointSelectEvent;
 	public static DestinationCallback destinationSelectEvent;
@@ -110,6 +112,14 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 				// Trigger a firewall selection event (if we are triggering events)
 				if(shouldTriggerEvents)
 					firewallSelectEvent?.Invoke(selected.GetComponent<Firewall>());
+			// If we hit a suggested firewall...
+			} else if(hit.transform.tag == "SuggestedFirewall"){
+				// Select it
+				selected = hit.transform.gameObject;
+
+				// Trigger a suggested firewall selection event (if we are triggering events)
+				if(shouldTriggerEvents)
+					suggestedFirewallSelectEvent?.Invoke(selected.GetComponent<SuggestedFirewall>());
 			// If we hit a packet...
 			} else if(hit.transform.tag == "Packet"){
 				// Select it
@@ -153,7 +163,7 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 
 
 	// -- Helpers --
-	
+
 
 	// Function which attaches the selection cylinder to the provided game object, takes a scale which determines how much larger than the object the selection cylinder should be
 	void AttachSelectionCylinderToObject(GameObject selection, float scaleMultiplier = 2){

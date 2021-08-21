@@ -27,7 +27,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	public Toggle[] firewallPacketPanelToggles;
 
 	// References to buttons which are disabled for advisors
-	public Button moveFirewallButton, removeFirewallButton, makeHoneypotButton;
+	public Button removeFirewallButton, makeHoneypotButton;
 
 	// Enum what a click currently means
 	enum ClickState {
@@ -55,11 +55,9 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 		// If we aren't the primary player, then we can't interact with the move, remove, or make-firewall buttons
 		if(!NetworkingManager.isPrimary){
-			moveFirewallButton.interactable = false;
 			removeFirewallButton.interactable = false;
 			makeHoneypotButton.interactable = false;
 		} else {
-			moveFirewallButton.interactable = true;
 			removeFirewallButton.interactable = true;
 			makeHoneypotButton.interactable = true;
 		}
