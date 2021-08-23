@@ -14,7 +14,7 @@ public class EnhancedUIBehavior : MonoBehaviour {
 	[HideInInspector] public RectTransform parentCanvasTransform;
 
 	// When the object is created determine its connections
-	void Awake(){
+	protected void Awake(){
 		rectTransform = GetComponent<RectTransform>();
 
 		parentCanvas = FindParentCanvas(transform);
@@ -81,4 +81,28 @@ public class EnhancedUIBehavior : MonoBehaviour {
 		}
 		return null;
 	}
+}
+
+// Version of EnhancedUIBehaviour which manages a singleton instance
+public class EnhancedUIBehaviorSingleton<T> : EnhancedUIBehavior where T : EnhancedUIBehaviorSingleton<T> {
+	public static T instance { get; protected set; }
+
+	public static bool instanceExists {
+		get => instance != null;
+	}
+
+	protected virtual void Awake() {
+		base.Awake();
+
+		if (instanceExists)
+			Destroy(gameObject);
+		else
+			instance = (T) this;
+	}
+
+	protected virtual void OnDestroy() {
+		if (instance == this)
+			instance = null;
+	}
+
 }
