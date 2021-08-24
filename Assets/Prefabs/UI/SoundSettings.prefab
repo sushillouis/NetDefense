@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f67b9be6ade085478c11105f93cc174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingsPannel: {fileID: 6089515998076456889}
+  settingsPanel: {fileID: 6089515998076456889}
   musicVolume: {fileID: 2303763546091966309}
   soundFXVolume: {fileID: 528650150646251141}
   masterMixer: {fileID: 24100000, guid: ded8e78b80717bb4f9ba217ce8404601, type: 2}
@@ -1401,7 +1401,7 @@ GameObject:
   - component: {fileID: 5057889746266238613}
   - component: {fileID: 2766712147721442287}
   m_Layer: 5
-  m_Name: SettingsPannel
+  m_Name: SettingsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

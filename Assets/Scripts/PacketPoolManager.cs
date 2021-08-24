@@ -104,7 +104,7 @@ public class PacketPoolManager : NetworkBehaviour {
         string target;
         float p1 = Shared.inst.gameMetrics.target_probabilities["LEFT"];
         float p2 = Shared.inst.gameMetrics.target_probabilities["RIGHT"];
-        float p3 = Shared.inst.gameMetrics.target_probabilities["CENTRE"];
+        float p3 = Shared.inst.gameMetrics.target_probabilities["CENTER"];
 
 
         float probability = Random.value;
@@ -114,7 +114,7 @@ public class PacketPoolManager : NetworkBehaviour {
         } else if (probability <= p2 + p1) {
             target = "RIGHT";
         } else {
-            target = "CENTRE";
+            target = "CENTER";
         }
 
       //  Debug.Log(target + " p1=" + p1 + ", p2=" + p2 + ", p3=" + p3);

@@ -1,11 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
 public class SoundSettings : MonoBehaviour {
-	public GameObject settingsPannel;
+	public GameObject settingsPanel;
 	public Slider musicVolume, soundFXVolume;
 	public AudioMixer masterMixer;
 
@@ -18,11 +18,11 @@ public class SoundSettings : MonoBehaviour {
 	}
 
 	public void ToggleSettings(){
-		Debug.Log(settingsPannel.activeSelf);
-		if(settingsPannel.activeSelf)
-			settingsPannel.SetActive(false);
+		Debug.Log(settingsPanel.activeSelf);
+		if(settingsPanel.activeSelf)
+			settingsPanel.SetActive(false);
 		else
-			settingsPannel.SetActive(true);
+			settingsPanel.SetActive(true);
 	}
 
 	public void MusicVolumeChanged(){

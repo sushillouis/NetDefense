@@ -279,6 +279,8 @@ public class GameManager : MonoBehaviour {
 		// Make sure the ready buttons appear
 		BlackHatMenu.inst.nextWaveButton.OnWaveStart();
 		WhiteHatMenu.inst.OnWaveStart();
+
+		StartCoroutine(ScoreDatabaseManager.inst.downloadScores());
 	}
 
 	// Called each time a wave ends (all of the packets have reached their destination)
