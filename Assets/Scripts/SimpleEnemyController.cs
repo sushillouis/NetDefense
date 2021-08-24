@@ -210,8 +210,10 @@ public class SimpleEnemyController : NetworkBehaviour {
                 other.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
                 Camera.main.transform.GetChild(0).GetComponent<AudioSource>().Play();
                 ScoreManager.inst.OnBadPacketTransferred(id);
-            } else
+            } else {
                 ScoreManager.inst.OnFriendlyPacketTransferred(id);
+				Camera.main.transform.GetChild(6).GetComponent<AudioSource>().Play();
+			}
         }
 
         if (other.gameObject.tag == "Router") {
