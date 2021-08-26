@@ -207,7 +207,7 @@ public class SimpleEnemyController : NetworkBehaviour {
 				// TODO: What different effects should the players see... should blackhat see normal hit effects?
 				if(Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT) Camera.main.transform.GetChild(1).GetComponent<AudioSource>().Play(); // If the player is a white hat, play the router sound!
 			} else if (malicious) {
-                other.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+                other.gameObject.transform.GetChild(1).GetComponent<ParticleSystem>().Play();
                 Camera.main.transform.GetChild(0).GetComponent<AudioSource>().Play();
                 ScoreManager.inst.OnBadPacketTransferred(id);
             } else {
