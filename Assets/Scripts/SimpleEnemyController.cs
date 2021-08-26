@@ -223,6 +223,8 @@ public class SimpleEnemyController : NetworkBehaviour {
                 status = PACKET_LIFECYCLE_STATUS.ROUTER_TAKE_DOWN;
                 if (malicious) {
                     Camera.main.transform.GetChild(1).GetComponent<AudioSource>().Play();
+					// Play the particle simulation effect
+					r.transform.GetChild(1).GetComponent<ParticleSystem>().Play();
 
                 }
                 if (EntityManager.inst.isMultiplayer && !EntityManager.inst.isServer) {
