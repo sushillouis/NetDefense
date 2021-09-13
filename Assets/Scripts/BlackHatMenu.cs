@@ -14,6 +14,9 @@ public class BlackHatMenu : MonoBehaviour
 
     private int currentMenu;
 
+	[Space(25)]
+	public GameObject settingsPanel;
+
     public GameObject target_panel;
 
     public Button targetingCoolDownButton;
@@ -83,11 +86,13 @@ public class BlackHatMenu : MonoBehaviour
     {
         if (currentMenu == types.NO_MENU)
         {
+			settingsPanel.SetActive(false);
             target_panel.SetActive(false);
             malic_packet_panel.SetActive(false);
         }
         else
         {
+			settingsPanel.SetActive(true);
             nav_menu.localPosition = init_pos_of_nav_menu;
         }
 
@@ -171,12 +176,12 @@ public class BlackHatMenu : MonoBehaviour
 
             if (MainMenu.isMultiplayerSelectedFromMenu) {
                 Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "LEFT" + "," + t1));
-                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "RIGHT" + "," + t2));
-                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "CENTER" + "," + t3));
+				Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "CENTER" + "," + t2));
+                Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_SERVER_TARGETING_PROBABILITY, "RIGHT" + "," + t3));
             } else {
                 Shared.inst.gameMetrics.target_probabilities["LEFT"] = t1;
-                Shared.inst.gameMetrics.target_probabilities["RIGHT"] = t2;
-                Shared.inst.gameMetrics.target_probabilities["CENTER"] = t3;
+				Shared.inst.gameMetrics.target_probabilities["CENTER"] = t2;
+                Shared.inst.gameMetrics.target_probabilities["RIGHT"] = t3;
                 PacketPoolManager.inst.OnBlackhatUpdateStrategy();
 
             }
