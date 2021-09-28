@@ -34198,9 +34198,12 @@ MonoBehaviour:
   - {fileID: 89692875}
   - {fileID: 216793422}
   materials:
+  - {fileID: 2100000, guid: df682caa28442f842b4dbee18f0c8651, type: 2}
+  - {fileID: 2100000, guid: ca5ab310ae68d1d4e86c6deea5701299, type: 2}
+  - {fileID: 2100000, guid: 2e626e742153e5647a3d965fe78b5058, type: 2}
   - {fileID: 2100000, guid: 1d035d90cc6d91e4f98fb13e02ced084, type: 2}
   - {fileID: 2100000, guid: ea208853602eeab4a9d311a6b1182795, type: 2}
-  - {fileID: 2100000, guid: 2e626e742153e5647a3d965fe78b5058, type: 2}
+  - {fileID: 2100000, guid: b5cbf82a02ac5084786a6d56d21660f9, type: 2}
   models:
   - {fileID: 4300000, guid: 3cb78c2d83df6914ba8867c732615e6a, type: 3}
   - {fileID: 4300000, guid: 17b19acf8db6b4b429a8a62505b25437, type: 3}

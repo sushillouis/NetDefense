@@ -234,9 +234,9 @@ public class SimpleEnemyController : NetworkBehaviour {
         }
     }
 
-    public void requestTurnOnBadPacketOutline(bool isbad) {
-        selectedChild.SetActive(isbad && MainMenu.difficulty == Difficulty.EASY);
-    }
+    // public void requestTurnOnBadPacketOutline(bool isbad) {
+    //     selectedChild.SetActive(isbad && MainMenu.difficulty == Difficulty.EASY);
+    // }
 
 
     public void setupBehavior(int newColor, int newSize, int newShape, bool newMalicious, bool updateClient = false) {
@@ -249,7 +249,7 @@ public class SimpleEnemyController : NetworkBehaviour {
         status = PACKET_LIFECYCLE_STATUS.UNSPAWNED;
         spawnPos = gameObject.transform.position;
 
-        requestTurnOnBadPacketOutline(newMalicious);
+        // requestTurnOnBadPacketOutline(newMalicious);
 
         float selectionScale = Mathf.Max(transform.localScale.x * selectedChild.transform.localScale.x, transform.localScale.z * selectedChild.transform.localScale.z);
         selectionScale *= 1.5f;
