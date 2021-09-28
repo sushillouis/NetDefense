@@ -238,13 +238,19 @@ public class GameManager : MonoBehaviour {
         Material[] tempMaterials = packet.GetComponent<MeshRenderer>().materials;
         switch (packet.color) {
             case 0:
-                tempMaterials[0] = materials[0];
+				if(packet.malicious && MainMenu.difficulty == Difficulty.EASY)
+					tempMaterials[0] = materials[3];
+				else tempMaterials[0] = materials[0];
                 break;
             case 1:
-                tempMaterials[0] = materials[1];
+				if(packet.malicious && MainMenu.difficulty == Difficulty.EASY)
+					tempMaterials[0] = materials[4];
+				else tempMaterials[0] = materials[1];
                 break;
             case 2:
-                tempMaterials[0] = materials[2];
+				if(packet.malicious && MainMenu.difficulty == Difficulty.EASY)
+					tempMaterials[0] = materials[5];
+				else tempMaterials[0] = materials[2];
                 break;
         }
         packet.GetComponent<MeshRenderer>().materials = tempMaterials;

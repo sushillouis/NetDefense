@@ -164,7 +164,7 @@ MonoBehaviour:
   id: 0
   status: 0
   spawnPos: {x: 0, y: 0, z: 0}
-  destination: {fileID: 0}
+  _destination: {fileID: 0}
   path: {fileID: 0}
   isReadyForRemoval: 0
   selectedChild: {fileID: 3864207490557312111}
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
-  m_MovementThreshold: 0
+  m_MovementTheshold: 0.001
   m_VelocityThreshold: 1
   m_SnapThreshold: 0
   m_InterpolateRotation: 10
@@ -315,6 +315,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SelectionCylinder
+      objectReference: {fileID: 0}
+    - target: {fileID: 9183282935489160824, guid: b1b64573597ecf94e812fd9d518ac68f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1b64573597ecf94e812fd9d518ac68f, type: 3}
