@@ -49,7 +49,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		rightClickAction.action.performed += OnCancel;
 		cancelAction.action.Enable();
 		cancelAction.action.performed += OnCancel;
-		SelectionManager.hoverChanged += OnHoverChanged;
+		SelectionManager.hoverChangedEvent += OnHoverChanged;
 		SelectionManager.packetSelectEvent += OnPacketSelected;
 		SelectionManager.firewallSelectEvent += OnFirewallSelected;
 
@@ -66,7 +66,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 		leftClickAction.action.performed -= OnClickPressed;
 		rightClickAction.action.performed -= OnCancel;
 		cancelAction.action.performed -= OnCancel;
-		SelectionManager.hoverChanged -= OnHoverChanged;
+		SelectionManager.hoverChangedEvent -= OnHoverChanged;
 		SelectionManager.packetSelectEvent -= OnPacketSelected;
 		SelectionManager.firewallSelectEvent -= OnFirewallSelected;
 	}

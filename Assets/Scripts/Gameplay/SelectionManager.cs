@@ -29,7 +29,7 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 	public static StartingPointCallback startingPointSelectEvent;
 	public static DestinationCallback destinationSelectEvent;
 	public static Utilities.VoidEventCallback deselectEvent;
-	public static HoverEventCallback hoverChanged;
+	public static HoverEventCallback hoverChangedEvent;
 
 
 	// Reference the mouse's position
@@ -80,13 +80,13 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 					// If the object has hover logic, then fire the hover changed event
 					Utilities.GetInterfaceInstances(out hoverables, hit.transform.gameObject);
 					if(hoverables.Count > 0){
-						hoverChanged?.Invoke(hit.transform.gameObject);
+						hoverChangedEvent?.Invoke(hit.transform.gameObject);
 						hovered = hit.transform.gameObject;
 					}
 				}
 			// If the raycast failed to hit anything, then the current hover is null
 			} else {
-				hoverChanged?.Invoke(null);
+				if(hovered is object) hoverChangedEvent?.Invoke(null);
 				hovered = null;
 			}
 	}

@@ -9,8 +9,8 @@ public class HoverHighlighter : MonoBehaviour, SelectionManager.IHoverable /* It
 	public GameObject highlightObject;
 
 	// De/Register this object with the hover manager when it is dis/enabled.
-	void OnEnable(){ SelectionManager.hoverChanged += OnHoverChanged; }
-	void OnDisable(){ SelectionManager.hoverChanged -= OnHoverChanged; }
+	void OnEnable(){ SelectionManager.hoverChangedEvent += OnHoverChanged; }
+	void OnDisable(){ SelectionManager.hoverChangedEvent -= OnHoverChanged; }
 
 	// Callback which changes the hovered state of the object
 	public void OnHoverChanged(GameObject newHover){
