@@ -86,10 +86,10 @@ public class AudioManagerBase : Core.Utilities.PersistentSingleton<AudioManagerB
 		}
 
 		// Gets a volume relative to the player's base volume
-		public float RelativeVolume(float baseVolume) { return baseVolume * volume; }
+		protected float RelativeVolume(float baseVolume) { return baseVolume * volume; }
 
 		// Creates a new audio source playing the given track
-		public AudioSource CreateTrackPlayer(string trackName, float desiredVolume = -1, bool looping = false){
+		protected AudioSource CreateTrackPlayer(string trackName, float desiredVolume = -1, bool looping = false){
 			// If the track isn't found throw an exception
 			if(!tracks.ContainsKey(trackName)) throw new TrackNotFoundException(trackName);
 			// If the desired volume is negative, then use the player's volume
