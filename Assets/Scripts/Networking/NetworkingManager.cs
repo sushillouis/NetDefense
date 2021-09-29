@@ -502,6 +502,13 @@ public class NetworkingManager : Core.Utilities.SingletonPunCallbacks<Networking
 	// Toggles weather or not the local player is ready.
 	public void toggleReady(){ setReady( !localPlayer.isReady ); }
 
+	// Function which ensures that all of the players are marked as unready (Network Synced)
+	public void UnreadyAllPlayers() { photonView.RPC("RPC_NetworkingManager_UnreadyAllPlayers", RpcTarget.AllBuffered); }
+	[PunRPC] void RPC_NetworkingManager_UnreadyAllPlayers(){
+		// Mark the local player as not ready
+		setReady(false);
+	}
+
 
 	// -- Properties --
 

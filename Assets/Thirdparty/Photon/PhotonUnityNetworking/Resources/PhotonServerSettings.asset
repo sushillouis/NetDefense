@@ -44,7 +44,6 @@ MonoBehaviour:
   - RPC_GameManager_EndWave
   - RPC_GameManager_SetDifficulty
   - RPC_GameManager_StartNextWave
-  - RPC_GameManager_UnreadyAllPlayers
   - RPC_NetworkingManager_BecomeAdvisor
   - RPC_NetworkingManager_BecomeBlackHat
   - RPC_NetworkingManager_BecomePrimaryPlayer
@@ -52,6 +51,7 @@ MonoBehaviour:
   - RPC_NetworkingManager_BecomeWhiteHat
   - RPC_NetworkingManager_RequestRoomStateSynchronization
   - RPC_NetworkingManager_RoomStateSynchronization
+  - RPC_NetworkingManager_UnreadyAllPlayers
   - RPC_Packet_Destroy
   - RPC_Packet_InitPath
   - RPC_Packet_SetDestination

@@ -151,7 +151,7 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		Debug.Log("Starting Next Wave!");
 
 		// Ensure that once the wave starts, all of the players are marked as unready
-		if(NetworkingManager.isHost) UnreadyAllPlayers();
+		if(NetworkingManager.isHost) NetworkingManager.instance.UnreadyAllPlayers();
 
 		waveStartEvent?.Invoke();
 		waveStarted = true; // Mark that the wave has started
@@ -170,13 +170,6 @@ public class GameManager : Core.Utilities.SingletonPun<GameManager> {
 		// If the current wave is greater than the maximum number of waves... end the game
 		if(currentWave >= maximumWaves)
 			EndGame(ScoreManager.instance.whiteHatScore >= ScoreManager.instance.blackHatScore ? Networking.Player.Side.WhiteHat : Networking.Player.Side.BlackHat);
-	}
-
-	// Function which ensures that all of the players are marked as unready (Network Synced)
-	public void UnreadyAllPlayers() { photonView.RPC("RPC_GameManager_UnreadyAllPlayers", RpcTarget.AllBuffered); }
-	[PunRPC] void RPC_GameManager_UnreadyAllPlayers(){
-		// Mark the local player as not ready
-		setReady(false);
 	}
 
 	// Function which ends the game, marking which player won (Network Synced)
