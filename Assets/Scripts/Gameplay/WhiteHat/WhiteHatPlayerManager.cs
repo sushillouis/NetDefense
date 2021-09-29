@@ -83,7 +83,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Function which responds to the remove selected firewall button
 	public void OnRemoveSelectedFirewall(){
 		Firewall selected = getSelected<Firewall>();
-		SelectionManager.instance.selected = null; // Make sure that the selection manager is not pointed at the item when we delete it
+		SelectionManager.instance.SelectGameObject(null); // Make sure that the selection manager is not pointed at the item when we delete it
 		DestroyFirewall(selected);
 
 		// Make sure the firewall panel closes
@@ -214,7 +214,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 			Firewall spawned = SpawnFirewall(SelectionManager.instance.hovered);
 			// If we succeeded, mark the new fire wall as selected and reset the click state
 			if(spawned != null){
-				SelectionManager.instance.selected = spawned.gameObject;
+				SelectionManager.instance.SelectGameObject(spawned.gameObject);
 				clickState = ClickState.Selecting;
 
 				// Make sure the placement cursor is hidden
@@ -237,7 +237,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 			// If its selection isn't a firewall, give the user an error message
 			if(SelectionManager.instance.selected == null || SelectionManager.instance.selected.GetComponent<Firewall>() == null){
-				SelectionManager.instance.selected = null;
+				SelectionManager.instance.SelectGameObject(null);
 				ErrorHandler(ErrorCodes.FirewallNotSelected, "A Firewall to move must be selected!");
 				return;
 			}
@@ -271,7 +271,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 
 			// If its selection isn't a destination, give the user an error message
 			if(SelectionManager.instance.selected == null || SelectionManager.instance.selected.GetComponent<Destination>() == null){
-				SelectionManager.instance.selected = null;
+				SelectionManager.instance.SelectGameObject(null);
 				ErrorHandler(ErrorCodes.FirewallNotSelected, "A Destination to make into a Honeypot must be selected!");
 				return;
 			}

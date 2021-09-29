@@ -42,7 +42,7 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 	[SerializeField] GameObject _selected;
 	public GameObject selected {
 		get => _selected;
-		set {
+		protected set {
 			_selected = value;
 			// When we select something wrap the selection cylinder around it
 			if(_selected != null) AttachSelectionCylinderToObject(_selected);
@@ -92,6 +92,68 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 	}
 
 
+	// Function which updates the selection to the provided game object (fireing all nessicary events)
+	public void SelectGameObject(GameObject obj, bool shouldTriggerEvents = true){
+		// If the provided object is null, then nothing is selecetd
+		if(obj is null){
+			GameObject oldSelected = selected;
+			selected = null;
+			if(shouldTriggerEvents && oldSelected is object) deselectEvent?.Invoke();
+			return;
+		}
+
+		// If we were passed a firewall...
+		if(obj.transform.tag == "Firewall"){
+			// Select it
+			selected = obj.transform.gameObject;
+
+			// Trigger a firewall selection event (if we are triggering events)
+			if(shouldTriggerEvents)
+				firewallSelectEvent?.Invoke(selected.GetComponent<Firewall>());
+		// If we were passed a suggested firewall...
+		} else if(obj.transform.tag == "SuggestedFirewall"){
+			// Select it
+			selected = obj.transform.gameObject;
+
+			// Trigger a suggested firewall selection event (if we are triggering events)
+			if(shouldTriggerEvents)
+				suggestedFirewallSelectEvent?.Invoke(selected.GetComponent<SuggestedFirewall>());
+		// If we were passed a packet...
+		} else if(obj.transform.tag == "Packet"){
+			// Select it
+			_selected = obj.transform.gameObject;
+			Packet p = selected.GetComponent<Packet>();
+
+			// We have to jump through some extra hoops, by temporarily enabling the malicious selection cylinder so that our selection cylinder is the correct size
+			bool savedActive = p.selectionCylinder.activeSelf;
+			p.selectionCylinder.SetActive(true);
+			AttachSelectionCylinderToObject(selected, 1); // Set the scale to 1 so that the selection cylinder is the same size as the packet's selection indicator
+			// Move our selection cylinder so that it is just above the one possibly already present
+			selectionCylinder.transform.position += new Vector3(0, .01f, 0);
+			p.selectionCylinder.SetActive(savedActive);
+
+			// Trigger a packet selection event (if we are triggering events)
+			if(shouldTriggerEvents)
+				packetSelectEvent?.Invoke(p);
+		// If we were passed a starting point...
+		} else if(obj.transform.tag == "StartingPoint"){
+			// Select it
+			selected = obj.transform.gameObject;
+
+			// Trigger a StartingPoint selection event (if we are triggering events)
+			if(shouldTriggerEvents)
+				startingPointSelectEvent?.Invoke(selected.GetComponent<StartingPoint>());
+		// If we were passed a destination...
+		} else if(obj.transform.tag == "Destination"){
+			// Select it
+			selected = obj.transform.gameObject;
+
+			// Trigger a StartingPoint selection event (if we are triggering events)
+			if(shouldTriggerEvents)
+				destinationSelectEvent?.Invoke(selected.GetComponent<Destination>());
+		}
+	}
+
 	// Function which updates the selection to whatever is currently under the mouse
 	public void SelectUnderCursor(bool shouldTriggerEvents = true){
 		// If the selection cyldinder gets deleted, then spawn a new one
@@ -103,61 +165,13 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 		selectionCylinder.SetActive(false);
 
 		// Perform the raycast
-		if(Physics.Raycast( Camera.main.ScreenPointToRay(mousePositionAction.action.ReadValue<Vector2>()), out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide )){
-			// If we hit a firewall...
-			if(hit.transform.tag == "Firewall"){
-				// Select it
-				selected = hit.transform.gameObject;
-
-				// Trigger a firewall selection event (if we are triggering events)
-				if(shouldTriggerEvents)
-					firewallSelectEvent?.Invoke(selected.GetComponent<Firewall>());
-			// If we hit a suggested firewall...
-			} else if(hit.transform.tag == "SuggestedFirewall"){
-				// Select it
-				selected = hit.transform.gameObject;
-
-				// Trigger a suggested firewall selection event (if we are triggering events)
-				if(shouldTriggerEvents)
-					suggestedFirewallSelectEvent?.Invoke(selected.GetComponent<SuggestedFirewall>());
-			// If we hit a packet...
-			} else if(hit.transform.tag == "Packet"){
-				// Select it
-				_selected = hit.transform.gameObject;
-				Packet p = selected.GetComponent<Packet>();
-
-				// We have to jump through some extra hoops, by temporarily enabling the malicious selection cylinder so that our selection cylinder is the correct size
-				bool savedActive = p.selectionCylinder.activeSelf;
-				p.selectionCylinder.SetActive(true);
-				AttachSelectionCylinderToObject(selected, 1); // Set the scale to 1 so that the selection cylinder is the same size as the packet's selection indicator
-				// Move our selection cylinder so that it is just above the one possibly already present
-				selectionCylinder.transform.position += new Vector3(0, .01f, 0);
-				p.selectionCylinder.SetActive(savedActive);
-
-				// Trigger a packet selection event (if we are triggering events)
-				if(shouldTriggerEvents)
-					packetSelectEvent?.Invoke(p);
-			// If we hit a starting point...
-			} else if(hit.transform.tag == "StartingPoint"){
-				// Select it
-				selected = hit.transform.gameObject;
-
-				// Trigger a StartingPoint selection event (if we are triggering events)
-				if(shouldTriggerEvents)
-					startingPointSelectEvent?.Invoke(selected.GetComponent<StartingPoint>());
-			// If we hit a destination...
-			} else if(hit.transform.tag == "Destination"){
-				// Select it
-				selected = hit.transform.gameObject;
-
-				// Trigger a StartingPoint selection event (if we are triggering events)
-				if(shouldTriggerEvents)
-					destinationSelectEvent?.Invoke(selected.GetComponent<Destination>());
-			}
+		if(Physics.Raycast( Camera.main.ScreenPointToRay(mousePositionAction.action.ReadValue<Vector2>()), out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide ))
+			SelectGameObject(hit.transform.gameObject, shouldTriggerEvents);
 		// If the raycast failed to find anything trigger a deselect event (if we are triggering events)
-		} else if(selected != null){
+		else if(selected != null){
+			GameObject oldSelected = selected;
 			selected = null;
-			if(shouldTriggerEvents) deselectEvent?.Invoke();
+			if(shouldTriggerEvents && oldSelected is object) deselectEvent?.Invoke();
 		}
 	}
 
