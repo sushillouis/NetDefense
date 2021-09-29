@@ -48,10 +48,6 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 	public void StartSpawningPackets(int toSpawn){ StartCoroutine(SpawnPackets(toSpawn)); }
 	// Coroutine which spawns the specified number of packets
 	IEnumerator SpawnPackets(int toSpawn){
-		// Generate the weighted lists used to determine the start and end points
-		StartingPoint[] startingPoints = StartingPoint.getWeightedList();
-		Destination[] destinations = Destination.getWeightedList();
-
 		// Packet spawning can only be performed by the host
 		if(NetworkingManager.isHost){
 			// Mark that we are spawning
@@ -59,6 +55,10 @@ public class PacketEntityPoolManager : Core.Utilities.Singleton<PacketEntityPool
 
 			// For each packet we should spawn...
 			for(packetsCurrentlySpawned = 0; packetsCurrentlySpawned < toSpawn; packetsCurrentlySpawned++){
+				// Generate the weighted lists used to determine the start and end points (done per packet to ensure black hat changes are propigated)
+				StartingPoint[] startingPoints = StartingPoint.getWeightedList();
+				Destination[] destinations = Destination.getWeightedList();
+
 				// Spawn the packet over the network
 				Packet spawned = PhotonNetwork.InstantiateRoomObject(packetPrefabPath, new Vector3(0, 100, 0), Quaternion.identity).GetComponent<Packet>();
 				// Locally parent it to ourselves
