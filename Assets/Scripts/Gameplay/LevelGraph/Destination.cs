@@ -47,7 +47,15 @@ public class Destination : PathNodeBase, SelectionManager.ISelectable {
 	public int updatesRemainingWhite = 0, updatesRemainingBlack = 0;
 
 	// All of the likelihoods are added together, then the probability of this point being a packet's destination is <likelihood>/<totalLikelihood>
-	public int packetDestinationLikelihood = 1;
+	// The likelihood of a packet targeting a HoneyPot is 0
+	[SerializeField] int _packetDestinationLikelihood = 1;
+	public int packetDestinationLikelihood {
+		get {
+			if(isHoneypot) return 0; // The likelihood of a packet targeting a HoneyPot is 0
+			return _packetDestinationLikelihood;
+		}
+		set => _packetDestinationLikelihood = value;
+	}
 	// Likelihood for malicious packets to target this destination
 	[SerializeField] int _maliciousPacketDestinationLikelihood = 1;
 	public int maliciousPacketDestinationLikelihood {

@@ -145,8 +145,9 @@ public class Packet : MonoBehaviourPun, SelectionManager.ISelectable {
 
 		// If the trigger was a destination...
 		if(collider.transform.tag == "Destination"){
-			// Process scoring
-			ScoreManager.instance.ProcessScoreEvent(isMalicious ? ScoreManager.ScoreEvent.MaliciousSuccess : ScoreManager.ScoreEvent.GoodSuccess);
+			// Process scoring (if the collided destination isn't a honeypot)
+			if(!collider.gameObject.GetComponent<Destination>().isHoneypot)
+				ScoreManager.instance.ProcessScoreEvent(isMalicious ? ScoreManager.ScoreEvent.MaliciousSuccess : ScoreManager.ScoreEvent.GoodSuccess);
 			// If the packet is malicious play a sound and particle effect
 			if(isMalicious){
 				AudioManager.instance.soundFXPlayer.PlayTrackImmediate("MaliciousSuccess");
