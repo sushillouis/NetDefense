@@ -50,7 +50,11 @@ public class BaseSharedBetweenHats : Core.Utilities.Singleton<BaseSharedBetweenH
 
 
 	// Access the selected element
-	public static T getSelected<T>() where T : MonoBehaviour, SelectionManager.ISelectable { return SelectionManager.instance.selected?.GetComponent<T>(); }
+	public static T getSelected<T>() where T : MonoBehaviour, SelectionManager.ISelectable {
+		var selected = SelectionManager.instance.selected;
+		if(selected is null || selected == null) return null;
+		return selected?.GetComponent<T>();
+	}
 
 	public static GameObject[] getFirewallTargets(){ return GameObject.FindGameObjectsWithTag("FirewallTarget"); }
 	public static GameObject[] getSwitchTargets(){ return GameObject.FindGameObjectsWithTag("SwitchTarget"); }

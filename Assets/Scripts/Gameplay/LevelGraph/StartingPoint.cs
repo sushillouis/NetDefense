@@ -53,14 +53,14 @@ public class StartingPoint : PathNodeBase, SelectionManager.ISelectable {
 	}
 
 	// The malicious packet for this starting point (NetworkSynced)
-	public Packet.Details maliciousPacketDetails = Packet.Details.Default;
+	public Packet.Details spawnedMaliciousPacketDetails = Packet.Details.Default;
 	// The likelihood that a packet coming from this starting point will be malicious (Network Synced)
 	public float maliciousPacketProbability = .33333f;
 
 	// Generates a random set of details, ensuring that the returned values aren't considered malicious
 	public Packet.Details randomNonMaliciousDetails() {
 		Packet.Details details = new Packet.Details(Utilities.randomEnum<Packet.Color>(), Utilities.randomEnum<Packet.Size>(), Utilities.randomEnum<Packet.Shape>());
-		if(details == maliciousPacketDetails) details = randomNonMaliciousDetails();
+		if(details == spawnedMaliciousPacketDetails) details = randomNonMaliciousDetails();
 		return details;
 	}
 
@@ -71,15 +71,15 @@ public class StartingPoint : PathNodeBase, SelectionManager.ISelectable {
 		// Only update the settings if we have updates remaining
 		if(updatesRemaining > 0){
 			// Take away an update if something actually changed
-			if(color != maliciousPacketDetails.color || size != maliciousPacketDetails.size || shape != maliciousPacketDetails.shape)
+			if(color != spawnedMaliciousPacketDetails.color || size != spawnedMaliciousPacketDetails.size || shape != spawnedMaliciousPacketDetails.shape)
 				updatesRemaining--;
-			photonView.RPC("RPC_StartingPoint_SetMaliciousPacketDetails", RpcTarget.AllBuffered, color, size, shape);
+			photonView.RPC("RPC_StartingPoint_SetspawnedMaliciousPacketDetails", RpcTarget.AllBuffered, color, size, shape);
 			return true;
 		} else return false;
 	}
 	public bool SetMaliciousPacketDetails(Packet.Details details) { return SetMaliciousPacketDetails(details.color, details.size, details.shape); }
 	[PunRPC] void RPC_StartingPoint_SetMaliciousPacketDetails(Packet.Color color, Packet.Size size, Packet.Shape shape){
-		maliciousPacketDetails = new Packet.Details(color, size, shape);
+		spawnedMaliciousPacketDetails = new Packet.Details(color, size, shape);
 	}
 
 

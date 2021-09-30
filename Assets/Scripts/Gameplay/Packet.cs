@@ -279,13 +279,13 @@ public class Packet : MonoBehaviourPun, SelectionManager.ISelectable {
 
 	// Synchronizes the properties across the network
 	// NOTE: The starting point must be set before this function can properly do its job
-	public void SetProperties(Color color, Size size, Shape shape, bool isMalicious){ SetProperties(color, size, shape, isMalicious); }
+	public void SetProperties(Color color, Size size, Shape shape, bool isMalicious){ SetProperties(new Details(color, size, shape), isMalicious); }
 	public void SetProperties(Details details, bool isMalicious){ photonView.RPC("RPC_Packet_SetProperties", RpcTarget.AllBuffered, details.color, details.size, details.shape, isMalicious); }
 	[PunRPC] void RPC_Packet_SetProperties(Color color, Size size, Shape shape, bool isMalicious){
 		// Ensure the local properties match the remote ones
 		_isMalicious = isMalicious;
 		if(!_isMalicious) _details = new Details(color, size, shape);
-		else _details = startPoint.maliciousPacketDetails;
+		else _details = startPoint.spawnedMaliciousPacketDetails;
 
 		// Set the mesh based on the shape
 		filter.mesh = meshes[(int)details.shape];

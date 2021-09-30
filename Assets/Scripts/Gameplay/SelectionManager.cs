@@ -45,7 +45,7 @@ public class SelectionManager : Core.Utilities.Singleton<SelectionManager> {
 		protected set {
 			_selected = value;
 			// When we select something wrap the selection cylinder around it
-			if(_selected != null) AttachSelectionCylinderToObject(_selected);
+			if(_selected is object) AttachSelectionCylinderToObject(_selected);
 			// When we deselect something hide the selection cylinder
 			else {
 				selectionCylinder.transform.parent = transform;

@@ -172,7 +172,7 @@ public class WhiteHatPlayerManager : WhiteHatBaseManager {
 	// Callback which makes the selected destination a honeypot (or sets the relevant click state so that the next click will make a destination a honeypot)
 	public void MakeHoneypot(){
 		// If we need to select a destination...
-		if(getSelected<Destination>() == null){
+		if(getSelected<Destination>() is null){
 			clickState = ClickState.SelectingDestinationToMakeHoneypot;
 			return;
 		}
