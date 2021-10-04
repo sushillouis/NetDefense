@@ -23,7 +23,7 @@ public class SimpleEnemyController : NetworkBehaviour {
     public float pulseDuration;
     public float pulseSpeed;
 
-    //public GameObject dynamicHud;
+    public GameObject dynamicHud;
     //public GameObject badPacketOutline;
 
 
