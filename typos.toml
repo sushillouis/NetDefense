@@ -4,11 +4,13 @@
 Behaviour = "Behaviour"
 Behaviours = "Behaviours"
 ret = "ret"
+prev = "prev"
 
 [default.extend-words]
 Behaviour = "Behaviour"
 Behaviours = "Behaviours"
 ret = "ret"
+prev = "prev"
 
 [files]
 # Ignore meta files
