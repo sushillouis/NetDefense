@@ -16,6 +16,7 @@ public class ThemedText : TextMeshProUGUI {
 	// De/register ourselves to theme updates on dis/enable
 	protected override void OnEnable(){
 		base.OnEnable();
+		OnThemeUpdate();
 		ThemeManager.themeUpdateEvent += OnThemeUpdate;
 	}
 	protected override void OnDisable(){

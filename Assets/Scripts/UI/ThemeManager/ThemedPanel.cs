@@ -12,7 +12,11 @@ public class ThemedPanel : Image {
 	public string themeStyleName = "default";
 
 	// Un/register to theme updates on dis/enable
-	protected override void OnEnable(){ base.OnEnable(); ThemeManager.themeUpdateEvent += OnThemeUpdate; }
+	protected override void OnEnable(){
+		base.OnEnable();
+		OnThemeUpdate();
+		ThemeManager.themeUpdateEvent += OnThemeUpdate;
+	}
 	protected override void OnDisable(){ base.OnDisable(); ThemeManager.themeUpdateEvent -= OnThemeUpdate; }
 	// On start update the theme and do any tweaks necessary to make the changes apply for the first time
 	protected override void Start(){

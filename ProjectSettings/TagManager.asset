@@ -13,6 +13,7 @@ TagManager:
   - StartingPoint
   - Grid
   - SuggestedFirewall
+  - LobbyScreenWindow
   layers:
   - Default
   - TransparentFX

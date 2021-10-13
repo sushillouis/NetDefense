@@ -10,6 +10,8 @@ public class WindowDrag : EnhancedUIBehavior, IPointerDownHandler, IDragHandler,
 	public Window dragTarget;
 	// Reference to the window's content
 	public ThemedPanel windowContent;
+	// Reference to the titleText
+	public TMPro.TMP_Text titleText;
 
 	// When a window is clicked, if it is outside of the window (can't be dragged) snap it in bounds
 	public void OnPointerDown(PointerEventData e){
@@ -23,11 +25,11 @@ public class WindowDrag : EnhancedUIBehavior, IPointerDownHandler, IDragHandler,
 
 	// When the window's title bar is dragged then move the window appropriately
 	public void OnDrag(PointerEventData e){
-		dragTarget.rectTransform.anchoredPosition += e.delta / dragTarget.parentCanvas.scaleFactor;
+		dragTarget.rectTransform.anchoredPosition += e.delta / dragTarget.canvas.scaleFactor;
 
 		// If the drag movement would move the titlebar off the screen, then undo the movement
 		if(!IsFullyVisibleFrom(Camera.main))
-			dragTarget.rectTransform.anchoredPosition -= e.delta / dragTarget.parentCanvas.scaleFactor;
+			dragTarget.rectTransform.anchoredPosition -= e.delta / dragTarget.canvas.scaleFactor;
 	}
 
 	// Function which causes the window to become slightly transparent when dragged
@@ -48,6 +50,11 @@ public class WindowDrag : EnhancedUIBehavior, IPointerDownHandler, IDragHandler,
 		// Restore the saved alpha of the content and its background
 		Color newColor = img.color; newColor.a = savedAlpha[0]; img.color = newColor;
 		newColor = windowContent.color; newColor.a = savedAlpha[1]; windowContent.color = newColor;
+	}
+
+	// Function which sets the window's title
+	public void SetWindowTitle(string title){
+		titleText.text = title;
 	}
 
 }

@@ -195,10 +195,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  parentCanvas: {fileID: 0}
-  parentCanvasTransform: {fileID: 0}
+  canvas: {fileID: 0}
+  canvasTransform: {fileID: 0}
   dragTarget: {fileID: 1516943330986447079}
   windowContent: {fileID: 1516943331246719982}
+  titleText: {fileID: 1516943330789078252}
 --- !u!114 &1516943330688200754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,8 +430,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  parentCanvas: {fileID: 0}
-  parentCanvasTransform: {fileID: 0}
+  canvas: {fileID: 0}
+  canvasTransform: {fileID: 0}
+  titlebar: {fileID: 1516943330688200755}
 --- !u!114 &1516943330986447076
 MonoBehaviour:
   m_ObjectHideFlags: 0

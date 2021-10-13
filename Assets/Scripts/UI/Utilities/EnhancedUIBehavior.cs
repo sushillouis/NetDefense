@@ -9,17 +9,26 @@ public class EnhancedUIBehavior : MonoBehaviour {
 	[HideInInspector] public RectTransform rectTransform;
 
 	// The canvas this element is attached to
-	[HideInInspector] public Canvas parentCanvas;
+	[HideInInspector] public Canvas canvas;
 	// The transform of the canvas this element is attached to
-	[HideInInspector] public RectTransform parentCanvasTransform;
+	[HideInInspector] public RectTransform canvasTransform;
 
 	// When the object is created determine its connections
-	protected void Awake(){
+	protected virtual void Awake(){
 		rectTransform = GetComponent<RectTransform>();
 
-		parentCanvas = FindParentCanvas(transform);
-		parentCanvasTransform = parentCanvas.GetComponent<RectTransform>();
+		canvas = Findcanvas(transform);
+		canvasTransform = canvas.GetComponent<RectTransform>();
 	}
+
+	// Function which centers the UI element on the screen
+	public void CenterOnScreen(){
+		transform.position = new Vector3 (Screen.width * 0.5f, Screen.height * 0.5f, 0);
+	}
+
+
+	// -- Visibility Functions --
+
 
 	// Function which determines if any amount of the element can be viewed from the provided rect
 	protected bool IsVisibleInRect(Rect pixelRect){
@@ -33,7 +42,7 @@ public class EnhancedUIBehavior : MonoBehaviour {
 
 	// Function which determines if any amount of the element can be viewed from the provided canvas (if no canvas is provided the parent canvas is used)
 	public bool IsVisibleFrom(Canvas canvas = null){
-		if(canvas == null) return IsVisibleInRect(parentCanvas.pixelRect);
+		if(canvas == null) return IsVisibleInRect(canvas.pixelRect);
 		return IsVisibleInRect(canvas.pixelRect);
 	}
 
@@ -49,7 +58,7 @@ public class EnhancedUIBehavior : MonoBehaviour {
 
 	// Function which determines if the element can be viewed from the provided canvas (if no canvas is provided the parent canvas is used)
 	public bool IsFullyVisibleFrom(Canvas canvas = null){
-		if(canvas == null) return IsFullyVisibleInRect(parentCanvas.pixelRect);
+		if(canvas == null) return IsFullyVisibleInRect(canvas.pixelRect);
 		return IsFullyVisibleInRect(canvas.pixelRect);
 	}
 
@@ -71,11 +80,11 @@ public class EnhancedUIBehavior : MonoBehaviour {
 	}
 
 	// Helper function which finds the parent canvas of UI element
-	public static Canvas FindParentCanvas(Transform us){
+	public static Canvas Findcanvas(Transform us){
 		while(us.parent != null){
-			Canvas parentCanvas = us.parent.gameObject.GetComponent<Canvas>();
-			if(parentCanvas != null)
-				return parentCanvas;
+			Canvas canvas = us.parent.gameObject.GetComponent<Canvas>();
+			if(canvas != null)
+				return canvas;
 
 			us = us.parent;
 		}
@@ -91,7 +100,7 @@ public class EnhancedUIBehaviorSingleton<T> : EnhancedUIBehavior where T : Enhan
 		get => instance != null;
 	}
 
-	protected virtual void Awake() {
+	protected override void Awake() {
 		base.Awake();
 
 		if (instanceExists)

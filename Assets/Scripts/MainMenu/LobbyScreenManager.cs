@@ -6,17 +6,17 @@ using UnityEngine.SceneManagement;
 using Photon.Realtime;
 using Photon.Pun;
 
-public class LobbyScreenManager : MonoBehaviour {
+public class LobbyScreenManager : Window {
 	// The three screens that the lobby manages
     public GameObject roomListScreen, inRoomScreen, loadingPrompt;
 
 	// RoomList
 	[Header("Room List")]
-	public Toggle multiplayerToggle;
-	public Button createRoomButton;
+	// Reference to the prefab instantiated for each room listing
+	public GameObject roomListingPrefab;
 	public TMPro.TMP_InputField aliasTextbox;
-	public TMPro.TextMeshProUGUI[] roomLabels;
-	public Button[] joinButtons;
+	public List<TMPro.TextMeshProUGUI> roomLabels;
+	public GameObject roomListContent;
 
 	// In Room
 	[Header("In Room")]
@@ -26,6 +26,9 @@ public class LobbyScreenManager : MonoBehaviour {
 	public DropdownController roleDropdownController;
 	public Button startButton, leaveButton;
 	public TMPro.TextMeshProUGUI[] playerLabels;
+
+	// Boolean tracking if the current lobby is a multiplayer lobby or not
+	bool isMultiplayer = false;
 
 	// Connect and disconnect to networking events
 	void OnEnable(){
@@ -80,20 +83,32 @@ public class LobbyScreenManager : MonoBehaviour {
 
 	// Updates the list of rooms that can be joined
 	void updateRoomList(List<RoomInfo> roomList){
+		// Remove all of the existing listings
+		foreach (Transform child in roomListContent.transform)
+			GameObject.Destroy(child.gameObject);
+
+		roomLabels.Clear();
+
 		int i = 0; // Counter representing how many rooms have been displayed
 		// For each room in the list
 		foreach(var info in roomList){
-			// If we have displayed more than 5 rooms... then stop // TODO: this limit needs to be removed
-			if(i >= 5) break;
 			// If the room is closed, invisible, or removed from the list then don't display it
 			if(!info.IsOpen || !info.IsVisible || info.RemovedFromList) continue;
 
-			// Reference to the ith join button
-			TMPro.TextMeshProUGUI buttonText = joinButtons[i].transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>();
+			// Create a new room listing
+			GameObject listing = Instantiate(roomListingPrefab);
+			listing.transform.parent = roomListContent.transform;
+
+			// Save a reference to it's label
+			roomLabels.Add(listing.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>());
+			Button button = listing.transform.GetChild(1).GetComponent<Button>();
+			TMPro.TextMeshProUGUI buttonText = button.transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>();
 
 			// Update the room buttons
+			int closureI = i; // We save i in a new variable so that its value at this point in time is saved in the onClick delegate
+			button.onClick.AddListener( () => OnJoinRoomButtonPressed(closureI) );
 			roomLabels[i].text = (i + 1) + ". " + info.Name;
-			buttonText.text = "Join as Second Player";
+			buttonText.text = "Join (" + info.PlayerCount + "/" + info.MaxPlayers + ")";
 
 			i++;
 		}
@@ -242,14 +257,22 @@ public class LobbyScreenManager : MonoBehaviour {
 	// -- UI Callbacks --
 
 
-	// Function called whenever the create room button is pressed, it updates the player's name and creates a room
-	public void OnCreateRoomButtonPressed(){
-		updatePlayerAlias();
+	// Function called whenever the create multiplayer room button is pressed, it updates the player's name and creates a room
+	public void OnCreateMultiplayerRoomButtonPressed(){
+		isMultiplayer = true;
+		titlebar.SetWindowTitle("Multiplayer");
 
-		if(multiplayerToggle.isOn)
-			NetworkingManager.instance.CreateRoom(/*max players*/ 16, true);
-		else
-			NetworkingManager.instance.CreateOfflineRoom();
+		updatePlayerAlias();
+		NetworkingManager.instance.CreateRoom(/*max players*/ 16, true);
+	}
+
+	// Function called whenever the create singleplayer room button is pressed, it updates the player's name and creates a room
+	public void OnCreateSingleplayerRoomButtonPressed(){
+		isMultiplayer = false;
+		titlebar.SetWindowTitle("Singleplayer");
+
+		updatePlayerAlias();
+		NetworkingManager.instance.CreateOfflineRoom();
 	}
 
 	// Function called when one of the join room buttons is pressed (it joins the specified room)
@@ -311,10 +334,19 @@ public class LobbyScreenManager : MonoBehaviour {
 
 	// Function called when the leave room button is pressed
 	public void OnLeaveRoomButtonPressed(){
-		if(multiplayerToggle.isOn)
+		titlebar.SetWindowTitle("Multiplayer");
+
+		if(isMultiplayer)
 			NetworkingManager.instance.LeaveRoom();
 		else
 			NetworkingManager.instance.Reconnect();
+	}
+
+	// Override of the base window, when the close button is pressed... also leave the room we are in.
+	public override void OnCloseButtonPressed(){
+		OnLeaveRoomButtonPressed();
+
+		base.OnCloseButtonPressed();
 	}
 
 

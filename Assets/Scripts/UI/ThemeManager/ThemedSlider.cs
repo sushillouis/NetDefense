@@ -12,7 +12,10 @@ public class ThemedSlider : Slider {
 	public string themeStyleName = "default";
 
 	// Dis/connect to theme updates when this object is dis/enabled
-	protected override void OnEnable(){ ThemeManager.themeUpdateEvent += OnThemeUpdate; }
+	protected override void OnEnable(){
+		OnThemeUpdate();
+		ThemeManager.themeUpdateEvent += OnThemeUpdate;
+	}
 	protected override void OnDisable(){ ThemeManager.themeUpdateEvent -= OnThemeUpdate; }
 	// On start update the theme and do any tweaks necessary to make the changes apply for the first time
 	protected override void Start(){

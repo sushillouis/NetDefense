@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class Window : EnhancedUIBehavior, IPointerDownHandler {
+	// Reference to the window's title bar
+	public WindowDrag titlebar;
 
 	// When a window is clicked, make sure it is drawn over all other UI elements
 	public void OnPointerDown(PointerEventData e){
