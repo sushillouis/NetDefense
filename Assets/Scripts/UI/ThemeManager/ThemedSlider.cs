@@ -108,6 +108,8 @@ public class ThemedSlider : Slider {
 		_new.animationTriggers = animationTriggers;
 		_new.targetGraphic = targetGraphic;
 		_new.interactable = interactable;
+
+		command.context = _new;
 	}
 #endif
 }

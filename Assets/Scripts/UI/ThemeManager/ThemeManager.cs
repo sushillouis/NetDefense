@@ -33,7 +33,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 	}
 
 
-	// -- Panel Style
+	// -- Panel Style --
 
 
 	// Class representing a Panel's style
@@ -85,7 +85,7 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 	public PanelStyle getPanelStyle(string name) { foreach(PanelStyle style in panelStyles) if(style.name == name) return style; /*default on failure*/ return getPanelStyle(0);  }
 
 
-	// -- Button Style
+	// -- Button Style --
 
 
 	// Class representing a Button's style
@@ -295,6 +295,46 @@ public class ThemeManager : Core.Utilities.Singleton<ThemeManager> {
 	public SliderStyle getSliderStyle(int index) { return sliderStyles[index]; }
 	public SliderStyle getSliderStyle(string name) { foreach(SliderStyle style in sliderStyles) if(style.name == name) return style; /*default on failure*/ return getSliderStyle(0);  }
 
+
+	// -- Dropdown Style --
+
+
+	// Class representing a dropdown's style
+	[System.Serializable]
+	public struct DropdownStyle {
+		// Name of the the style, referenced in components which use it (calls theme update callback when changed)
+		[SerializeField] string _name;
+		public string name {
+			get => _name;
+			set {
+				_name = value;
+				themeUpdateEvent?.Invoke();
+			}
+		}
+
+		// Slider colors (calls theme update callback when changed)
+		[SerializeField] ColorBlock _colors;
+		public ColorBlock colors {
+			get => _colors;
+			set {
+				_colors = value;
+				themeUpdateEvent?.Invoke();
+			}
+		}
+
+		public DropdownStyle(string name) {
+			_name = name;
+			_colors = ColorBlock.defaultColorBlock;
+			themeUpdateEvent?.Invoke();
+		}
+	}
+
+	// List of button styles
+	public List<DropdownStyle> dropdownStyles = new List<DropdownStyle> { new DropdownStyle("default") };
+
+	// Functions to access a particular button style
+	public DropdownStyle getDropdownStyle(int index) { return dropdownStyles[index]; }
+	public DropdownStyle getDropdownStyle(string name) { foreach(DropdownStyle style in dropdownStyles) if(style.name == name) return style; /*default on failure*/ return getDropdownStyle(0);  }
 
 
 #if UNITY_EDITOR

@@ -67,6 +67,8 @@ public class ThemedButton : Button {
 		_new.animationTriggers = animationTriggers;
 		_new.targetGraphic = targetGraphic;
 		_new.interactable = interactable;
+
+		command.context = _new;
 	}
 
 	// Menu item which converts the child TextMeshPro text into ThemedText

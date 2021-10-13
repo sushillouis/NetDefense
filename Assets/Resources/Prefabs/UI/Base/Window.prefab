@@ -197,7 +197,7 @@ MonoBehaviour:
   rectTransform: {fileID: 0}
   parentCanvas: {fileID: 0}
   parentCanvasTransform: {fileID: 0}
-  dragTaget: {fileID: 1516943330986447079}
+  dragTarget: {fileID: 1516943330986447079}
   windowContent: {fileID: 1516943331246719982}
 --- !u!114 &1516943330688200754
 MonoBehaviour:

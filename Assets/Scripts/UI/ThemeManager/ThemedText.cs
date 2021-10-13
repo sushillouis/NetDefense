@@ -96,9 +96,9 @@ public class ThemedText : TextMeshProUGUI {
 		newText.isRightToLeftText = isRightToLeftText;
 		newText.font = font;
 		newText.fontSharedMaterial = fontSharedMaterial;
-		newText.fontSharedMaterials = fontSharedMaterials;
+		try{ newText.fontSharedMaterials = fontSharedMaterials; } catch (System.NullReferenceException) {}
 		newText.fontMaterial = fontMaterial;
-		newText.fontMaterials = fontMaterials;
+		try{ newText.fontMaterials = fontMaterials; } catch (System.NullReferenceException) {}
 		newText.color = color;
 		newText.alpha = alpha;
 		newText.enableVertexGradient = enableVertexGradient;
@@ -129,6 +129,8 @@ public class ThemedText : TextMeshProUGUI {
 		newText.characterWidthAdjustment = characterWidthAdjustment;
 		newText.wordWrappingRatios = wordWrappingRatios;
 		newText.overflowMode = overflowMode;
+
+		command.context = newText;
 	}
 
 	// Menu item which converts TextMeshPro to ThemedText
@@ -169,6 +171,8 @@ public class ThemedText : TextMeshProUGUI {
         newText.text = text;
         newText.color = color;
         newText.raycastTarget = raycastTarget;
+
+		command.context = newText;
 	}
 
 	// Function which converts UGUI font style information to TMPro font style information

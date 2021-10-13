@@ -43,6 +43,8 @@ public class ThemedPanel : Image {
 
 		UnityEngine.GameObject.DestroyImmediate(old);
 		ThemedPanel _new = go.AddComponent<ThemedPanel>();
+
+		command.context = _new;
 	}
 
 #endif
