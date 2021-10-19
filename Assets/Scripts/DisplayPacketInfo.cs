@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class DisplayPacketInfo : MonoBehaviour
 {
     public static DisplayPacketInfo inst;
+
     public GameObject SimpleEnemyController; 
 
     private void Awake()
@@ -27,6 +28,7 @@ public class DisplayPacketInfo : MonoBehaviour
     void Update()
     {
         //Color Labels 
+
         if (SimpleEnemyController.GetComponent<SimpleEnemyController>().color == 0)
         {
             color.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().color.ToString("Pink");
@@ -67,7 +69,7 @@ public class DisplayPacketInfo : MonoBehaviour
         {
             shape.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().shape.ToString("Sphere");
         }
-
+        
     }
 }
  

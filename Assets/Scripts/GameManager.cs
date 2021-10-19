@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour {
                 packet.transform.localScale = new Vector3(sizes[2], sizes[2], sizes[2]);
                 break;
         }
-
+   
         switch (packet.shape) {
             case 0:
                 packet.GetComponent<MeshFilter>().mesh = models[0];
