@@ -7,7 +7,7 @@ public class DisplayPacketInfo : MonoBehaviour
 {
     public static DisplayPacketInfo inst;
 
-    public GameObject SimpleEnemyController; 
+    public SimpleEnemyController packet; 
 
     private void Awake()
     {
@@ -17,7 +17,7 @@ public class DisplayPacketInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject HoverInfo = new GameObject("text");  
+        packet = transform.parent.gameObject.GetComponent<SimpleEnemyController>();
     }
 
     public Text color;               
@@ -29,45 +29,48 @@ public class DisplayPacketInfo : MonoBehaviour
     {
         //Color Labels 
 
-        if (SimpleEnemyController.GetComponent<SimpleEnemyController>().color == 0)
+        if (packet.color == 0)
         {
-            color.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().color.ToString("Pink");
+            color.text = packet.color.ToString("Pink");
+            color.color = Color.magenta;
         }
-        if (SimpleEnemyController.GetComponent<SimpleEnemyController>().color == 1)
+        if (packet.color == 1)
         {
-            color.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().color.ToString("Green");
+            color.text = packet.color.ToString("Green");
+            color.color = Color.green; 
         }
-        if (SimpleEnemyController.GetComponent<SimpleEnemyController>().color == 2)
+        if (packet.color == 2)
         {
-            color.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().color.ToString("blue");
+            color.text = packet.color.ToString("Blue");
+            color.color = Color.blue;
         }
 
         //Size Labels
-        if (SimpleEnemyController.GetComponent<SimpleEnemyController>().size == 0)
+        if (packet.size == 0)
         {
-            size.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().size.ToString("S");
+            size.text = packet.size.ToString("Small");
         }
-        if (SimpleEnemyController.GetComponent<SimpleEnemyController>().size == 1)
+        if (packet.size == 1)
         {
-            size.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().size.ToString("M");
+            size.text = packet.size.ToString("Medium");
         }
-        if (SimpleEnemyController.GetComponent<SimpleEnemyController>().size == 2)
+        if (packet.size == 2)
         {
-            size.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().size.ToString("L");
+            size.text = packet.size.ToString("Large");
         }
 
         //Shape Labels 
-        if (SimpleEnemyController.GetComponent<SimpleEnemyController>().shape == 0)
+        if (packet.shape == 0)
         {
-            shape.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().shape.ToString("Cube");
+            shape.text = packet.shape.ToString("Cube");
         }
-        if (SimpleEnemyController.GetComponent<SimpleEnemyController>().shape == 1)
+        if (packet.shape == 1)
         {
-            shape.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().shape.ToString("Cone");
+            shape.text = packet.shape.ToString("Cone");
         }
-        if (SimpleEnemyController.GetComponent<SimpleEnemyController>().shape == 2)
+        if (packet.shape == 2)
         {
-            shape.text = SimpleEnemyController.GetComponent<SimpleEnemyController>().shape.ToString("Sphere");
+            shape.text = packet.shape.ToString("Sphere");
         }
         
     }
