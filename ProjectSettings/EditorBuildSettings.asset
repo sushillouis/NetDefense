@@ -26,4 +26,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/MediumLevelBank.unity
+    guid: 224349d254354ee4d8376640a32d07fe
+  - enabled: 1
+    path: Assets/Scenes/HardLevelPowerPlant.unity
+    guid: 69075c136d211c84fb759a400d5947d4
   m_configObjects: {}
