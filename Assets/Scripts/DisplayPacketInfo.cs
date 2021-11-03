@@ -34,12 +34,12 @@ public class DisplayPacketInfo : MonoBehaviour
             color.text = packet.color.ToString("Pink");
             color.color = Color.magenta;
         }
-        if (packet.color == 1)
+        else if (packet.color == 1)
         {
             color.text = packet.color.ToString("Green");
             color.color = Color.green; 
         }
-        if (packet.color == 2)
+        else if (packet.color == 2)
         {
             color.text = packet.color.ToString("Blue");
             color.color = Color.blue;
@@ -50,11 +50,11 @@ public class DisplayPacketInfo : MonoBehaviour
         {
             size.text = packet.size.ToString("Small");
         }
-        if (packet.size == 1)
+        else if (packet.size == 1)
         {
             size.text = packet.size.ToString("Medium");
         }
-        if (packet.size == 2)
+        else if (packet.size == 2)
         {
             size.text = packet.size.ToString("Large");
         }
@@ -64,11 +64,11 @@ public class DisplayPacketInfo : MonoBehaviour
         {
             shape.text = packet.shape.ToString("Cube");
         }
-        if (packet.shape == 1)
+        else if (packet.shape == 1)
         {
             shape.text = packet.shape.ToString("Cone");
         }
-        if (packet.shape == 2)
+        else if (packet.shape == 2)
         {
             shape.text = packet.shape.ToString("Sphere");
         }
