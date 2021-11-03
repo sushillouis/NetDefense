@@ -86,8 +86,7 @@ public class MainMenu : MonoBehaviour {
             difficulty = Difficulty.EASY;
 
         if (level == 1)
-            difficulty = Difficulty.MEDIUM;
-            SceneManager.LoadScene("MediumLevelBank");
+            difficulty = Difficulty.MEDIUM;            
 
         if (level == 2)
             difficulty = Difficulty.HARD;
@@ -132,6 +131,9 @@ public class MainMenu : MonoBehaviour {
 
         if (mode == 1)
             SceneManager.LoadScene("MultiStateGameplay");
+
+        if (mode == 1 && level == 2)
+            SceneManager.LoadScene("MediumLevelBank");
     }
 
     public void OnBackSelected() {
