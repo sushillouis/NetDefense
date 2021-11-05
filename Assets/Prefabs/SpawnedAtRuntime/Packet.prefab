@@ -157,6 +157,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   pulseDuration: 2
   pulseSpeed: 3
+  dynamicHud: {fileID: 0}
   color: 0
   size: 0
   shape: 0
