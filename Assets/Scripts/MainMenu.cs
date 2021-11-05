@@ -130,10 +130,13 @@ public class MainMenu : MonoBehaviour {
         }
 
         if (mode == 1)
-            SceneManager.LoadScene("MultiStateGameplay");  
+            SceneManager.LoadScene("MultiStateGameplay");  // Loads Tron (easy) skin
 
         if (level == 1)
-            SceneManager.LoadScene("MediumLevelBank");
+            SceneManager.LoadScene("MediumLevelBank"); // Loads Bank (medium) skin
+
+        //if (level == 2)
+            //SceneManager.LoadScene("HardLevelPowerPlant"); // Loads PowerPlant (hard) skin
     }
 
     public void OnBackSelected() {
