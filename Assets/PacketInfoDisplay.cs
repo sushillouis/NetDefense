@@ -9,7 +9,7 @@ public class PacketInfoDisplay : MonoBehaviour
 
     public SimpleEnemyController packet;
 
-    public SimpleEnemyController selected;
+    public SelectionManager selected;
 
     private void Awake()
     {
