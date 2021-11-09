@@ -17,7 +17,7 @@ public class PacketInfoDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        packet = transform.parent.gameObject.GetComponent<SimpleEnemyController>();
+        
     }
 
     public Text color;
@@ -28,24 +28,21 @@ public class PacketInfoDisplay : MonoBehaviour
     void Update()
     {
 
-        if (packet.GetComponent<SelectionManager>().selected != null)
+        if (SelectionManager.inst.selected is object)
         {
 
             //Color Labels 
             if (packet.color == 0)
             {
                 color.text = packet.color.ToString("PINK");
-                color.color = Color.magenta;
             }
             else if (packet.color == 1)
             {
                 color.text = packet.color.ToString("GREEN");
-                color.color = Color.green;
             }
             else if (packet.color == 2)
             {
                 color.text = packet.color.ToString("BLUE");
-                color.color = Color.blue;
             }
 
             //Size Labels

@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
 {
+    public static SelectionManager inst;
+    public void Awake() { inst = this; }
+
     // Variable storing the results of raycasts
     RaycastHit hit;
 
     public SimpleEnemyController selected;
-
     // Update is called once per frame
     void Update()
     {
@@ -30,14 +32,14 @@ public class SelectionManager : MonoBehaviour
                         selected = packet;
 
                         // Make sure no other packet has its UI displayed
-                        var packets = FindObjectsOfType<SimpleEnemyController>();
-                        foreach (var p in packets)
-                            p.dynamicHud.SetActive(false);
+                        //var packets = FindObjectsOfType<SimpleEnemyController>();
+                        //foreach (var p in packets)
+                            //p.dynamicHud.SetActive(false);
 
                         // Display the UI of the selected packet
-                        packet.dynamicHud.SetActive(true);
+                        //packet.dynamicHud.SetActive(true);
                         // Ensure that the UI is facing towards the camera (prevents snapping)
-                        packet.dynamicHud.transform.LookAt(currentCamera.transform);
+                        //packet.dynamicHud.transform.LookAt(currentCamera.transform);
                     }
                     else
                         selected = null; 
