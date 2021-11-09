@@ -9,8 +9,6 @@ public class PacketInfoDisplay : MonoBehaviour
 
     public SimpleEnemyController packet;
 
-    public SelectionManager selected;
-
     private void Awake()
     {
         inst = this;
@@ -30,7 +28,7 @@ public class PacketInfoDisplay : MonoBehaviour
     void Update()
     {
 
-        if (selected != null)
+        if (packet.GetComponent<SelectionManager>().selected != null)
         {
 
             //Color Labels 

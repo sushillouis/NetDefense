@@ -4,13 +4,12 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: RedEnemy
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Water
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION
-  m_LightmapFlags: 1
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -60,18 +59,24 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _Fresnel: 1
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0.715
     - _GlossyReflections: 1
-    - _Metallic: 0
+    - _Metallic: 0.554
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _Opacity: 8.15
     - _Parallax: 0.02
+    - _Smoothness: 0.593
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
+    - __dirty: 0
     m_Colors:
-    - _Color: {r: 0.17647052, g: 0.023529414, b: 0.17647052, a: 1}
+    - _Color: {r: 0.35294113, g: 0.5160242, b: 0.7058823, a: 1}
+    - _Color_01: {r: 0.2661116, g: 0.70058763, b: 0.78676474, a: 0}
+    - _Color_02: {r: 0.18685122, g: 0.56661475, b: 0.9411765, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

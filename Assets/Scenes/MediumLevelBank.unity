@@ -62321,13 +62321,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772189852}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a54e44d789c64c844ba0c503ab495a9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   packet: {fileID: -2724340389063060650, guid: 80f87c8ad241016409f779d31e4ba027, type: 3}
-  selected: {fileID: 668051530}
   color: {fileID: 1235622064}
   shape: {fileID: 111019611}
   size: {fileID: 785629541}
