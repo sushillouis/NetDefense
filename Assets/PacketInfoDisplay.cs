@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
 public class PacketInfoDisplay : MonoBehaviour
 {
     public static PacketInfoDisplay inst;
 
     public SimpleEnemyController packet;
+
+    string[] colors = new string[3] { "PINK", "GREEN", "BLUE" };
+    string[] sizes = new string[3]{"SMALL","MEDIUM","LARGE"};
+    string[] shapes = new string[3]{"CUBE","CONE","SPHERE"};
 
     private void Awake()
     {
@@ -17,7 +23,7 @@ public class PacketInfoDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     public Text color;
@@ -30,48 +36,19 @@ public class PacketInfoDisplay : MonoBehaviour
 
         if (SelectionManager.inst.selected is object)
         {
+            packet = SelectionManager.inst.selected;
+            Debug.Log(packet.color);
+            Debug.Log(packet.shape);
+            Debug.Log(packet.size);
 
             //Color Labels 
-            if (packet.color == 0)
-            {
-                color.text = packet.color.ToString("PINK");
-            }
-            else if (packet.color == 1)
-            {
-                color.text = packet.color.ToString("GREEN");
-            }
-            else if (packet.color == 2)
-            {
-                color.text = packet.color.ToString("BLUE");
-            }
+            color.text = colors[packet.color].ToString();
 
             //Size Labels
-            if (packet.size == 0)
-            {
-                size.text = packet.size.ToString("SMALL");
-            }
-            else if (packet.size == 1)
-            {
-                size.text = packet.size.ToString("MEDIUM");
-            }
-            else if (packet.size == 2)
-            {
-                size.text = packet.size.ToString("LARGE");
-            }
+            size.text = sizes[packet.size];
 
             //Shape Labels 
-            if (packet.shape == 0)
-            {
-                shape.text = packet.shape.ToString("CUBE");
-            }
-            else if (packet.shape == 1)
-            {
-                shape.text = packet.shape.ToString("CONE");
-            }
-            else if (packet.shape == 2)
-            {
-                shape.text = packet.shape.ToString("SPHERE");
-            }
+            shape.text = shapes[packet.shape];
         }
     }
 }

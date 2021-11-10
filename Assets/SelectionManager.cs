@@ -30,7 +30,9 @@ public class SelectionManager : MonoBehaviour
                     {
                         // Save the selected packet
                         selected = packet;
-
+                        Debug.Log(packet.color);
+                        Debug.Log(packet.size);
+                        Debug.Log(packet.shape);
                         // Make sure no other packet has its UI displayed
                         //var packets = FindObjectsOfType<SimpleEnemyController>();
                         //foreach (var p in packets)
@@ -42,7 +44,8 @@ public class SelectionManager : MonoBehaviour
                         //packet.dynamicHud.transform.LookAt(currentCamera.transform);
                     }
                     else
-                        selected = null; 
+                        selected = null;
+                    Debug.Log(selected = null);
                 }
             }
         }
