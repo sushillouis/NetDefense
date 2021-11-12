@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectionManager : MonoBehaviour
 {
     public static SelectionManager inst;
     public void Awake() { inst = this; }
+
+    public Text color;
+    public Text shape;
+    public Text size;
 
     // Variable storing the results of raycasts
     RaycastHit hit;
@@ -33,10 +38,53 @@ public class SelectionManager : MonoBehaviour
                         Debug.Log(packet.color);
                         Debug.Log(packet.size);
                         Debug.Log(packet.shape);
+
+                        //Color Labels 
+                        if (packet.color == 0)
+                        {
+                            color.text = packet.color.ToString("PINK");
+                        }
+                        else if (packet.color == 1)
+                        {
+                            color.text = packet.color.ToString("GREEN");
+                        }
+                        else if (packet.color == 2)
+                        {
+                            color.text = packet.color.ToString("BLUE");
+                        }
+
+                        //Size Labels
+                        if (packet.size == 0)
+                        {
+                            size.text = packet.size.ToString("SMALL");
+                        }
+                        else if (packet.size == 1)
+                        {
+                            size.text = packet.size.ToString("MEDIUM");
+                        }
+                        else if (packet.size == 2)
+                        {
+                            size.text = packet.size.ToString("LARGE");
+                        }
+
+                        //Shape Labels 
+                        if (packet.shape == 0)
+                        {
+                            shape.text = packet.shape.ToString("CUBE");
+                        }
+                        else if (packet.shape == 1)
+                        {
+                            shape.text = packet.shape.ToString("CONE");
+                        }
+                        else if (packet.shape == 2)
+                        {
+                            shape.text = packet.shape.ToString("SPHERE");
+                        }
+
                         // Make sure no other packet has its UI displayed
                         //var packets = FindObjectsOfType<SimpleEnemyController>();
                         //foreach (var p in packets)
-                            //p.dynamicHud.SetActive(false);
+                        //p.dynamicHud.SetActive(false);
 
                         // Display the UI of the selected packet
                         //packet.dynamicHud.SetActive(true);
