@@ -35,6 +35,9 @@ public class SelectionManager : MonoBehaviour
                     {
                         // Save the selected packet
                         selected = packet;
+
+                        packet.selectedChild.SetActive(true);
+
                         Debug.Log(packet.color);
                         Debug.Log(packet.size);
                         Debug.Log(packet.shape);

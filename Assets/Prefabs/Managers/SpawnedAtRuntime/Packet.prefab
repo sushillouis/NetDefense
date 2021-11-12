@@ -168,7 +168,8 @@ MonoBehaviour:
   _destination: {fileID: 0}
   path: {fileID: 0}
   isReadyForRemoval: 0
-  selectedChild: {fileID: 3864207490557312111}
+  selectedChild: {fileID: 9183282935489160824, guid: b1b64573597ecf94e812fd9d518ac68f,
+    type: 3}
 --- !u!114 &3369030672383057657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,12 +325,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1b64573597ecf94e812fd9d518ac68f, type: 3}
---- !u!1 &3864207490557312111 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9183282935489160824, guid: b1b64573597ecf94e812fd9d518ac68f,
-    type: 3}
-  m_PrefabInstance: {fileID: 5391370679644756503}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6974627380346461651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3034060244875282372, guid: b1b64573597ecf94e812fd9d518ac68f,
