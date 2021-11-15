@@ -36,7 +36,8 @@ public class SelectionManager : MonoBehaviour
                         // Save the selected packet
                         selected = packet;
 
-                        packet.selectedChild.SetActive(true);
+                        
+                        //Debug.Assert(packet.selectedChild, "Selection circle is not active.");
 
                         Debug.Log(packet.color);
                         Debug.Log(packet.size);
@@ -84,6 +85,8 @@ public class SelectionManager : MonoBehaviour
                             shape.text = packet.shape.ToString("SPHERE");
                         }
 
+                        packet.selectionCylinder.SetActive(true);
+
                         // Make sure no other packet has its UI displayed
                         //var packets = FindObjectsOfType<SimpleEnemyController>();
                         //foreach (var p in packets)
@@ -96,9 +99,9 @@ public class SelectionManager : MonoBehaviour
                     }
                     else
                         selected = null;
-                    Debug.Log(selected = null);
+                        Debug.Log(selected = null);
                 }
             }
-        }
+        } 
     }
 }

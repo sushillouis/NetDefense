@@ -73,6 +73,7 @@ public class SimpleEnemyController : NetworkBehaviour {
     public bool isReadyForRemoval;
 
     public GameObject selectedChild;
+    public GameObject selectionCylinder;
 
     public void Start() {
 
