@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        // add keys to dictionary for targgeting
+        // add keys to dictionary for targeting
         foreach (Destination d in destinations) {
             Shared.inst.gameMetrics.target_probabilities.Add(d.inst_id, 0);
         }

@@ -53,6 +53,8 @@ public class Destination : MonoBehaviour {
             tempMaterials[0] = newMaterial;
             GetComponent<Renderer>().materials = tempMaterials;
         }
+        Debug.Log(honeypotMaterial);
+        Debug.Log("Honeypot is " + isHoneypot );
 
 		// Play the router place sound (if we are creating a honeypot and the player is a whitehat)
 		if(value && Shared.inst.getDevicePlayer().role == SharedPlayer.WHITEHAT) Camera.main.transform.GetChild(4).GetComponent<AudioSource>().Play();

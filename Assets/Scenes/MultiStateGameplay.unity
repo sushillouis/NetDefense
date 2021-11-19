@@ -8476,7 +8476,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1751, y: -28.000092}
+  m_AnchoredPosition: {x: -1751, y: -28.000061}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &389190349
@@ -13196,6 +13196,11 @@ PrefabInstance:
     - target: {fileID: 3837353942167120302, guid: faf56a038a9e60440b77a842867bc61c,
         type: 3}
       propertyPath: isHoneypot
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837353942167120302, guid: faf56a038a9e60440b77a842867bc61c,
+        type: 3}
+      propertyPath: isReadyTobeHoneypot
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4135552877210382402, guid: faf56a038a9e60440b77a842867bc61c,
@@ -30663,7 +30668,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -10.1}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1397579351
