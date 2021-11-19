@@ -32,6 +32,8 @@ public class Destination : MonoBehaviour {
             Shared.inst.syncEvents.Add(new SyncEvent(MessageTypes.SET_HONEY_POT_ACTIVATION, inst_id + "," + isHoneypot));
             setIsHoneyPot(isHoneypot);
 
+            Debug.Log("Honeypot is clicked");
+
             foreach (Destination d in destinations) {
                 d.isReadyTobeHoneypot = false;
                 d.updateSelection();

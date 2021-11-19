@@ -136,7 +136,7 @@ public class MainMenu : MonoBehaviour {
             SceneManager.LoadScene("MediumLevelBank"); // Loads Bank (medium) skin
 
         if (level == 2)
-            SceneManager.LoadScene("HardLevelPowerPlant"); // Loads PowerPlant (hard) skin
+            SceneManager.LoadScene("MultiStateGameplay1"); // Loads PowerPlant (hard) skin
     }
 
     public void OnBackSelected() {

@@ -32,4 +32,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HardLevelPowerPlant.unity
     guid: 69075c136d211c84fb759a400d5947d4
+  - enabled: 0
+    path: Assets/Scenes/HardLevel.unity
+    guid: 2f57b3682d4bfdc4ab7a2ffe9cf62d45
+  - enabled: 1
+    path: Assets/Scenes/MultiStateGameplay1.unity
+    guid: b3a75ad74ab532e4da5a19c046eae6cb
   m_configObjects: {}
